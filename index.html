@@ -84,6 +84,19 @@ label.field{display:flex;flex-direction:column;gap:4px;font-size:.8rem;color:var
 @keyframes bob{50%{transform:translateY(-8px)}}
 @media (prefers-reduced-motion: reduce){.bob{animation:none}}
 
+/* pin lock */
+#lock{position:fixed;inset:0;z-index:19;background:var(--bg);color:var(--on-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;
+  padding:calc(24px + env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px))}
+#lock .masc{width:120px}
+#lock h1{color:var(--lime)}
+.dots{display:flex;gap:14px;justify-content:center;min-height:18px}
+.dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--on-bg);display:block}
+.dots i.on{background:var(--lime);border-color:var(--lime)}
+.pad{display:grid;grid-template-columns:repeat(3,72px);gap:12px;justify-content:center}
+.pad button{width:72px;height:72px;border-radius:50%;font-size:1.6rem;font-family:var(--fd);background:var(--card);border-color:var(--card);padding:0}
+.pad button.ghost{background:transparent;border-color:transparent;color:var(--on-bg);font-family:var(--f);font-size:.9rem}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 /* header */
 header.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .logo{font-family:var(--fd);color:var(--lime);font-size:1.4rem;letter-spacing:.02em;text-transform:uppercase}
@@ -202,6 +215,17 @@ textarea{width:100%;min-height:90px;font:inherit;font-size:.8rem;background:var(
   <div class="tiny">Ketuk di mana saja untuk masuk</div>
   <div id="iosHint" hidden style="background:var(--card);color:var(--ink);border-radius:18px;padding:12px 14px;font-size:.85rem;max-width:320px;text-align:left">
     <b>Pasang di iPhone:</b> ketuk tombol <b>Bagikan</b> (kotak dengan panah ke atas) di bawah, lalu pilih <b>Tambahkan ke Layar Utama</b>.
+  </div>
+</div>
+
+<div id="lock" hidden>
+  <div id="lockMascot"></div>
+  <h1 id="lockTitle">Masukkan PIN</h1>
+  <div class="small" id="lockSub" style="color:var(--on-bg-muted)">PIN 4 angka</div>
+  <div class="dots" id="pinDots"><i></i><i></i><i></i><i></i></div>
+  <div class="pad" id="pad">
+    <button>1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button><button>8</button><button>9</button>
+    <button class="ghost" id="padCancel">Batal</button><button>0</button><button class="ghost" id="padDel" aria-label="Hapus angka">⌫</button>
   </div>
 </div>
 
@@ -351,6 +375,11 @@ textarea{width:100%;min-height:90px;font:inherit;font-size:.8rem;background:var(
       <label class="field">Target tidur / malam
         <select id="sSleep"><option value="6">6 jam</option><option value="6.5">6,5 jam</option><option value="7">7 jam</option><option value="7.5">7,5 jam</option><option value="8">8 jam</option></select>
       </label>
+    </div>
+    <div class="card">
+      <div class="row between"><h2>Kunci PIN</h2><span id="pinState"></span></div>
+      <div class="muted small">Minta PIN 4 angka setiap aplikasi dibuka, supaya orang lain yang memegang HP ini tidak bisa melihat catatanmu. Kalau lupa PIN, catatan hanya bisa dibuka lagi dengan menghapus data aplikasi, jadi simpan cadangan.</div>
+      <div class="row"><button id="pinSet" class="p">Pasang PIN</button><button id="pinOff" hidden>Matikan PIN</button></div>
     </div>
     <div class="card sky">
       <h2>Soal pelacakan tidur</h2>
@@ -777,6 +806,54 @@ function render() {
   ({ today: renderToday, recap: renderRecap, program: renderProgram, set: renderSettings })[S.view]();
 }
 let toastT; function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2400); }
+
+/* ---------- pin lock (kept only on this device) ---------- */
+const PIN_KEY = "jendela-makan-pin";
+const pinGet = () => { try { return JSON.parse(localStorage.getItem(PIN_KEY) || "null"); } catch (e) { return null; } };
+async function hashPin(pin, salt) {
+  const data = new TextEncoder().encode(salt + ":" + pin);
+  try { const b = await crypto.subtle.digest("SHA-256", data); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join(""); }
+  catch (e) { let h = 0; for (const c of salt + pin) h = (h * 31 + c.charCodeAt(0)) | 0; return "f" + h; }
+}
+let pinMode = null, pinBuf = "", pinFirst = "", pinTries = 0;
+function showLock(mode) {
+  pinMode = mode; pinBuf = ""; pinFirst = "";
+  $("#lockMascot").innerHTML = mascot(mode === "unlock" ? "calm" : "happy", null, false);
+  $("#lockTitle").textContent = mode === "unlock" ? "Masukkan PIN" : mode === "off" ? "PIN lama" : "PIN baru";
+  $("#lockSub").textContent = mode === "unlock" ? "Catatanmu terkunci" : mode === "off" ? "Masukkan PIN untuk mematikan kunci" : "Pilih 4 angka yang mudah kamu ingat";
+  $("#padCancel").style.visibility = mode === "unlock" ? "hidden" : "visible";
+  dots(); $("#lock").hidden = false;
+}
+function dots() { $("#pinDots").querySelectorAll("i").forEach((d, i) => d.classList.toggle("on", i < pinBuf.length)); }
+function shake(msg) { const d = $("#pinDots"); d.classList.remove("shake"); void d.offsetWidth; d.classList.add("shake"); if (msg) $("#lockSub").textContent = msg; pinBuf = ""; setTimeout(dots, 300); }
+async function pinComplete() {
+  const saved = pinGet();
+  if (pinMode === "unlock" || pinMode === "off") {
+    const ok = saved && (await hashPin(pinBuf, saved.salt)) === saved.hash;
+    if (!ok) { pinTries++; shake(pinTries >= 5 ? "PIN salah. Tunggu sebentar lalu coba lagi." : "PIN salah, coba lagi"); if (pinTries >= 5) { $("#pad").style.pointerEvents = "none"; setTimeout(() => { $("#pad").style.pointerEvents = ""; pinTries = 0; }, 30000); } return; }
+    pinTries = 0;
+    if (pinMode === "off") { try { localStorage.removeItem(PIN_KEY); } catch (e) {} toast("Kunci PIN dimatikan"); renderPin(); }
+    $("#lock").hidden = true; return;
+  }
+  if (!pinFirst) { pinFirst = pinBuf; pinBuf = ""; $("#lockTitle").textContent = "Ulangi PIN"; $("#lockSub").textContent = "Ketik sekali lagi untuk memastikan"; dots(); return; }
+  if (pinBuf !== pinFirst) { pinFirst = ""; $("#lockTitle").textContent = "PIN baru"; shake("Tidak sama. Ulangi dari awal."); return; }
+  const salt = uid() + uid();
+  try { localStorage.setItem(PIN_KEY, JSON.stringify({ salt, hash: await hashPin(pinBuf, salt) })); $("#lock").hidden = true; toast("PIN terpasang"); }
+  catch (e) { $("#lock").hidden = true; toast("PIN tidak bisa disimpan di browser ini"); }
+  renderPin();
+}
+$("#pad").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b || b.id === "padCancel" || b.id === "padDel") return;
+  if (pinBuf.length < 4) { pinBuf += b.textContent; dots(); if (pinBuf.length === 4) setTimeout(pinComplete, 120); }
+});
+$("#padDel").onclick = () => { pinBuf = pinBuf.slice(0, -1); dots(); };
+$("#padCancel").onclick = () => { if (pinMode !== "unlock") $("#lock").hidden = true; };
+function renderPin() { const on = !!pinGet(); $("#pinState").innerHTML = on ? '<span class="pill good">Aktif</span>' : '<span class="pill wait">Mati</span>'; $("#pinSet").textContent = on ? "Ganti PIN" : "Pasang PIN"; $("#pinOff").hidden = !on; }
+$("#pinSet").onclick = () => showLock("set");
+$("#pinOff").onclick = () => showLock("off");
+renderPin();
+if (pinGet()) showLock("unlock");
+document.addEventListener("visibilitychange", () => { if (document.hidden) { window.__hiddenAt = Date.now(); } else if (pinGet() && window.__hiddenAt && Date.now() - window.__hiddenAt > 60000 && $("#lock").hidden) showLock("unlock"); });
 
 /* ---------- events ---------- */
 $("#splashMascot").innerHTML = mascot("happy", "var(--yellow)");
