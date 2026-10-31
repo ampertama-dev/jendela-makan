@@ -200,6 +200,9 @@ textarea{width:100%;min-height:90px;font:inherit;font-size:.8rem;background:var(
   <p>Fast smart. Skip the sugar. Sleep well. Every single day.</p>
   <button class="go" id="goBtn">Let’s start</button>
   <div class="tiny">Ketuk di mana saja untuk masuk</div>
+  <div id="iosHint" hidden style="background:var(--card);color:var(--ink);border-radius:18px;padding:12px 14px;font-size:.85rem;max-width:320px;text-align:left">
+    <b>Pasang di iPhone:</b> ketuk tombol <b>Bagikan</b> (kotak dengan panah ke atas) di bawah, lalu pilih <b>Tambahkan ke Layar Utama</b>.
+  </div>
 </div>
 
 <div class="wrap" id="app">
@@ -834,6 +837,7 @@ setInterval(() => { if (S.view === "today" && S.day === isoDay(new Date())) { dr
 setSync(); initStore();
 })();
 </script>
+<script>try{var ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);var standalone=navigator.standalone||matchMedia("(display-mode: standalone)").matches;if(ios&&!standalone)document.getElementById("iosHint").hidden=false;}catch(e){}</script>
 <script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist();}catch(e){}</script>
 </body></html>
