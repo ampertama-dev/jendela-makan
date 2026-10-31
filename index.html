@@ -1,0 +1,839 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#17454A">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+<title>Jendela Makan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Onest:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: playful phone app. Splash screen, then one column of colour-block cards on deep teal, bottom tab bar.
+   Single deliberate look from the user's palette: cherry rose / light yellow / lime cream / strong cyan on deep teal. */
+:root{
+  --bg:#17454A; --card:#FEFFE0; --stone:#E8EBC4; --line:#FEFFE0;
+  --ink:#14363B; --muted:#557172; --on-bg:#FEFFE0; --on-bg-muted:#A9C7C5;
+  --purple:#B5185F; --indigo:#0E3034; --yellow:#D0E86E; --lime:#D0E86E;
+  --pink:#F6CADC; --sky:#35C1C2; --cheek:#F6CADC;
+  --good:#2C7A4B; --bad:#B5185F;
+  --f:"Onest", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --fd:"Anton", "Impact", "Arial Narrow", sans-serif;
+  --r:26px; color-scheme:dark;
+}
+.masc{position:relative}
+.masc img{width:100%;height:auto;display:block;filter:drop-shadow(0 5px 0 rgba(0,0,0,.18))}
+.masc.calm img{transform:rotate(-5deg)}
+.masc.sleep img{transform:rotate(-10deg) translateY(4px)}
+.masc.meh img{filter:grayscale(.55) drop-shadow(0 5px 0 rgba(0,0,0,.18))}
+.masc .deco{position:absolute;inset:-12%;width:124%;height:124%;pointer-events:none}
+.result{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start}
+.result .ic{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1rem}
+.result .num{font-family:var(--fd);font-size:1.9rem;line-height:1.05;letter-spacing:.01em}
+.result p{margin:4px 0 0}
+.basis{font-size:.74rem;color:var(--muted);margin-top:6px;border-top:1px dashed var(--stone);padding-top:6px}
+.gauge{height:12px;border-radius:999px;background:var(--stone);overflow:hidden;margin-top:6px}
+.gauge span{display:block;height:100%;border-radius:999px}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--f);font-size:15px;line-height:1.45;font-variant-numeric:tabular-nums;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:14px calc(96px + env(safe-area-inset-bottom, 0px))}
+.wrap{max-width:520px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:14px;min-width:0}
+section{min-width:0}
+h1,h2,h3{margin:0;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
+h1{font-family:var(--fd);font-weight:400;font-size:2.2rem;letter-spacing:.01em;text-transform:uppercase;color:var(--on-bg)}
+.card h1{color:inherit}
+h2{font-size:1.15rem}
+.eyebrow{font-size:.74rem;font-weight:600;color:var(--muted)}
+.muted{color:var(--muted)}
+.small{font-size:.84rem}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.card.stone{background:var(--stone);border-color:transparent}
+.card.pink{background:var(--pink);border-color:transparent}
+.card.sky{background:var(--sky);border-color:transparent}
+.card.lime{background:var(--lime);border-color:transparent}
+.card.purple{background:var(--purple);border-color:transparent;color:#fff}
+.card.indigo{background:var(--indigo);border-color:var(--sky);color:#fff}
+.card.cherry{background:var(--purple);border-color:transparent;color:var(--card)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:10px 16px;font-weight:600;min-height:44px;color:var(--ink)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--indigo);outline-offset:2px}
+button.p{background:var(--purple);border-color:var(--purple);color:#fff}
+button.y{background:var(--yellow);border-color:var(--yellow)}
+button.l{background:var(--lime);border-color:var(--lime)}
+button.k{background:var(--pink);border-color:var(--pink)}
+button.sm{min-height:36px;padding:6px 12px;font-size:.85rem}
+input[type=time],input[type=date],input[type=number],select{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:9px 12px;min-height:46px;width:100%;color:var(--ink)}
+label.field{display:flex;flex-direction:column;gap:4px;font-size:.8rem;color:var(--muted);font-weight:600;flex:1;min-width:120px}
+
+/* splash */
+#splash{position:fixed;inset:0;z-index:20;background:var(--purple);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;
+  padding:calc(24px + env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) calc(28px + env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px));cursor:pointer;overflow:auto}
+#splash .hero{width:min(250px,62vw);position:relative}
+#splash .hero svg{width:100%;height:auto;display:block}
+#splash h1{font-size:clamp(2.6rem,13vw,4rem);line-height:1;max-width:10ch;color:var(--lime)}
+#splash p{margin:0;font-size:1.05rem;opacity:.92;max-width:28ch}
+#splash .go{background:var(--lime);border-color:var(--lime);color:var(--ink);font-size:1.05rem;padding:14px 34px;min-height:54px;font-weight:800}
+#splash .tiny{font-size:.78rem;opacity:.75}
+.bob{animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}
+@media (prefers-reduced-motion: reduce){.bob{animation:none}}
+
+/* header */
+header.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.logo{font-family:var(--fd);color:var(--lime);font-size:1.4rem;letter-spacing:.02em;text-transform:uppercase}
+.sync{font-size:.72rem;color:var(--on-bg-muted);font-weight:600;text-align:right}
+
+/* status card */
+.hero-card{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center}
+.hero-card .m{width:110px}
+.hero-card .big{font-family:var(--fd);font-size:3rem;line-height:1;letter-spacing:.01em}
+.dialwrap{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.dial{width:150px;max-width:100%;aspect-ratio:1;flex:none}
+.legend{display:flex;flex-direction:column;gap:6px;font-size:.82rem;flex:1;min-width:140px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:-1px}
+
+.datenav{display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
+.datenav button{min-height:40px;width:40px;padding:0}
+.datenav input{min-height:40px;padding:6px 10px;width:auto;max-width:160px}
+
+.pill{display:inline-flex;align-items:center;border-radius:999px;padding:4px 11px;font-size:.76rem;font-weight:700;width:max-content;max-width:100%;white-space:nowrap}
+.pill.good{background:var(--lime);color:var(--ink)}
+.pill.bad{background:var(--pink);color:var(--bad)}
+.pill.info{background:var(--sky);color:var(--indigo)}
+.pill.wait{background:var(--stone);color:var(--muted)}
+.pill.y{background:var(--yellow);color:var(--ink)}
+
+.switch{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.switch input{appearance:none;width:56px;height:32px;border-radius:999px;background:var(--stone);position:relative;flex:none;cursor:pointer;transition:background .15s}
+.switch input::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .15s}
+.switch input:checked{background:var(--purple)}
+.switch input:checked::after{transform:translateX(24px)}
+
+.meals{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.meals li{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;border-radius:16px;background:var(--stone)}
+.meals .t{font-weight:800;width:3.1em}
+.meals .k{flex:1;min-width:0}
+.x{border:none;background:transparent;color:var(--muted);min-height:34px;width:34px;padding:0;font-size:1.2rem}
+.btns3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.btns3 button{padding:10px 6px;border-radius:18px;line-height:1.15}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border-radius:14px;min-height:40px;padding:6px 14px;font-size:.88rem}
+#rangeSeg .chip[aria-pressed=true]{background:var(--purple);border-color:var(--purple);color:#fff}
+.chip[aria-pressed=true].yes{background:var(--lime);border-color:var(--lime)}
+.chip[aria-pressed=true].no{background:var(--pink);border-color:var(--pink);color:var(--bad)}
+.tri{display:flex;flex-direction:column;gap:12px}
+.tri .item{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+
+.counter{display:flex;align-items:center;gap:8px}
+.counter b{font-size:1.6rem;font-weight:800;min-width:1.7em;text-align:center}
+.counter button{width:44px;padding:0}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tile{border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.tile .label{font-size:.8rem;font-weight:700}
+.tile .v{font-family:var(--fd);font-size:2.1rem;line-height:1;letter-spacing:.01em}
+.tile.purple .label,.tile.purple .v{color:var(--card)}
+.tile.sky .s{color:var(--ink)}
+.tile .s{font-size:.75rem;color:var(--muted)}
+.tile.pink{background:var(--pink)}.tile.sky{background:var(--sky)}.tile.lime{background:var(--lime)}.tile.yellow{background:var(--yellow)}.tile.stone{background:var(--stone)}.tile.purple{background:var(--purple);color:#fff}.tile.purple .s{color:#E8E2FF}
+.tile .counter b{font-size:1.4rem}
+.tile .counter button{width:38px;min-height:38px;background:#fff;border-color:#fff}
+
+.bar{height:22px;border-radius:999px;background:#fff;overflow:hidden;position:relative}
+.bar > span{position:absolute;inset:0 auto 0 0;background:var(--pink);border-radius:999px}
+.bar > em{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-style:normal;font-size:.72rem;font-weight:700;color:var(--muted)}
+.progrow{display:grid;grid-template-columns:7.5em 1fr;gap:10px;align-items:center;font-size:.88rem;font-weight:600}
+
+.scroll{overflow-x:auto;min-width:0}
+table{border-collapse:collapse;width:100%;font-size:.85rem;min-width:430px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--stone);white-space:nowrap}
+th{font-size:.7rem;font-weight:700;color:var(--muted)}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--stone)}
+.ok{color:var(--good);font-weight:800}.ng{color:var(--bad);font-weight:800}.na{color:var(--muted)}
+.chart svg{width:100%;height:auto;display:block}
+
+/* calendar faces */
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.cal .d{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;max-width:100%}
+.cal .d .masc{width:88%}
+.cal .d{overflow:hidden}
+.cal .h{font-size:.66rem;color:var(--muted);text-align:center;font-weight:600}
+
+.habit{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;background:var(--stone);cursor:pointer}
+.habit input{width:22px;height:22px;accent-color:var(--purple);flex:none}
+.habit span{flex:1;min-width:0}
+.habit b{white-space:nowrap;font-size:.82rem}
+.formula{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.formula li{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}
+.formula .ic{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem}
+.iftable{display:flex;flex-direction:column;gap:6px}
+.iftable div{display:grid;grid-template-columns:1fr auto;gap:10px;padding:9px 12px;border-radius:14px;background:rgba(255,255,255,.55);font-size:.85rem}
+.iftable b{white-space:nowrap}
+
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--card);border-top:none;border-radius:22px 22px 0 0;display:flex;justify-content:center;
+  padding:8px max(16px, env(safe-area-inset-right, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))}
+nav.tabs .in{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:520px}
+nav.tabs button{border:none;background:transparent;border-radius:16px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px;font-size:.76rem;color:var(--muted);min-height:54px}
+nav.tabs .sq{width:40px;height:30px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:var(--stone)}
+nav.tabs svg{width:19px;height:19px}
+nav.tabs button[aria-current=true]{color:var(--ink)}
+nav.tabs button[data-v=today][aria-current=true] .sq{background:var(--yellow)}
+nav.tabs button[data-v=recap][aria-current=true] .sq{background:var(--purple);color:var(--card)}
+nav.tabs button[data-v=program][aria-current=true] .sq{background:var(--sky)}
+nav.tabs button[data-v=set][aria-current=true] .sq{background:var(--lime)}
+.note{font-size:.82rem;color:var(--muted);background:var(--stone);border-radius:14px;padding:10px 12px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom, 0px));background:var(--indigo);color:#fff;padding:10px 16px;border-radius:999px;font-size:.88rem;font-weight:600;z-index:6;max-width:90vw;text-align:center}
+textarea{width:100%;min-height:90px;font:inherit;font-size:.8rem;background:var(--stone);border:1.5px solid var(--line);border-radius:14px;padding:8px;color:var(--ink)}
+</style>
+
+<!-- ===== SPLASH ===== -->
+<div id="splash" role="button" tabindex="0" aria-label="Masuk ke aplikasi">
+  <div class="hero bob" id="splashMascot"></div>
+  <h1>Healthy is a must, not a maybe.</h1>
+  <p>Fast smart. Skip the sugar. Sleep well. Every single day.</p>
+  <button class="go" id="goBtn">Let’s start</button>
+  <div class="tiny">Ketuk di mana saja untuk masuk</div>
+</div>
+
+<div class="wrap" id="app">
+  <header class="top">
+    <span class="logo">jendela makan</span>
+    <span class="sync" id="sync">Memuat data…</span>
+  </header>
+
+  <!-- ===== HARI INI ===== -->
+  <section id="v-today" class="wrap">
+    <div class="row between">
+      <div class="datenav">
+        <button id="prevDay" aria-label="Hari sebelumnya">‹</button>
+        <input type="date" id="dayPick" aria-label="Pilih tanggal">
+        <button id="nextDay" aria-label="Hari berikutnya">›</button>
+      </div>
+      <button class="sm l" id="goToday">Hari ini</button>
+    </div>
+
+    <div class="card purple hero-card" id="heroCard">
+      <div class="m" id="heroMascot"></div>
+      <div id="status"></div>
+    </div>
+
+    <div class="card">
+      <div class="dialwrap">
+        <svg class="dial" id="dial" viewBox="0 0 200 200" role="img" aria-label="Jam 24 jam: jendela makan, jam snack, dan waktu sekarang"></svg>
+        <div class="legend">
+          <span><i style="background:var(--yellow)"></i>Jendela makan <b id="lgWin"></b></span>
+          <span><i style="background:var(--pink)"></i>Snack opsional <b id="lgSnack"></b></span>
+          <span><i style="background:var(--stone)"></i>Puasa (air &amp; americano boleh)</span>
+          <span id="dinasNote" class="muted"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="switch">
+        <div><h2>Perjalanan dinas</h2><div class="muted small">Sarapan ringan dihitung pengecualian, bukan pelanggaran.</div></div>
+        <input type="checkbox" id="dinas" aria-label="Hari ini perjalanan dinas">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row between"><h2>Catat makan</h2><span id="mealPill"></span></div>
+      <label class="field" style="max-width:150px">Jam<input type="time" id="mealTime"></label>
+      <div class="btns3">
+        <button class="y" id="addHeavy">Makan<br>berat</button>
+        <button class="k" id="addSnack">Snack</button>
+        <button id="addLight">Sarapan<br>ringan</button>
+      </div>
+      <ul class="meals" id="meals"></ul>
+    </div>
+
+    <div class="tiles">
+      <div class="tile sky">
+        <span class="label">Air putih</span>
+        <span class="v" id="wVal">0</span><span class="s" id="wSub">gelas 250 ml</span>
+        <div class="counter"><button id="wMinus" aria-label="Kurangi air">−</button><button id="wPlus" aria-label="Tambah segelas air">+</button></div>
+      </div>
+      <div class="tile yellow">
+        <span class="label">Americano</span>
+        <span class="v" id="cVal">0</span><span class="s">tanpa gula, susu, creamer</span>
+        <div class="counter"><button id="cMinus" aria-label="Kurangi americano">−</button><button id="cPlus" aria-label="Tambah americano">+</button></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Formula hari ini</h2>
+      <div class="tri">
+        <div class="item"><div><b>Gula tambahan</b><div class="muted small">Target 0, maksimal 25 g.</div></div>
+          <div class="chips" data-key="sugar"><button class="chip yes" data-v="1">Bebas</button><button class="chip no" data-v="0">Kebobolan</button></div></div>
+        <div class="item"><div><b>Tepung &amp; gorengan</b><div class="muted small">Roti putih, mie, biskuit, keripik.</div></div>
+          <div class="chips" data-key="flour"><button class="chip yes" data-v="1">Bebas</button><button class="chip no" data-v="0">Kebobolan</button></div></div>
+        <div class="item"><div><b>Protein cukup</b><div class="muted small" id="protHint">1,6–2,2 g per kg berat badan.</div></div>
+          <div class="chips" data-key="protein"><button class="chip yes" data-v="1">Cukup</button><button class="chip no" data-v="0">Kurang</button></div></div>
+        <div class="item"><div><b>Kopi lain</b><div class="muted small">Kopi susu, sachet, sirup.</div></div>
+          <div class="counter"><button id="oMinus" aria-label="Kurangi kopi lain">−</button><b id="oVal">0</b><button id="oPlus" aria-label="Tambah kopi lain">+</button></div></div>
+      </div>
+    </div>
+
+    <div class="card pink">
+      <div class="row between"><h2>Tidur</h2><span id="sleepPill"></span></div>
+      <div class="small">Isi tidur semalam. Dicatat di tanggal kamu bangun.</div>
+      <div class="row">
+        <label class="field">Tidur jam<input type="time" id="sleepStart"></label>
+        <label class="field">Bangun jam<input type="time" id="sleepEnd"></label>
+      </div>
+    </div>
+
+    <div class="card stone">
+      <div class="row between"><h2>Timbang</h2><span id="wtPill"></span></div>
+      <div class="small muted">Opsional. Timbang pagi setelah bangun, cukup 1–2 kali seminggu.</div>
+      <label class="field" style="max-width:180px">Berat (kg)<input type="number" id="weight" inputmode="decimal" step="0.1" min="30" max="250" placeholder="contoh 78.4"></label>
+    </div>
+  </section>
+
+  <!-- ===== REKAP ===== -->
+  <section id="v-recap" class="wrap" hidden>
+    <div class="row between">
+      <h1>Rekap</h1>
+      <div class="chips" id="rangeSeg"><button class="chip sm" data-r="7" aria-pressed="true">7 hari</button><button class="chip sm" data-r="30" aria-pressed="false">30 hari</button></div>
+    </div>
+    <div id="recapBody" class="wrap"></div>
+  </section>
+
+  <!-- ===== PROGRAM ===== -->
+  <section id="v-program" class="wrap" hidden>
+    <h1>Program</h1>
+    <div id="progBody" class="wrap"></div>
+  </section>
+
+  <!-- ===== ATUR ===== -->
+  <section id="v-set" class="wrap" hidden>
+    <h1>Atur</h1>
+    <div class="card">
+      <h2>Jendela makan</h2>
+      <div class="muted small">Di luar jendela kamu puasa. Air putih dan americano tetap boleh.</div>
+      <div class="row">
+        <label class="field">Mulai makan<input type="time" id="sStart"></label>
+        <label class="field">Makan terakhir<input type="time" id="sEnd"></label>
+      </div>
+      <div class="row">
+        <label class="field">Snack mulai<input type="time" id="sSnackS"></label>
+        <label class="field">Snack selesai<input type="time" id="sSnackE"></label>
+      </div>
+      <label class="field">Toleransi (menit)
+        <select id="sTol"><option value="0">0</option><option value="15">15</option><option value="30">30</option><option value="45">45</option><option value="60">60</option></select>
+      </label>
+      <div class="note" id="protoNote"></div>
+    </div>
+    <div class="card">
+      <h2>Profil &amp; target</h2>
+      <div class="row">
+        <label class="field">Berat awal (kg)<input type="number" id="sW0" step="0.1" inputmode="decimal" placeholder="contoh 82"></label>
+        <label class="field">Mulai program<input type="date" id="sD0"></label>
+      </div>
+      <div class="row">
+        <label class="field">Defisit kalori / hari
+          <select id="sDef"><option value="300">300 kkal (santai)</option><option value="500">500 kkal (disarankan)</option><option value="750">750 kkal</option><option value="1000">1.000 kkal (agresif)</option></select>
+        </label>
+        <label class="field">Target air / hari
+          <select id="sWater"><option value="8">2 liter (8 gelas)</option><option value="10">2,5 liter (10 gelas)</option><option value="12">3 liter (12 gelas)</option></select>
+        </label>
+      </div>
+      <label class="field">Target tidur / malam
+        <select id="sSleep"><option value="6">6 jam</option><option value="6.5">6,5 jam</option><option value="7">7 jam</option><option value="7.5">7,5 jam</option><option value="8">8 jam</option></select>
+      </label>
+    </div>
+    <div class="card sky">
+      <h2>Soal pelacakan tidur</h2>
+      <div class="small">Tidur dicatat manual: isi jam tidur dan jam bangun. Halaman web tidak bisa membaca sensor HP. Kalau mau otomatis, pakai jam pintar (Mi Band, Galaxy Watch, Fitbit) atau aplikasi Sleep as Android, lalu salin jamnya ke sini tiap pagi.</div>
+    </div>
+    <div class="card">
+      <h2>Cadangan data</h2>
+      <div class="muted small">Salin semua catatan sebagai teks, misalnya untuk disimpan di catatan HP.</div>
+      <button id="copyJson">Salin data</button>
+      <textarea id="jsonOut" readonly hidden aria-label="Data JSON"></textarea>
+      <div class="muted small">Pindah dari versi lain? Tempel teks cadangan di sini, lalu ketuk Pulihkan.</div>
+      <textarea id="jsonIn" aria-label="Tempel data cadangan" placeholder="Tempel teks cadangan di sini"></textarea>
+      <button id="restoreJson">Pulihkan data</button>
+      <div class="note" id="storeNote"></div>
+      <button class="sm" id="showSplash">Lihat halaman pembuka</button>
+    </div>
+  </section>
+</div>
+
+<nav class="tabs" aria-label="Menu">
+  <div class="in">
+    <button data-v="today" aria-current="true"><span class="sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>Hari ini</button>
+    <button data-v="recap"><span class="sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 19v-6M12 19V6M19 19v-9"/></svg></span>Rekap</button>
+    <button data-v="program"><span class="sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></span>Program</button>
+    <button data-v="set"><span class="sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span>Atur</button>
+  </div>
+</nav>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+"use strict";
+const $ = s => document.querySelector(s);
+const pad = n => String(n).padStart(2, "0");
+const toMin = t => { if (!t) return null; const [h, m] = t.split(":").map(Number); return h * 60 + m; };
+const fmtMin = m => pad(Math.floor(m / 60) % 24) + ":" + pad(m % 60);
+const dur = m => { m = Math.max(0, Math.round(m)); const h = Math.floor(m / 60), r = m % 60; return h ? (r ? `${h}j ${r}m` : `${h}j`) : `${r}m`; };
+const isoDay = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+const addDays = (iso, n) => { const d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); return isoDay(d); };
+const diffDays = (a, b) => Math.round((new Date(b + "T12:00:00") - new Date(a + "T12:00:00")) / 864e5);
+const HARI = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+const dayLabel = iso => { const d = new Date(iso + "T12:00:00"); return HARI[d.getDay()] + " " + d.getDate() + "/" + (d.getMonth() + 1); };
+const nowMin = () => { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); };
+const uid = () => Math.random().toString(36).slice(2, 9);
+const kg = (v, dp = 1) => v.toFixed(dp).replace(".", ",");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* ---------- mascot ---------- */
+const MASCOT = "data:image/webp;base64,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";
+function mascot(mood = "happy", _fill, extras = true) {
+  let deco = "";
+  if (extras && mood === "happy") deco = `<svg class="deco" viewBox="0 0 200 200" aria-hidden="true"><path d="M14 40 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z" fill="var(--lime)"/><path d="M182 118 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="var(--card)"/><path d="M168 22 l10 -6 -4 10 10 -4" stroke="var(--sky)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  if (extras && mood === "sleep") deco = `<svg class="deco" viewBox="0 0 200 200" aria-hidden="true"><text x="160" y="46" font-size="30" fill="var(--sky)" font-family="Anton,Impact,sans-serif">Z</text><text x="182" y="22" font-size="20" fill="var(--sky)" font-family="Anton,Impact,sans-serif">z</text></svg>`;
+  return `<div class="masc ${mood}"><img src="${MASCOT}" alt="">${deco}</div>`;
+}
+
+/* ---------- state ---------- */
+const DEFAULTS = { start: "12:00", end: "20:00", snackS: "15:00", snackE: "16:00", tol: 30, sleepTarget: 7, w0: null, d0: isoDay(new Date()), deficit: 500, water: 10, habits: [] };
+const S = { settings: { ...DEFAULTS }, days: {}, day: isoDay(new Date()), view: "today", range: 7, mode: "loading" };
+const blankDay = () => ({ meals: [], dinas: false, coffee: 0, otherCoffee: 0, water: 0, sugar: null, flour: null, protein: null, sleepStart: "", sleepEnd: "", weight: null });
+const getDay = iso => ({ ...blankDay(), ...(S.days[iso] || {}) });
+
+/* ---------- storage: claude db (private per person) with browser fallback ---------- */
+const LS_KEY = "jendela-makan-v1";
+let col = null; const dirty = new Set(); const writing = {}; const queued = {};
+function lsSave() { try { localStorage.setItem(LS_KEY, JSON.stringify({ settings: S.settings, days: S.days })); } catch (e) {} }
+function lsLoad() { try { const o = JSON.parse(localStorage.getItem(LS_KEY) || "null"); if (o) { S.settings = { ...DEFAULTS, ...o.settings }; S.days = o.days || {}; } } catch (e) {} }
+async function writeDoc(id, data) {
+  if (!col) { lsSave(); return; }
+  dirty.add(id);
+  if (writing[id]) { queued[id] = data; return; }
+  writing[id] = true;
+  try { await col.doc(id).set(data); }
+  catch (e) { toast(e && e.code === "quota_exceeded" ? "Penyimpanan penuh. Hapus beberapa catatan lama." : "Gagal menyimpan. Coba lagi sebentar."); }
+  writing[id] = false;
+  if (queued[id]) { const q = queued[id]; delete queued[id]; return writeDoc(id, q); }
+  dirty.delete(id);
+}
+const saveDay = iso => { lsSave(); writeDoc("d-" + iso, S.days[iso]); };
+const saveSettings = () => { lsSave(); writeDoc("settings", S.settings); };
+async function initStore() {
+  lsLoad(); render();
+  let db = null, user = null;
+  try { if (window.claude && window.claude.use) [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]); } catch (e) {}
+  const id = user ? await user.id().catch(() => null) : null;
+  if (!db || !id) { S.mode = "local"; setSync(); render(); return; }
+  col = db.collection("data/users/" + id);
+  const timer = setTimeout(() => { if (S.mode === "loading") { S.mode = "slow"; setSync(); } }, 10000);
+  let migrated = false;
+  col.onSnapshot(snap => {
+    const days = {}; let settings = null;
+    snap.docs.forEach(d => { if (d.id === "settings") settings = d.data(); else if (d.id.startsWith("d-")) days[d.id.slice(2)] = d.data(); });
+    dirty.forEach(k => { if (k === "settings") settings = S.settings; else days[k.slice(2)] = S.days[k.slice(2)]; });
+    if (!snap.metadata.fromCache) {
+      clearTimeout(timer); S.mode = "cloud";
+      if (!migrated) { migrated = true;
+        if (snap.empty) { Object.keys(S.days).forEach(k => { days[k] = S.days[k]; writeDoc("d-" + k, S.days[k]); }); if (!settings) { settings = S.settings; writeDoc("settings", S.settings); } } }
+    }
+    if (settings) S.settings = { ...DEFAULTS, ...settings };
+    S.days = days; lsSave(); setSync(); render();
+  }, () => { clearTimeout(timer); S.mode = "local"; col = null; setSync(); render(); });
+}
+function setSync() {
+  $("#sync").textContent = { loading: "Memuat data…", slow: "Belum tersambung", cloud: "Tersimpan di akunmu", local: "Tersimpan di HP ini" }[S.mode];
+  $("#storeNote").textContent = S.mode === "cloud"
+    ? "Catatan disimpan privat di akun Claude kamu, jadi tetap ada walau dibuka dari HP atau laptop lain."
+    : "Catatan disimpan di HP ini saja, tanpa akun. Kalau aplikasi dihapus atau data Chrome dibersihkan, catatan ikut hilang, jadi salin cadangan seminggu sekali.";
+}
+
+/* ---------- rules ---------- */
+const W = () => ({ s: toMin(S.settings.start), e: toMin(S.settings.end), tol: +S.settings.tol || 0 });
+function inWindow(t) { const { s, e, tol } = W(); const m = toMin(t); return s <= e ? (m >= s - tol && m <= e + tol) : (m >= s - tol || m <= e + tol); }
+function mealVerdict(meal, day) { if (inWindow(meal.t)) return "ok"; if (meal.kind === "ringan" && day.dinas) return "dinas"; return "out"; }
+function dayEval(iso) {
+  const raw = S.days[iso]; if (!raw) return null; const d = getDay(iso);
+  const meals = d.meals.slice().sort((a, b) => toMin(a.t) - toMin(b.t));
+  const verdicts = meals.map(m => mealVerdict(m, d));
+  const windowOk = meals.length ? !verdicts.includes("out") : null;
+  let fast = null; const prev = S.days[addDays(iso, -1)];
+  if (meals.length && prev && prev.meals && prev.meals.length) fast = (1440 - Math.max(...prev.meals.map(m => toMin(m.t)))) + toMin(meals[0].t);
+  const sleep = d.sleepStart && d.sleepEnd ? (toMin(d.sleepEnd) - toMin(d.sleepStart) + 1440) % 1440 : null;
+  // score: how many daily formula items were met (of those filled)
+  const checks = [windowOk, d.sugar, d.flour, d.protein, d.water ? d.water >= S.settings.water : null, d.otherCoffee ? false : (d.coffee || meals.length ? true : null)].filter(v => v != null);
+  const score = checks.length ? checks.filter(Boolean).length / checks.length : null;
+  return { meals, verdicts, windowOk, exceptions: verdicts.filter(v => v === "dinas").length, fast, sleep, sugar: d.sugar, flour: d.flour, protein: d.protein, coffee: d.coffee || 0, other: d.otherCoffee || 0, water: d.water || 0, dinas: !!d.dinas, weight: d.weight, score };
+}
+function latestWeight() { const ks = Object.keys(S.days).filter(k => S.days[k] && S.days[k].weight).sort(); return ks.length ? { iso: ks[ks.length - 1], w: +S.days[ks[ks.length - 1]].weight } : null; }
+const ratePerWeek = () => (+S.settings.deficit * 7) / 7700; // kg fat per week
+
+function mutDay(fn) { const iso = S.day; const d = JSON.parse(JSON.stringify(getDay(iso))); fn(d); S.days[iso] = d; saveDay(iso); render(); }
+
+/* ---------- dial ---------- */
+function polar(min, r) { const a = (min / 1440) * 2 * Math.PI - Math.PI / 2; return [100 + r * Math.cos(a), 100 + r * Math.sin(a)]; }
+function arc(a, b, r) { const span = ((b - a) + 1440) % 1440 || 1440; const [x1, y1] = polar(a, r), [x2, y2] = polar(a + span, r); return `M${x1.toFixed(2)} ${y1.toFixed(2)} A${r} ${r} 0 ${span > 720 ? 1 : 0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`; }
+function drawDial() {
+  const { s, e } = W(); const d = getDay(S.day); const isToday = S.day === isoDay(new Date());
+  let h = `<circle cx="100" cy="100" r="76" fill="none" stroke="var(--stone)" stroke-width="22"/>`;
+  h += `<path d="${arc(s, e, 76)}" fill="none" stroke="var(--yellow)" stroke-width="22"/>`;
+  const ss = toMin(S.settings.snackS), se = toMin(S.settings.snackE);
+  if (ss != null && se != null && se > ss) h += `<path d="${arc(ss, se, 76)}" fill="none" stroke="var(--pink)" stroke-width="22"/>`;
+  for (let i = 0; i < 24; i++) { const [x1, y1] = polar(i * 60, 92), [x2, y2] = polar(i * 60, i % 6 ? 95 : 99); h += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="var(--muted)" stroke-width="${i % 6 ? 1 : 2.2}" stroke-linecap="round"/>`; }
+  [[0, "0"], [360, "6"], [720, "12"], [1080, "18"]].forEach(([m, l]) => { const [x, y] = polar(m, 50); h += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--muted)" font-family="Onest, sans-serif">${l}</text>`; });
+  d.meals.forEach(m => { const v = mealVerdict(m, d); const [x, y] = polar(toMin(m.t), 76); const c = v === "ok" ? "#fff" : v === "dinas" ? "var(--sky)" : "var(--bad)"; h += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7" fill="${c}" stroke="var(--ink)" stroke-width="2"/>`; });
+  if (isToday) { const [x, y] = polar(nowMin(), 66); h += `<line x1="100" y1="100" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--purple)" stroke-width="4" stroke-linecap="round"/><circle cx="100" cy="100" r="6" fill="var(--purple)"/>`; }
+  else h += `<text x="100" y="105" text-anchor="middle" font-size="14" font-weight="800" fill="var(--ink)" font-family="Onest, sans-serif">${dayLabel(S.day)}</text>`;
+  $("#dial").innerHTML = h;
+  $("#lgWin").textContent = S.settings.start + "–" + S.settings.end;
+  $("#lgSnack").textContent = S.settings.snackS + "–" + S.settings.snackE;
+  $("#dinasNote").textContent = d.dinas ? "Mode dinas aktif: sarapan ringan boleh." : "";
+}
+function drawStatus() {
+  const el = $("#status"); const card = $("#heroCard"); const { s, e } = W(); const isToday = S.day === isoDay(new Date()); const ev = dayEval(S.day);
+  if (!isToday) {
+    card.className = "card hero-card " + (ev && ev.windowOk === false ? "pink" : "lime");
+    $("#heroMascot").innerHTML = mascot(ev && ev.windowOk === false ? "meh" : "happy", "var(--yellow)", false);
+    const sc = ev && ev.score != null ? Math.round(ev.score * 100) + "%" : "–";
+    el.innerHTML = `<div class="eyebrow">Catatan ${dayLabel(S.day)}</div><div class="big">${sc}</div><div class="small">formula terpenuhi · puasa ${ev && ev.fast != null ? dur(ev.fast) : "–"}</div>`;
+    return;
+  }
+  const n = nowMin(); const open = s <= e ? (n >= s && n <= e) : (n >= s || n <= e);
+  let last = null; const td = getDay(S.day), yd = S.days[addDays(S.day, -1)];
+  const tm = td.meals.map(m => toMin(m.t)).filter(m => m <= n);
+  if (tm.length) last = n - Math.max(...tm); else if (yd && yd.meals && yd.meals.length) last = n + 1440 - Math.max(...yd.meals.map(m => toMin(m.t)));
+  if (open) {
+    card.className = "card hero-card purple";
+    $("#heroMascot").innerHTML = mascot("happy", "var(--yellow)");
+    el.innerHTML = `<div class="eyebrow" style="color:#E8E2FF">Jendela makan terbuka</div><div class="big">${dur(((e - n) + 1440) % 1440)}</div><div class="small" style="color:#E8E2FF">lagi sampai makan terakhir jam <b style="color:#fff">${S.settings.end}</b></div>`;
+  } else {
+    card.className = "card hero-card indigo";
+    $("#heroMascot").innerHTML = mascot(n >= 22 * 60 || n < 5 * 60 ? "sleep" : "calm", "var(--sky)");
+    el.innerHTML = `<div class="eyebrow" style="color:#C9C1F5">Sedang puasa</div><div class="big">${dur(((s - n) + 1440) % 1440)}</div><div class="small" style="color:#C9C1F5">lagi sampai boleh makan jam <b style="color:#fff">${S.settings.start}</b>${last != null ? `<br>sudah puasa <b style="color:#fff">${dur(last)}</b>` : ""}</div>`;
+  }
+}
+
+/* ---------- today ---------- */
+function renderToday() {
+  const d = getDay(S.day); const today = isoDay(new Date());
+  $("#dayPick").value = S.day; $("#dayPick").max = today;
+  $("#nextDay").disabled = S.day >= today; $("#goToday").hidden = S.day === today;
+  $("#dinas").checked = !!d.dinas;
+  if (!$("#mealTime").value) $("#mealTime").value = fmtMin(nowMin());
+  const meals = d.meals.slice().sort((a, b) => toMin(a.t) - toMin(b.t));
+  $("#meals").innerHTML = meals.length ? meals.map(m => {
+    const v = mealVerdict(m, d);
+    const pill = v === "ok" ? '<span class="pill good">Di jendela</span>' : v === "dinas" ? '<span class="pill info">Pengecualian dinas</span>' : '<span class="pill bad">Di luar jendela</span>';
+    const name = m.kind === "berat" ? "Makan berat" : m.kind === "snack" ? "Snack" : "Sarapan ringan";
+    return `<li><span class="t">${esc(m.t)}</span><span class="k">${name}</span>${pill}<button class="x" data-del="${esc(m.id)}" aria-label="Hapus makan jam ${esc(m.t)}">×</button></li>`;
+  }).join("") : `<li class="muted small">Belum ada catatan. Pola kamu: makan berat ${S.settings.start} dan ${fmtMin(Math.max(0, toMin(S.settings.end) - 60))}–${S.settings.end}, snack opsional ${S.settings.snackS}–${S.settings.snackE}.</li>`;
+  const ev = dayEval(S.day);
+  $("#mealPill").innerHTML = !ev || ev.windowOk == null ? "" : ev.windowOk ? '<span class="pill good">Patuh</span>' : '<span class="pill bad">Bolong</span>';
+  document.querySelectorAll("#v-today .chips[data-key]").forEach(g => { const val = d[g.dataset.key]; g.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(val != null && (+b.dataset.v === 1) === val))); });
+  $("#cVal").textContent = d.coffee || 0; $("#oVal").textContent = d.otherCoffee || 0;
+  $("#wVal").textContent = (d.water || 0) + " / " + S.settings.water;
+  $("#wSub").textContent = kg((d.water || 0) * 0.25, 2).replace(/,?0+$/, "") + " L dari " + kg(S.settings.water * 0.25, 1).replace(",0", "") + " L";
+  if (document.activeElement !== $("#sleepStart")) $("#sleepStart").value = d.sleepStart || "";
+  if (document.activeElement !== $("#sleepEnd")) $("#sleepEnd").value = d.sleepEnd || "";
+  if (document.activeElement !== $("#weight")) $("#weight").value = d.weight || "";
+  const sl = ev && ev.sleep;
+  $("#sleepPill").innerHTML = sl == null ? "" : `<span class="pill ${sl >= S.settings.sleepTarget * 60 ? "good" : "bad"}">${dur(sl)}</span>`;
+  const lw = latestWeight(); const bw = lw ? lw.w : (S.settings.w0 ? +S.settings.w0 : null);
+  $("#protHint").textContent = bw ? `Sekitar ${Math.round(bw * 1.6)}–${Math.round(bw * 2.2)} g per hari untuk berat ${kg(bw)} kg.` : "1,6–2,2 g per kg berat badan. Isi berat di Atur.";
+  $("#wtPill").innerHTML = S.settings.w0 && lw ? `<span class="pill ${lw.w <= S.settings.w0 ? "good" : "bad"}">${lw.w <= S.settings.w0 ? "−" : "+"}${kg(Math.abs(S.settings.w0 - lw.w))} kg</span>` : "";
+  drawDial(); drawStatus();
+}
+
+/* ---------- recap ---------- */
+function face(score) {
+  if (score == null) return { bg: "var(--stone)", svg: "" };
+  if (score >= 0.8) return { bg: "var(--lime)", svg: mascot("happy", null, false) };
+  if (score >= 0.5) return { bg: "var(--sky)", svg: "" };
+  return { bg: "var(--pink)", svg: "" };
+}
+function renderRecap() {
+  const end = isoDay(new Date()); const N = S.range;
+  const days = Array.from({ length: N }, (_, i) => addDays(end, -(N - 1 - i)));
+  const evs = days.map(iso => ({ iso, ev: dayEval(iso) })); const filled = evs.filter(x => x.ev);
+  const body = $("#recapBody");
+  if (!filled.length) { body.innerHTML = `<div class="card pink"><div style="width:110px">${mascot("calm", "var(--yellow)", false)}</div><h2>Belum ada catatan</h2><div class="small">Rekap muncul setelah kamu mencatat makan, gula/tepung, air, kopi, atau tidur di tab Hari ini.</div></div>`; return; }
+  const withMeals = filled.filter(x => x.ev.windowOk != null); const okDays = withMeals.filter(x => x.ev.windowOk).length;
+  const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
+  const avgFast = avg(filled.map(x => x.ev.fast).filter(v => v != null));
+  const sleeps = filled.map(x => x.ev.sleep).filter(v => v != null);
+  const avgSleep = avg(sleeps);
+  const avgWater = avg(filled.map(x => x.ev.water).filter(v => v));
+  const cnt = k => ({ yes: filled.filter(x => x.ev[k] === true).length, all: filled.filter(x => x.ev[k] != null).length });
+  const streak = k => { let n = 0; for (let i = 0; i < 400; i++) { const ev = dayEval(addDays(end, -i)); if (ev && ev[k] === true) n++; else if (i === 0 && (!ev || ev[k] == null)) continue; else break; } return n; };
+  const pct = c => c.all ? Math.round(c.yes / c.all * 100) : 0;
+  const sug = cnt("sugar"), flo = cnt("flour"), pro = cnt("protein");
+  const coffee = filled.reduce((a, x) => a + x.ev.coffee, 0), other = filled.reduce((a, x) => a + x.ev.other, 0), exc = filled.reduce((a, x) => a + x.ev.exceptions, 0);
+  const target = S.settings.sleepTarget * 60;
+  const lw = latestWeight();
+  const calDays = N === 7 ? days : days.slice(-28);
+  const firstDow = new Date(calDays[0] + "T12:00:00").getDay();
+  const lead = (firstDow + 6) % 7;
+  let cal = ["Sen","Sel","Rab","Kam","Jum","Sab","Min"].map(h => `<div class="h">${h}</div>`).join("") + "<div></div>".repeat(lead);
+  cal += calDays.map(iso => { const ev = dayEval(iso); const f = face(ev && ev.score); return `<div class="d" data-day="${iso}" style="background:${f.bg};cursor:pointer" title="${dayLabel(iso)}">${f.svg || `<span class="small muted">${new Date(iso + "T12:00:00").getDate()}</span>`}</div>`; }).join("");
+
+  const Wd = 340, H = 150, padL = 26, padB = 22, top = 8, maxH = 12 * 60, bw = (Wd - padL - 4) / N;
+  const y = m => top + (H - padB - top) * (1 - Math.min(m, maxH) / maxH);
+  let svg = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Grafik lama tidur per hari">`;
+  [0, 4, 8, 12].forEach(hh => { svg += `<line x1="${padL}" x2="${Wd}" y1="${y(hh * 60).toFixed(1)}" y2="${y(hh * 60).toFixed(1)}" stroke="var(--stone)" stroke-width="1"/><text x="${padL - 6}" y="${(y(hh * 60) + 4).toFixed(1)}" text-anchor="end" font-size="10" fill="var(--muted)">${hh}j</text>`; });
+  evs.forEach((x, i) => { const sl = x.ev && x.ev.sleep; const cx = padL + i * bw;
+    if (sl != null) svg += `<rect x="${(cx + bw * 0.16).toFixed(1)}" y="${y(sl).toFixed(1)}" width="${(bw * 0.68).toFixed(1)}" height="${(y(0) - y(sl)).toFixed(1)}" rx="${Math.min(8, bw * 0.3).toFixed(1)}" fill="${sl >= target ? "var(--purple)" : "var(--pink)"}"/>`;
+    if (N <= 7 || i % 5 === 0 || i === N - 1) svg += `<text x="${(cx + bw / 2).toFixed(1)}" y="${H - 6}" text-anchor="middle" font-size="9.5" fill="var(--muted)">${N <= 7 ? HARI[new Date(x.iso + "T12:00:00").getDay()] : new Date(x.iso + "T12:00:00").getDate()}</text>`; });
+  svg += `<line x1="${padL}" x2="${Wd}" y1="${y(target).toFixed(1)}" y2="${y(target).toFixed(1)}" stroke="var(--good)" stroke-width="1.5" stroke-dasharray="4 3"/></svg>`;
+
+  const mark = v => v === true ? '<span class="ok">✓</span>' : v === false ? '<span class="ng">✗</span>' : '<span class="na">–</span>';
+  const rows = evs.slice().reverse().map(x => { const e = x.ev;
+    if (!e) return `<tr data-day="${x.iso}"><td>${dayLabel(x.iso)}</td><td colspan="7" class="na">belum diisi</td></tr>`;
+    return `<tr data-day="${x.iso}"><td>${dayLabel(x.iso)}${e.dinas ? ' <span class="pill info" style="padding:1px 7px">dinas</span>' : ""}</td><td>${mark(e.windowOk)}</td><td>${e.fast != null ? dur(e.fast) : "–"}</td><td>${mark(e.sugar)}</td><td>${mark(e.flour)}</td><td>${e.water || "–"}</td><td>${e.coffee}${e.other ? ` <span class="ng">+${e.other}</span>` : ""}</td><td>${e.sleep != null ? dur(e.sleep) : "–"}</td></tr>`; }).join("");
+  /* ---- Hasil: estimates computed only from what was logged ---- */
+  const chosenH = new Set(S.settings.habits || []);
+  const sumH = cat => HABITS.filter(h => h[3] === cat && chosenH.has(h[0])).reduce((a, h) => a + h[2], 0);
+  const sugarK = sumH("gula") || 300, flourK = sumH("tepung") || 300, ifK = 150, otherK = 150;
+  let defK = 0, defDays = 0;
+  filled.forEach(x => { const e = x.ev; let k = 0, any = false;
+    if (e.sugar === true) { k += sugarK; any = true; } if (e.sugar === false) any = true;
+    if (e.flour === true) { k += flourK; any = true; } if (e.flour === false) any = true;
+    if (e.windowOk === true) { k += ifK; any = true; } if (e.windowOk === false) any = true;
+    if (e.other) { k -= e.other * otherK; any = true; }
+    if (any) { defK += k; defDays++; } });
+  const fatKg = Math.max(0, defK) / 7700;
+  const firstW = filled.find(x => x.ev.weight), lastW = filled.slice().reverse().find(x => x.ev.weight);
+  const scaleTxt = firstW && lastW && firstW !== lastW ? `Timbangan di periode ini: ${lastW.ev.weight <= firstW.ev.weight ? "turun" : "naik"} ${kg(Math.abs(firstW.ev.weight - lastW.ev.weight))} kg (termasuk air dan isi usus).` : "Isi timbangan 1–2 kali seminggu untuk membandingkan dengan angka nyata.";
+  const burnMin = filled.reduce((a, x) => a + (x.ev.fast != null ? Math.max(0, x.ev.fast - 12 * 60) : 0), 0);
+  const comp = [];
+  if (avgFast != null) comp.push(Math.min(1, avgFast / (16 * 60)));
+  if (sug.all) comp.push(sug.yes / sug.all);
+  if (flo.all) comp.push(flo.yes / flo.all);
+  if (avgSleep != null) comp.push(Math.min(1, avgSleep / target));
+  if (avgWater) comp.push(Math.min(1, avgWater / S.settings.water));
+  const bs = comp.length ? Math.round(comp.reduce((a, b) => a + b, 0) / comp.length * 100) : null;
+  const bsLabel = bs == null ? "Belum cukup data" : bs >= 80 ? "Cenderung stabil" : bs >= 60 ? "Cukup stabil" : "Rawan naik-turun";
+  const bsColor = bs == null ? "var(--stone)" : bs >= 80 ? "var(--lime)" : bs >= 60 ? "var(--sky)" : "var(--purple)";
+  const debt = filled.reduce((a, x) => a + (x.ev.sleep != null ? Math.max(0, target - x.ev.sleep) : 0), 0);
+  let sleepTxt = "Isi jam tidur dan bangun untuk melihat efeknya.";
+  if (avgSleep != null) {
+    if (avgSleep < 360) sleepTxt = "Kurang tidur menaikkan hormon lapar (ghrelin) dan menurunkan hormon kenyang (leptin), jadi lebih gampang ngidam manis dan tepung. Dalam studi diet, tidur 5,5 jam dibanding 8,5 jam membuat lemak yang hilang sekitar 55% lebih sedikit, sisanya dari otot. Sensitivitas insulin juga ikut turun.";
+    else if (avgSleep < 420) sleepTxt = "Cukup, tapi masih di bawah ideal 7–9 jam. Menambah 30–60 menit tidur membantu menahan lapar saat puasa dan menjaga otot tetap utuh.";
+    else sleepTxt = "Ideal. Hormon lapar lebih terkendali, pemulihan otot baik, dan berat yang turun lebih banyak berasal dari lemak.";
+  }
+  const waterDays = filled.filter(x => x.ev.water).length;
+  const waterL = filled.reduce((a, x) => a + x.ev.water, 0) * 0.25;
+  let waterTxt = "Catat gelas air putih tiap hari untuk melihat efeknya.";
+  if (avgWater) waterTxt = avgWater >= S.settings.water
+    ? "Target tercapai. Air membantu rasa kenyang selama puasa, mencegah haus yang terasa seperti lapar, dan mengurangi sakit kepala saat adaptasi."
+    : `Rata-rata kurang ${kg(S.settings.water - avgWater)} gelas dari target. Kurang minum sering terasa seperti lapar atau lemas saat puasa. Coba 2 gelas begitu bangun dan 1 gelas sebelum tiap makan.`;
+  const results = `
+  <div class="card">
+    <div class="row between"><h2>Hasil kamu</h2><span class="small muted">${N} hari terakhir</span></div>
+    <div class="result"><span class="ic" style="background:var(--purple);color:var(--card)">FAT</span><div>
+      <div class="small muted">Estimasi lemak terkurangi</div><div class="num">${kg(fatKg, 2)} kg</div>
+      <p class="small">Dari defisit sekitar <b>${Math.max(0, Math.round(defK)).toLocaleString("id-ID")} kkal</b> selama ${defDays} hari tercatat. ${scaleTxt}</p>
+      <div class="basis">Dasar angka: hari bebas gula −${sugarK} kkal, bebas tepung −${flourK} kkal (dari kalkulator di tab Program${sumH("gula") || sumH("tepung") ? "" : ", pakai nilai bawaan karena belum dicentang"}), patuh jendela −${ifK} kkal, tiap kopi lain +${otherK} kkal. 7.700 kkal ≈ 1 kg lemak.</div></div></div>
+    <div class="result"><span class="ic" style="background:${bsColor}">GD</span><div>
+      <div class="small muted">Indikasi stabilitas gula darah</div><div class="num">${bs != null ? bs + "/100" : "–"}</div>
+      <div class="gauge"><span style="width:${bs || 0}%;background:${bsColor}"></span></div>
+      <p class="small"><b>${bsLabel}.</b> ${burnMin ? `Kamu menghabiskan sekitar <b>${dur(burnMin)}</b> di atas 12 jam puasa, fase saat tubuh mulai beralih membakar lemak.` : "Puasa di atas 12 jam akan muncul di sini."}</p>
+      <div class="basis">Ini indikasi dari kebiasaan, bukan ukuran gula darah. Dihitung dari rata-rata lama puasa (target 16 jam), hari bebas gula dan tepung, lama tidur, dan air putih. Untuk angka sebenarnya pakai glukometer atau cek lab (gula darah puasa normal di bawah 100 mg/dL).</div></div></div>
+    <div class="result"><span class="ic" style="background:var(--pink)">ZZ</span><div>
+      <div class="small muted">Efek tidur rata-rata</div><div class="num">${avgSleep != null ? dur(avgSleep) : "–"}</div>
+      <p class="small">${sleepTxt}</p>
+      <div class="basis">Dasar angka: ${sleeps.length} malam tercatat, target ${String(S.settings.sleepTarget).replace(".", ",")} jam${debt ? `, utang tidur ${dur(debt)}` : ""}.</div></div></div>
+    <div class="result"><span class="ic" style="background:var(--sky)">H₂O</span><div>
+      <div class="small muted">Air putih</div><div class="num">${avgWater ? kg(avgWater) + " gelas/hari" : "–"}</div>
+      <p class="small">${waterTxt}</p>
+      <div class="basis">Dasar angka: ${waterDays} hari tercatat, total ${kg(waterL)} liter, target ${S.settings.water} gelas (${kg(S.settings.water * 0.25, 1).replace(",0", "")} L) per hari.</div></div></div>
+  </div>`;
+  const bar = (label, p, txt) => `<div class="progrow"><span>${label}</span><div class="bar"><span style="width:${Math.max(4, p)}%"></span><em>${txt}</em></div></div>`;
+
+  body.innerHTML = `
+  <div class="card stone"><div class="row between"><h2>Kalender wajah</h2><span class="small muted">${N === 7 ? "7 hari" : "4 minggu"} terakhir</span></div><div class="cal">${cal}</div>
+    <div class="small muted">Lime + maskot: ≥80% formula terpenuhi · cyan: 50–79% · pink: di bawah 50%. Ketuk hari untuk membuka.</div></div>
+  <div class="tiles">
+    <div class="tile purple"><span class="label">Hari patuh jendela</span><span class="v">${withMeals.length ? okDays + "/" + withMeals.length : "–"}</span><span class="s">${exc ? exc + " pengecualian dinas" : "hari yang ada catatan makan"}</span></div>
+    <div class="tile yellow"><span class="label">Rata-rata puasa</span><span class="v">${avgFast != null ? dur(avgFast) : "–"}</span><span class="s">target ${dur(((W().s - W().e) + 1440) % 1440)}</span></div>
+    <div class="tile pink"><span class="label">Rata-rata tidur</span><span class="v">${avgSleep != null ? dur(avgSleep) : "–"}</span><span class="s">target ${String(S.settings.sleepTarget).replace(".", ",")} jam</span></div>
+    <div class="tile sky"><span class="label">Berat badan</span><span class="v">${lw ? kg(lw.w) : "–"}</span><span class="s">${lw && S.settings.w0 ? (lw.w <= S.settings.w0 ? "turun " : "naik ") + kg(Math.abs(S.settings.w0 - lw.w)) + " kg dari awal" : "isi di Hari ini → Timbang"}</span></div>
+  </div>
+  ${results}
+  <div class="card"><h2>Konsistensi</h2>
+    ${bar("Bebas gula", pct(sug), sug.all ? `${sug.yes}/${sug.all} · streak ${streak("sugar")}` : "belum diisi")}
+    ${bar("Bebas tepung", pct(flo), flo.all ? `${flo.yes}/${flo.all} · streak ${streak("flour")}` : "belum diisi")}
+    ${bar("Protein cukup", pct(pro), pro.all ? `${pro.yes}/${pro.all}` : "belum diisi")}
+    ${bar("Air putih", avgWater ? Math.min(100, avgWater / S.settings.water * 100) : 0, avgWater ? `rata-rata ${kg(avgWater)} gelas` : "belum diisi")}
+    <div class="small muted">Americano: <b>${coffee}</b> gelas${other ? ` · kopi lain: <b class="ng">${other}</b>` : " · tanpa kopi lain"}</div>
+  </div>
+  <div class="card chart"><div class="row between"><h2>Lama tidur</h2><span class="small muted">garis putus = target</span></div>${svg}</div>
+  <div class="card"><h2>Per hari</h2><div class="small muted">Ketuk baris untuk membuka atau mengubah catatan.</div>
+    <div class="scroll"><table><thead><tr><th>Hari</th><th>Jendela</th><th>Puasa</th><th>Gula</th><th>Tepung</th><th>Air</th><th>Kopi</th><th>Tidur</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+}
+
+/* ---------- program (the user's formula) ---------- */
+const HABITS = [
+  ["sweetdrink", "Teh manis / kopi susu gula 1 gelas", 150, "gula"],
+  ["soda", "Soda / minuman manis 330–500 ml", 195, "gula"],
+  ["cake", "Kue / bolu / donat 1 potong", 350, "gula"],
+  ["sweetsnack", "Minuman manis + snack manis tiap hari", 450, "gula"],
+  ["rice", "Nasi putih porsi besar → nasi merah/kentang porsi sedang", 225, "tepung"],
+  ["fried", "Gorengan 1 porsi per hari", 300, "tepung"],
+  ["chips", "Biskuit / keripik / camilan tepung", 275, "tepung"],
+  ["noodle", "Mie instan / roti manis / camilan kemasan", 450, "tepung"],
+];
+function renderProgram() {
+  const st = S.settings; const rate = ratePerWeek(); const lw = latestWeight();
+  const w0 = st.w0 ? +st.w0 : null; const weeks = Math.max(0, diffDays(st.d0 || isoDay(new Date()), isoDay(new Date())) / 7);
+  const expected = w0 ? w0 - rate * weeks : null; const cur = lw ? lw.w : null;
+  let prog = `<div class="small">Isi berat awal dan tanggal mulai di tab <b>Atur</b> supaya target kamu bisa dihitung.</div>`;
+  if (w0) {
+    const lost = cur != null ? w0 - cur : 0; const p = Math.max(0, Math.min(100, (lost / (rate * 12)) * 100));
+    prog = `<div class="tiles">
+      <div class="tile" style="background:rgba(255,255,255,.6)"><span class="label">Berat sekarang</span><span class="v">${cur != null ? kg(cur) : "–"}</span><span class="s">awal ${kg(w0)} kg</span></div>
+      <div class="tile" style="background:rgba(255,255,255,.6)"><span class="label">Seharusnya sekarang</span><span class="v">${kg(expected)}</span><span class="s">minggu ke-${Math.floor(weeks) + 1}</span></div>
+    </div>
+    <div class="progrow"><span>Menuju 3 bulan</span><div class="bar"><span style="width:${Math.max(4, p)}%;background:var(--purple)"></span><em>${kg(Math.max(0, lost))} / ${kg(rate * 12)} kg</em></div></div>
+    ${cur != null ? `<span class="pill ${cur <= expected + 0.5 ? "good" : "bad"}">${cur <= expected + 0.5 ? "Sesuai jalur" : "Sedikit di belakang target"}</span>` : ""}`;
+  }
+  const chosen = new Set(st.habits || []);
+  const kcal = HABITS.filter(h => chosen.has(h[0])).reduce((a, h) => a + h[2], 0);
+  const perMonth = kcal * 30 / 7700;
+  body = $("#progBody");
+  body.innerHTML = `
+  <div class="card lime">
+    <div class="row between"><h2>Target utama</h2><span class="pill y">defisit ${(+st.deficit).toLocaleString("id-ID")} kkal/hari</span></div>
+    <div class="small">Turunkan lemak, bukan sekadar angka timbangan. Dengan defisit ini, perkiraan turun sekitar <b>${kg(rate, 2)} kg per minggu</b>.</div>
+    <div class="iftable">
+      <div><span>1 bulan (realistis)</span><b>${kg(rate * 4.3)}–${kg(Math.min(4, rate * 4.3 * 1.8))} kg</b></div>
+      <div><span>3 bulan (konsisten)</span><b>${kg(rate * 13)}–${kg(Math.min(12, rate * 13 * 1.8))} kg</b></div>
+    </div>
+    <div class="small muted" style="color:var(--ink);opacity:.7">Bulan pertama sebagian berupa air dan glikogen. CDC menyebut 0,45–0,9 kg per minggu sebagai laju yang sehat.</div>
+    ${prog}
+  </div>
+
+  <div class="card">
+    <h2>Formula harian</h2>
+    <ul class="formula">
+      <li><span class="ic" style="background:var(--yellow)">16:8</span><div><b>Puasa ${st.end}–${st.start}</b><div class="small muted">Makan berat ${st.start} dan ${fmtMin(Math.max(0, toMin(st.end) - 60))}–${st.end}. Snack opsional ${st.snackS}–${st.snackE}.</div></div></li>
+      <li><span class="ic" style="background:var(--stone)">☕</span><div><b>Kopi hanya americano</b><div class="small muted">Tanpa gula, susu, creamer, atau sirup.</div></div></li>
+      <li><span class="ic" style="background:var(--pink)">0g</span><div><b>Gula tambahan 0–25 g</b><div class="small muted">Idealnya mendekati nol. Gula dari buah utuh tidak dihitung.</div></div></li>
+      <li><span class="ic" style="background:var(--lime)">✕</span><div><b>Tepung olahan &amp; gorengan seminimal mungkin</b><div class="small muted">Karbohidrat tidak dihapus, ganti ke nasi merah atau kentang porsi sedang.</div></div></li>
+      <li><span class="ic" style="background:var(--sky)">P</span><div><b>Protein 1,6–2,2 g/kg</b><div class="small muted">${(cur || w0) ? `Untuk ${kg(cur || w0)} kg: ${Math.round((cur || w0) * 1.6)}–${Math.round((cur || w0) * 2.2)} g per hari.` : "Isi berat badan untuk melihat angkanya."}</div></div></li>
+      <li><span class="ic" style="background:var(--purple);color:#fff">H₂O</span><div><b>Air putih 2–3 liter</b><div class="small muted">Target kamu ${S.settings.water} gelas (${kg(S.settings.water * 0.25, 1).replace(",0", "")} L).</div></div></li>
+    </ul>
+  </div>
+
+  <div class="card sky">
+    <h2>Kalkulator: kebiasaan yang kamu stop</h2>
+    <div class="small">Centang yang benar-benar kamu hentikan. Angkanya perkiraan kalau tidak diganti makanan lain.</div>
+    <div class="wrap" style="gap:8px">${HABITS.map(h => `<label class="habit" style="background:rgba(255,255,255,.6)"><input type="checkbox" data-habit="${h[0]}" ${chosen.has(h[0]) ? "checked" : ""}><span>${h[1]}<div class="small muted">${h[3]}</div></span><b>−${h[2]} kkal</b></label>`).join("")}</div>
+    <div class="tiles">
+      <div class="tile purple"><span class="label">Kalori hilang</span><span class="v">${kcal.toLocaleString("id-ID")}</span><span class="s">kkal per hari</span></div>
+      <div class="tile yellow"><span class="label">Potensi per bulan</span><span class="v">${kg(perMonth)} kg</span><span class="s">hasil nyata biasanya lebih kecil</span></div>
+    </div>
+  </div>
+
+  <div class="card pink">
+    <h2>Efek IF 16:8</h2>
+    <div class="iftable">
+      <div><span>IF tapi kalori tetap berlebih</span><b>tidak turun</b></div>
+      <div><span>IF + kalori turun 300–500 kkal</span><b>1–2 kg/bln</b></div>
+      <div><span>IF + turun 500–750 kkal + aktif</span><b>2–3 kg/bln</b></div>
+      <div><span>IF + cut gula/tepung + olahraga</span><b>paling baik</b></div>
+      <div><span>IF beberapa hari lalu berhenti</span><b>minimal</b></div>
+    </div>
+    <div class="small">IF bukan pembakar lemak otomatis. Ia membantu karena membatasi waktu makan dan mengurangi ngemil malam, tapi total kalori tetap penentunya.</div>
+  </div>`;
+}
+let body;
+
+/* ---------- settings ---------- */
+function renderSettings() {
+  const st = S.settings;
+  $("#sStart").value = st.start; $("#sEnd").value = st.end; $("#sSnackS").value = st.snackS; $("#sSnackE").value = st.snackE;
+  $("#sTol").value = String(st.tol); $("#sSleep").value = String(st.sleepTarget); $("#sDef").value = String(st.deficit); $("#sWater").value = String(st.water);
+  if (document.activeElement !== $("#sW0")) $("#sW0").value = st.w0 || "";
+  $("#sD0").value = st.d0 || "";
+  const { s, e } = W(); const eat = ((e - s) + 1440) % 1440; const fast = 1440 - eat;
+  $("#protoNote").innerHTML = `Pola kamu: puasa <b>${dur(fast)}</b>, makan <b>${dur(eat)}</b> (${Math.round(fast / 60)}:${Math.round(eat / 60)}). Makan dalam toleransi ${st.tol} menit masih dihitung patuh.`;
+}
+
+function render() {
+  ["today", "recap", "program", "set"].forEach(v => { $("#v-" + v).hidden = S.view !== v; });
+  document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-current", String(b.dataset.v === S.view)));
+  ({ today: renderToday, recap: renderRecap, program: renderProgram, set: renderSettings })[S.view]();
+}
+let toastT; function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2400); }
+
+/* ---------- events ---------- */
+$("#splashMascot").innerHTML = mascot("happy", "var(--yellow)");
+const closeSplash = () => { $("#splash").hidden = true; window.scrollTo(0, 0); };
+$("#splash").addEventListener("click", closeSplash);
+$("#splash").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); closeSplash(); } });
+$("#showSplash").onclick = () => { $("#splash").hidden = false; };
+document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => { S.view = b.dataset.v; render(); window.scrollTo(0, 0); }));
+const goDay = iso => { S.day = iso; $("#mealTime").value = ""; S.view = "today"; render(); window.scrollTo(0, 0); };
+$("#prevDay").onclick = () => goDay(addDays(S.day, -1));
+$("#nextDay").onclick = () => { if (S.day < isoDay(new Date())) goDay(addDays(S.day, 1)); };
+$("#goToday").onclick = () => goDay(isoDay(new Date()));
+$("#dayPick").onchange = e => { const v = e.target.value; if (v && v <= isoDay(new Date())) goDay(v); else render(); };
+$("#dinas").onchange = e => mutDay(d => { d.dinas = e.target.checked; });
+function addMeal(kind) {
+  const t = $("#mealTime").value || fmtMin(nowMin());
+  mutDay(d => { d.meals = d.meals.concat({ id: uid(), t, kind }); });
+  const v = mealVerdict({ t, kind }, getDay(S.day));
+  toast(v === "ok" ? `Tercatat jam ${t}. Mantap!` : v === "dinas" ? "Tercatat sebagai pengecualian dinas" : "Tercatat, tapi di luar jendela makan");
+  $("#mealTime").value = ""; renderToday();
+}
+$("#addHeavy").onclick = () => addMeal("berat");
+$("#addSnack").onclick = () => addMeal("snack");
+$("#addLight").onclick = () => addMeal("ringan");
+$("#meals").addEventListener("click", e => { const id = e.target.dataset && e.target.dataset.del; if (id) mutDay(d => { d.meals = d.meals.filter(m => m.id !== id); }); });
+document.querySelectorAll("#v-today .chips[data-key]").forEach(g => g.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return; const k = g.dataset.key; const val = +b.dataset.v === 1;
+  mutDay(d => { d[k] = d[k] === val ? null : val; });
+}));
+const step = (k, n) => () => mutDay(d => { d[k] = Math.max(0, (d[k] || 0) + n); });
+$("#cPlus").onclick = step("coffee", 1); $("#cMinus").onclick = step("coffee", -1);
+$("#oPlus").onclick = step("otherCoffee", 1); $("#oMinus").onclick = step("otherCoffee", -1);
+$("#wPlus").onclick = step("water", 1); $("#wMinus").onclick = step("water", -1);
+["sleepStart", "sleepEnd"].forEach(k => $("#" + k).addEventListener("change", e => mutDay(d => { d[k] = e.target.value; })));
+$("#weight").addEventListener("change", e => { const v = parseFloat(String(e.target.value).replace(",", ".")); mutDay(d => { d.weight = v > 0 ? Math.round(v * 10) / 10 : null; }); if (v > 0 && !S.settings.w0) { S.settings.w0 = Math.round(v * 10) / 10; S.settings.d0 = S.day; saveSettings(); toast("Dipakai juga sebagai berat awal program"); } });
+$("#rangeSeg").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; S.range = +b.dataset.r; $("#rangeSeg").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); renderRecap(); });
+$("#recapBody").addEventListener("click", e => { const t = e.target.closest("[data-day]"); if (t) goDay(t.dataset.day); });
+$("#progBody").addEventListener("change", e => { const h = e.target.dataset && e.target.dataset.habit; if (!h) return; const set = new Set(S.settings.habits || []); e.target.checked ? set.add(h) : set.delete(h); S.settings.habits = [...set]; saveSettings(); renderProgram(); });
+const bindSet = (id, key, conv = v => v) => $(id).addEventListener("change", e => { const v = e.target.value; if (v === "" && key !== "w0") return; S.settings[key] = conv(v); saveSettings(); render(); });
+bindSet("#sStart", "start"); bindSet("#sEnd", "end"); bindSet("#sSnackS", "snackS"); bindSet("#sSnackE", "snackE");
+bindSet("#sTol", "tol", Number); bindSet("#sSleep", "sleepTarget", Number); bindSet("#sDef", "deficit", Number); bindSet("#sWater", "water", Number);
+bindSet("#sW0", "w0", v => { const n = parseFloat(String(v).replace(",", ".")); return n > 0 ? Math.round(n * 10) / 10 : null; });
+bindSet("#sD0", "d0");
+$("#copyJson").onclick = () => {
+  const txt = JSON.stringify({ settings: S.settings, days: S.days }, null, 1); const ta = $("#jsonOut"); ta.value = txt;
+  const fallback = () => { ta.hidden = false; ta.select(); toast("Pilih dan salin teks di bawah"); };
+  try { navigator.clipboard.writeText(txt).then(() => toast("Data tersalin"), fallback); } catch (e) { fallback(); }
+};
+$("#restoreJson").onclick = () => {
+  let o; try { o = JSON.parse($("#jsonIn").value); } catch (e) { toast("Teks cadangan tidak terbaca. Salin ulang semuanya."); return; }
+  if (!o || typeof o.days !== "object") { toast("Ini bukan cadangan Jendela Makan."); return; }
+  const n = Object.keys(o.days).length;
+  Object.keys(o.days).forEach(k => { if (/^\d{4}-\d{2}-\d{2}$/.test(k) && o.days[k]) { S.days[k] = o.days[k]; saveDay(k); } });
+  if (o.settings) { S.settings = { ...DEFAULTS, ...S.settings, ...o.settings }; saveSettings(); }
+  $("#jsonIn").value = ""; toast(`${n} hari dipulihkan`); render();
+};
+setInterval(() => { if (S.view === "today" && S.day === isoDay(new Date())) { drawDial(); drawStatus(); } }, 30000);
+setSync(); initStore();
+})();
+</script>
+<script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist();}catch(e){}</script>
+</body></html>
