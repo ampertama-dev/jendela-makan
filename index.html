@@ -1,219 +1,277 @@
 <!doctype html><html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#17454A">
+<meta name="theme-color" content="#F5F4EC">
+<title>Jendela Makan</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-</head><body>
-<title>Jendela Makan</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Onest:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
 <style>
-/* Layout: playful phone app. Splash screen, then one column of colour-block cards on deep teal, bottom tab bar.
-   Single deliberate look from the user's palette: cherry rose / light yellow / lime cream / strong cyan on deep teal. */
+/* Layout: soft pastel phone app. Off-white page, rounded pastel cards with white label chips and hand-drawn
+   line icons (gastronomy style), a floating pill tab bar. Food logging opens a bottom sheet. */
 :root{
-  --bg:#17454A; --card:#FEFFE0; --stone:#E8EBC4; --line:#FEFFE0;
-  --ink:#14363B; --muted:#557172; --on-bg:#FEFFE0; --on-bg-muted:#A9C7C5;
-  --purple:#B5185F; --indigo:#0E3034; --yellow:#D0E86E; --lime:#D0E86E;
-  --pink:#F6CADC; --sky:#35C1C2; --cheek:#F6CADC;
-  --good:#2C7A4B; --bad:#B5185F;
-  --f:"Onest", "Helvetica Neue", Arial, system-ui, sans-serif;
-  --fd:"Anton", "Impact", "Arial Narrow", sans-serif;
-  --r:26px; color-scheme:dark;
+  --bg:#F5F4EC; --surface:#FFFFFF; --soft:#EFEDE3; --line:#E4E1D5;
+  --ink:#22252A; --ink2:#464A51; --muted:#676B72;
+  --blue:#CFE1FB; --blue-d:#93BAF2;
+  --lime:#E1EBA5; --lime-d:#B5CB84;
+  --amber:#F8DA9C; --amber-d:#EDB24D;
+  --peach:#F6BEA4; --peach-d:#EC8C66;
+  --lav:#D9CCF8; --lav-d:#A98DEB;
+  --rose:#F8D3CE; --rose-ink:#A3372B;
+  --good:#356D2F; --bad:#AE3B2B;
+  --f:"Nunito", "Segoe UI", system-ui, sans-serif;
+  --r:28px; color-scheme:light;
 }
-.masc{position:relative}
-.masc img{width:100%;height:auto;display:block;filter:drop-shadow(0 5px 0 rgba(0,0,0,.18))}
-.masc.calm img{transform:rotate(-5deg)}
-.masc.sleep img{transform:rotate(-10deg) translateY(4px)}
-.masc.meh img{filter:grayscale(.55) drop-shadow(0 5px 0 rgba(0,0,0,.18))}
-.masc .deco{position:absolute;inset:-12%;width:124%;height:124%;pointer-events:none}
-.result{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start}
-.result .ic{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1rem}
-.result .num{font-family:var(--fd);font-size:1.9rem;line-height:1.05;letter-spacing:.01em}
-.result p{margin:4px 0 0}
-.basis{font-size:.74rem;color:var(--muted);margin-top:6px;border-top:1px dashed var(--stone);padding-top:6px}
-.gauge{height:12px;border-radius:999px;background:var(--stone);overflow:hidden;margin-top:6px}
-.gauge span{display:block;height:100%;border-radius:999px}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-html,body{background:var(--bg);color:var(--ink)}
+html,body{background:var(--bg);color:var(--ink);margin:0}
 body{font-family:var(--f);font-size:15px;line-height:1.45;font-variant-numeric:tabular-nums;
   padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
-  padding-block:14px calc(96px + env(safe-area-inset-bottom, 0px))}
+  padding-top:calc(14px + env(safe-area-inset-top, 0px));padding-bottom:calc(104px + env(safe-area-inset-bottom, 0px))}
+img{max-width:100%}
 .wrap{max-width:520px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:14px;min-width:0}
 section{min-width:0}
-h1,h2,h3{margin:0;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
-h1{font-family:var(--fd);font-weight:400;font-size:2.2rem;letter-spacing:.01em;text-transform:uppercase;color:var(--on-bg)}
-.card h1{color:inherit}
-h2{font-size:1.15rem}
-.eyebrow{font-size:.74rem;font-weight:600;color:var(--muted)}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.01em;text-wrap:balance}
+h1{font-size:1.7rem;font-weight:900}
+h2{font-size:1.08rem}
+svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.eyebrow{font-size:.78rem;font-weight:700;color:var(--ink2)}
 .muted{color:var(--muted)}
 .small{font-size:.84rem}
-.card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
-.card.stone{background:var(--stone);border-color:transparent}
-.card.pink{background:var(--pink);border-color:transparent}
-.card.sky{background:var(--sky);border-color:transparent}
-.card.lime{background:var(--lime);border-color:transparent}
-.card.purple{background:var(--purple);border-color:transparent;color:#fff}
-.card.indigo{background:var(--indigo);border-color:var(--sky);color:#fff}
-.card.cherry{background:var(--purple);border-color:transparent;color:var(--card)}
+.card{background:var(--surface);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0;box-shadow:0 1px 0 var(--line)}
+.card.blue{background:var(--blue)}.card.lime{background:var(--lime)}.card.amber{background:var(--amber)}.card.peach{background:var(--peach)}.card.lav{background:var(--lav)}.card.rose{background:var(--rose)}.card.soft{background:var(--soft);box-shadow:none}
+.card.blue,.card.lime,.card.amber,.card.peach,.card.lav,.card.rose{box-shadow:none}
+.card.blue .muted,.card.lime .muted,.card.amber .muted,.card.peach .muted,.card.lav .muted,.card.rose .muted{color:var(--ink2)}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .between{justify-content:space-between}
+.tag{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.72);border-radius:999px;padding:6px 13px 6px 10px;font-weight:800;font-size:.88rem;width:max-content;max-width:100%}
+.card:not(.blue):not(.lime):not(.amber):not(.peach):not(.lav):not(.rose) .tag{background:var(--soft)}
 button,select,input{font:inherit;color:inherit}
-button{cursor:pointer;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:10px 16px;font-weight:600;min-height:44px;color:var(--ink)}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--indigo);outline-offset:2px}
-button.p{background:var(--purple);border-color:var(--purple);color:#fff}
-button.y{background:var(--yellow);border-color:var(--yellow)}
-button.l{background:var(--lime);border-color:var(--lime)}
-button.k{background:var(--pink);border-color:var(--pink)}
-button.sm{min-height:36px;padding:6px 12px;font-size:.85rem}
-input[type=time],input[type=date],input[type=number],select{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:9px 12px;min-height:46px;width:100%;color:var(--ink)}
-label.field{display:flex;flex-direction:column;gap:4px;font-size:.8rem;color:var(--muted);font-weight:600;flex:1;min-width:120px}
+button{cursor:pointer;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:10px 16px;font-weight:700;min-height:44px;color:var(--ink)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--lav-d);outline-offset:2px}
+button.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+button.sm{min-height:36px;padding:6px 13px;font-size:.85rem}
+button.round{width:44px;height:44px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:50%}
+.plus{width:48px;height:48px;min-height:48px;border-radius:50%;padding:0;border:none;display:inline-flex;align-items:center;justify-content:center;color:var(--ink)}
+.plus svg{width:22px;height:22px;stroke-width:2}
+.plus.blue{background:var(--blue-d)}.plus.lime{background:var(--lime-d)}.plus.amber{background:var(--amber-d)}.plus.peach{background:var(--peach-d)}.plus.lav{background:var(--lav-d)}.plus.ghost{background:rgba(255,255,255,.75)}
+input[type=time],input[type=date],input[type=number],input[type=text],input[type=search],select{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:9px 12px;min-height:46px;width:100%;color:var(--ink)}
+label.field{display:flex;flex-direction:column;gap:4px;font-size:.8rem;color:var(--ink2);font-weight:700;flex:1;min-width:120px}
 
 /* splash */
-#splash{position:fixed;inset:0;z-index:20;background:var(--purple);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;
+#splash{position:fixed;inset:0;z-index:20;background:var(--lav);color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;
   padding:calc(24px + env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) calc(28px + env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px));cursor:pointer;overflow:auto}
-#splash .hero{width:min(250px,62vw);position:relative}
-#splash .hero svg{width:100%;height:auto;display:block}
-#splash h1{font-size:clamp(2.6rem,13vw,4rem);line-height:1;max-width:10ch;color:var(--lime)}
-#splash p{margin:0;font-size:1.05rem;opacity:.92;max-width:28ch}
-#splash .go{background:var(--lime);border-color:var(--lime);color:var(--ink);font-size:1.05rem;padding:14px 34px;min-height:54px;font-weight:800}
-#splash .tiny{font-size:.78rem;opacity:.75}
+#splash .hero{width:min(240px,60vw);position:relative}
+#splash h1{font-size:clamp(2.2rem,10.5vw,3.2rem);line-height:1.02;max-width:11ch;font-weight:900}
+#splash p{margin:0;font-size:1.02rem;color:var(--ink2);max-width:28ch}
+#splash .go{background:var(--ink);border-color:var(--ink);color:#fff;font-size:1.05rem;padding:14px 34px;min-height:54px;font-weight:800}
+#splash .tiny{font-size:.78rem;color:var(--ink2)}
+#splash .foods{display:flex;gap:10px;justify-content:center}
+#splash .foods span{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center}
+.masc{position:relative}
+.masc img{width:100%;height:auto;display:block;filter:drop-shadow(0 4px 0 rgba(0,0,0,.08))}
+.masc.calm img{transform:rotate(-5deg)}
+.masc.sleep img{transform:rotate(-10deg) translateY(4px)}
+.masc.meh img{filter:grayscale(.55)}
+.masc .deco{position:absolute;inset:-12%;width:124%;height:124%;pointer-events:none}
 .bob{animation:bob 2.6s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-8px)}}
 @media (prefers-reduced-motion: reduce){.bob{animation:none}}
 
 /* pin lock */
-#lock{position:fixed;inset:0;z-index:19;background:var(--bg);color:var(--on-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;
+#lock{position:fixed;inset:0;z-index:19;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;
   padding:calc(24px + env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px))}
-#lock .masc{width:120px}
-#lock h1{color:var(--lime)}
+#lock .masc{width:110px}
 .dots{display:flex;gap:14px;justify-content:center;min-height:18px}
-.dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--on-bg);display:block}
-.dots i.on{background:var(--lime);border-color:var(--lime)}
+.dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--ink);display:block}
+.dots i.on{background:var(--ink)}
 .pad{display:grid;grid-template-columns:repeat(3,72px);gap:12px;justify-content:center}
-.pad button{width:72px;height:72px;border-radius:50%;font-size:1.6rem;font-family:var(--fd);background:var(--card);border-color:var(--card);padding:0}
-.pad button.ghost{background:transparent;border-color:transparent;color:var(--on-bg);font-family:var(--f);font-size:.9rem}
+.pad button{width:72px;height:72px;border-radius:50%;font-size:1.5rem;font-weight:800;background:var(--surface);border-color:var(--line);padding:0}
+.pad button.ghost{background:transparent;border-color:transparent;font-size:.9rem}
 .shake{animation:shake .35s}
 @keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
 /* header */
 header.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.logo{font-family:var(--fd);color:var(--lime);font-size:1.4rem;letter-spacing:.02em;text-transform:uppercase}
-.sync{font-size:.72rem;color:var(--on-bg-muted);font-weight:600;text-align:right}
+.hello{display:flex;align-items:center;gap:10px;min-width:0}
+.hello .av{width:46px;height:46px;border-radius:50%;background:var(--lav);display:flex;align-items:center;justify-content:center;overflow:hidden;flex:none}
+.hello .av .masc{width:40px;margin-top:6px}
+.hello .t1{font-size:.84rem;color:var(--ink2);font-weight:700}
+.hello .t2{font-size:1.2rem;font-weight:900;line-height:1.15;white-space:nowrap}
+.datenav{display:flex;align-items:center;gap:6px}
+.datenav button{width:38px;height:38px;min-height:38px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:transparent}
+.datenav button svg{width:18px;height:18px}
+.datepick{position:relative}
+.datepick input{position:absolute;inset:0;opacity:0;width:100%;height:100%;min-height:0;cursor:pointer}
+.sync{font-size:.74rem;color:var(--muted);font-weight:700}
 
-/* status card */
-.hero-card{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center}
-.hero-card .m{width:110px}
-.hero-card .big{font-family:var(--fd);font-size:3rem;line-height:1;letter-spacing:.01em}
-.dialwrap{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.dial{width:150px;max-width:100%;aspect-ratio:1;flex:none}
-.legend{display:flex;flex-direction:column;gap:6px;font-size:.82rem;flex:1;min-width:140px}
-.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:-1px}
+/* status */
+.status{display:grid;grid-template-columns:1fr 128px;gap:12px;align-items:center}
+.status .big{font-size:2.6rem;font-weight:900;line-height:1;letter-spacing:-.02em}
+.dial{width:128px;aspect-ratio:1;display:block}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.76rem;font-weight:700;color:var(--ink2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
 
-.datenav{display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
-.datenav button{min-height:40px;width:40px;padding:0}
-.datenav input{min-height:40px;padding:6px 10px;width:auto;max-width:160px}
+/* calories */
+.kcal{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.kcal b{font-size:2.4rem;font-weight:900;line-height:1;letter-spacing:-.02em}
+.meter{height:14px;border-radius:999px;background:rgba(255,255,255,.7);overflow:hidden;position:relative}
+.meter span{position:absolute;inset:0 auto 0 0;border-radius:999px;background:var(--ink)}
+.meter span.over{background:var(--bad)}
+.kgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kgrid div{background:rgba(255,255,255,.62);border-radius:16px;padding:8px 10px;min-width:0}
+.kgrid small{display:block;font-size:.7rem;font-weight:700;color:var(--ink2)}
+.kgrid b{font-size:1.02rem;font-weight:900}
 
-.pill{display:inline-flex;align-items:center;border-radius:999px;padding:4px 11px;font-size:.76rem;font-weight:700;width:max-content;max-width:100%;white-space:nowrap}
-.pill.good{background:var(--lime);color:var(--ink)}
-.pill.bad{background:var(--pink);color:var(--bad)}
-.pill.info{background:var(--sky);color:var(--indigo)}
-.pill.wait{background:var(--stone);color:var(--muted)}
-.pill.y{background:var(--yellow);color:var(--ink)}
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tile{border-radius:var(--r);padding:12px 12px 12px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;min-height:150px}
+.tile.tall{grid-row:span 2}
+.tile.wide{grid-column:span 2;min-height:0}
+.tile.blue{background:var(--blue)}.tile.lime{background:var(--lime)}.tile.amber{background:var(--amber)}.tile.peach{background:var(--peach)}.tile.lav{background:var(--lav)}.tile.soft{background:var(--soft)}.tile.rose{background:var(--rose)}
+.tile .v{font-size:1.9rem;font-weight:900;line-height:1;letter-spacing:-.02em}
+.tile .s{font-size:.78rem;color:var(--ink2);font-weight:600}
+.tile .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;gap:6px}
+.tile .mini{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.tile .mini li{background:rgba(255,255,255,.62);border-radius:14px;padding:6px 10px;font-size:.8rem;font-weight:700;display:flex;justify-content:space-between;gap:6px}
+.step{display:flex;gap:6px}
+.step button{width:40px;height:40px;min-height:40px;padding:0;border-radius:50%;border:none;background:rgba(255,255,255,.75);display:inline-flex;align-items:center;justify-content:center}
+.step button.on{background:var(--blue-d)}
+.step svg{width:18px;height:18px;stroke-width:2}
+
+.pill{display:inline-flex;align-items:center;border-radius:999px;padding:3px 10px;font-size:.74rem;font-weight:800;width:max-content;max-width:100%;white-space:nowrap}
+.pill.good{background:var(--lime);color:var(--good)}
+.pill.bad{background:var(--rose);color:var(--rose-ink)}
+.pill.info{background:var(--blue);color:#24508F}
+.pill.wait{background:var(--soft);color:var(--muted)}
+.pill.y{background:var(--amber);color:var(--ink)}
+
+/* meal list */
+.meals{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.meals li.m{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;padding:8px 6px 8px 8px;border-radius:20px;background:var(--soft);cursor:pointer}
+.meals .ic{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.meals .ic svg{width:22px;height:22px}
+.meals .nm{font-weight:800;font-size:.92rem;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.meals .it{font-size:.78rem;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meals .kc{font-weight:900;font-size:.95rem;text-align:right;white-space:nowrap}
+.meals .kc small{display:block;font-size:.68rem;color:var(--muted);font-weight:700}
+.meals .min{min-width:0}
+.x{border:none;background:transparent;color:var(--muted);min-height:34px;width:34px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+.x svg{width:16px;height:16px}
 
 .switch{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.switch input{appearance:none;width:56px;height:32px;border-radius:999px;background:var(--stone);position:relative;flex:none;cursor:pointer;transition:background .15s}
-.switch input::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .15s}
-.switch input:checked{background:var(--purple)}
+.switch input{appearance:none;width:56px;height:32px;border-radius:999px;background:var(--line);position:relative;flex:none;cursor:pointer;transition:background .15s;margin:0}
+.switch input::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .15s;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.switch input:checked{background:var(--ink)}
 .switch input:checked::after{transform:translateX(24px)}
+.icrow{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center}
+.icb{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}
+.icb svg{width:22px;height:22px}
 
-.meals{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.meals li{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;border-radius:16px;background:var(--stone)}
-.meals .t{font-weight:800;width:3.1em}
-.meals .k{flex:1;min-width:0}
-.x{border:none;background:transparent;color:var(--muted);min-height:34px;width:34px;padding:0;font-size:1.2rem}
-.btns3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.btns3 button{padding:10px 6px;border-radius:18px;line-height:1.15}
-
-.chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{border-radius:14px;min-height:40px;padding:6px 14px;font-size:.88rem}
-#rangeSeg .chip[aria-pressed=true]{background:var(--purple);border-color:var(--purple);color:#fff}
-.chip[aria-pressed=true].yes{background:var(--lime);border-color:var(--lime)}
-.chip[aria-pressed=true].no{background:var(--pink);border-color:var(--pink);color:var(--bad)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border-radius:999px;min-height:38px;padding:6px 14px;font-size:.86rem}
+#rangeSeg .chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip[aria-pressed=true].yes{background:var(--lime);border-color:var(--lime-d);color:var(--good)}
+.chip[aria-pressed=true].no{background:var(--rose);border-color:var(--rose);color:var(--rose-ink)}
 .tri{display:flex;flex-direction:column;gap:12px}
-.tri .item{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-
+.tri .item{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center}
+.tri .item .ctl{grid-column:2}
+@media (min-width:430px){.tri .item{grid-template-columns:44px 1fr auto}.tri .item .ctl{grid-column:auto}}
 .counter{display:flex;align-items:center;gap:8px}
-.counter b{font-size:1.6rem;font-weight:800;min-width:1.7em;text-align:center}
-.counter button{width:44px;padding:0}
-.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.tile{border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.tile .label{font-size:.8rem;font-weight:700}
-.tile .v{font-family:var(--fd);font-size:2.1rem;line-height:1;letter-spacing:.01em}
-.tile.purple .label,.tile.purple .v{color:var(--card)}
-.tile.sky .s{color:var(--ink)}
-.tile .s{font-size:.75rem;color:var(--muted)}
-.tile.pink{background:var(--pink)}.tile.sky{background:var(--sky)}.tile.lime{background:var(--lime)}.tile.yellow{background:var(--yellow)}.tile.stone{background:var(--stone)}.tile.purple{background:var(--purple);color:#fff}.tile.purple .s{color:#E8E2FF}
-.tile .counter b{font-size:1.4rem}
-.tile .counter button{width:38px;min-height:38px;background:#fff;border-color:#fff}
+.counter b{font-size:1.4rem;font-weight:900;min-width:1.6em;text-align:center}
+.counter button{width:40px;height:40px;min-height:40px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+.counter svg{width:18px;height:18px;stroke-width:2}
 
-.bar{height:22px;border-radius:999px;background:#fff;overflow:hidden;position:relative}
-.bar > span{position:absolute;inset:0 auto 0 0;background:var(--pink);border-radius:999px}
-.bar > em{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-style:normal;font-size:.72rem;font-weight:700;color:var(--muted)}
-.progrow{display:grid;grid-template-columns:7.5em 1fr;gap:10px;align-items:center;font-size:.88rem;font-weight:600}
-
+.bar{height:22px;border-radius:999px;background:var(--soft);overflow:hidden;position:relative}
+.bar > span{position:absolute;inset:0 auto 0 0;background:var(--lime-d);border-radius:999px}
+.bar > em{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-style:normal;font-size:.72rem;font-weight:800;color:var(--ink2)}
+.progrow{display:grid;grid-template-columns:7.5em 1fr;gap:10px;align-items:center;font-size:.86rem;font-weight:700}
 .scroll{overflow-x:auto;min-width:0}
-table{border-collapse:collapse;width:100%;font-size:.85rem;min-width:430px}
-th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--stone);white-space:nowrap}
-th{font-size:.7rem;font-weight:700;color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;min-width:470px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--soft);white-space:nowrap}
+th{font-size:.7rem;font-weight:800;color:var(--muted)}
 tbody tr{cursor:pointer}
-tbody tr:hover{background:var(--stone)}
-.ok{color:var(--good);font-weight:800}.ng{color:var(--bad);font-weight:800}.na{color:var(--muted)}
-.chart svg{width:100%;height:auto;display:block}
-
-/* calendar faces */
+tbody tr:hover{background:var(--soft)}
+.ok{color:var(--good);font-weight:900}.ng{color:var(--bad);font-weight:900}.na{color:var(--muted)}
+.chart svg:not(.i){width:100%;height:auto;display:block}
 .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
-.cal .d{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;max-width:100%}
-.cal .d .masc{width:88%}
-.cal .d{overflow:hidden}
-.cal .h{font-size:.66rem;color:var(--muted);text-align:center;font-weight:600}
-
-.habit{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;background:var(--stone);cursor:pointer}
-.habit input{width:22px;height:22px;accent-color:var(--purple);flex:none}
+.cal .d{aspect-ratio:1;border-radius:14px;display:flex;align-items:center;justify-content:center;max-width:100%;overflow:hidden}
+.cal .d .masc{width:86%}
+.cal .h{font-size:.66rem;color:var(--muted);text-align:center;font-weight:700}
+.result{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start}
+.result .num{font-size:1.7rem;font-weight:900;line-height:1.05;letter-spacing:-.02em}
+.result p{margin:4px 0 0}
+.basis{font-size:.74rem;color:var(--muted);margin-top:6px;border-top:1px dashed var(--line);padding-top:6px}
+.gauge{height:12px;border-radius:999px;background:var(--soft);overflow:hidden;margin-top:6px}
+.gauge span{display:block;height:100%;border-radius:999px}
+.habit{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:18px;background:rgba(255,255,255,.65);cursor:pointer}
+.habit input{width:22px;height:22px;accent-color:var(--ink);flex:none}
 .habit span{flex:1;min-width:0}
 .habit b{white-space:nowrap;font-size:.82rem}
-.formula{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
-.formula li{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}
-.formula .ic{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem}
+.formula{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.formula li{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center}
 .iftable{display:flex;flex-direction:column;gap:6px}
-.iftable div{display:grid;grid-template-columns:1fr auto;gap:10px;padding:9px 12px;border-radius:14px;background:rgba(255,255,255,.55);font-size:.85rem}
+.iftable div{display:grid;grid-template-columns:1fr auto;gap:10px;padding:9px 12px;border-radius:16px;background:rgba(255,255,255,.62);font-size:.85rem}
 .iftable b{white-space:nowrap}
+.note{font-size:.82rem;color:var(--ink2);background:var(--soft);border-radius:16px;padding:10px 12px}
+textarea{width:100%;min-height:90px;font:inherit;font-size:.8rem;background:var(--soft);border:1.5px solid var(--line);border-radius:16px;padding:8px;color:var(--ink)}
 
-nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--card);border-top:none;border-radius:22px 22px 0 0;display:flex;justify-content:center;
-  padding:8px max(16px, env(safe-area-inset-right, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))}
-nav.tabs .in{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:520px}
-nav.tabs button{border:none;background:transparent;border-radius:16px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px;font-size:.76rem;color:var(--muted);min-height:54px}
-nav.tabs .sq{width:40px;height:30px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:var(--stone)}
-nav.tabs svg{width:19px;height:19px}
-nav.tabs button[aria-current=true]{color:var(--ink)}
-nav.tabs button[data-v=today][aria-current=true] .sq{background:var(--yellow)}
-nav.tabs button[data-v=recap][aria-current=true] .sq{background:var(--purple);color:var(--card)}
-nav.tabs button[data-v=program][aria-current=true] .sq{background:var(--sky)}
-nav.tabs button[data-v=set][aria-current=true] .sq{background:var(--lime)}
-.note{font-size:.82rem;color:var(--muted);background:var(--stone);border-radius:14px;padding:10px 12px}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom, 0px));background:var(--indigo);color:#fff;padding:10px 16px;border-radius:999px;font-size:.88rem;font-weight:600;z-index:6;max-width:90vw;text-align:center}
-textarea{width:100%;min-height:90px;font:inherit;font-size:.8rem;background:var(--stone);border:1.5px solid var(--line);border-radius:14px;padding:8px;color:var(--ink)}
+/* tab bar */
+nav.tabs{position:fixed;left:max(16px, env(safe-area-inset-left, 0px));right:max(16px, env(safe-area-inset-right, 0px));bottom:calc(12px + env(safe-area-inset-bottom, 0px));z-index:5;display:flex;justify-content:center;pointer-events:none}
+nav.tabs .in{pointer-events:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:100%;max-width:520px;background:var(--surface);border-radius:999px;padding:6px;box-shadow:0 6px 24px rgba(40,40,30,.12)}
+nav.tabs button{border:none;background:transparent;border-radius:999px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 2px;font-size:.7rem;color:var(--muted);min-height:52px;font-weight:700}
+nav.tabs button svg{width:22px;height:22px}
+nav.tabs button[aria-current=true]{color:var(--ink);background:var(--soft);font-weight:900}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom, 0px));background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:.88rem;font-weight:700;z-index:40;max-width:90vw;text-align:center}
+
+/* food sheet */
+#sheetBg{position:fixed;inset:0;background:rgba(30,30,25,.35);z-index:30}
+#sheet{position:fixed;left:0;right:0;bottom:0;top:calc(28px + env(safe-area-inset-top, 0px));z-index:31;background:var(--bg);border-radius:28px 28px 0 0;display:flex;flex-direction:column;max-width:560px;margin:0 auto;box-shadow:0 -8px 30px rgba(0,0,0,.12)}
+#sheet .hd{padding:14px 16px 10px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line)}
+#sheet .bd{flex:1;overflow-y:auto;padding:12px 16px 16px;display:flex;flex-direction:column;gap:12px;overscroll-behavior:contain}
+#sheet .ft{padding:12px 16px calc(12px + env(safe-area-inset-bottom, 0px));background:var(--surface);border-top:1px solid var(--line);display:flex;align-items:center;gap:12px;border-radius:0}
+#sheet .ft .tot{flex:1;min-width:0}
+#sheet .ft .tot b{font-size:1.5rem;font-weight:900;line-height:1}
+#sheet .ft .tot small{display:block;font-size:.74rem;color:var(--ink2);font-weight:700}
+.kinds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.kinds button{min-height:40px;padding:6px 4px;font-size:.82rem;border-radius:999px}
+.kinds button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cats{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cats button{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;min-height:40px;padding:6px 13px 6px 9px;font-size:.84rem;flex:none}
+.cats button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cats button .n{background:var(--amber);color:var(--ink);border-radius:999px;font-size:.68rem;padding:0 6px;font-weight:900}
+.flist{display:flex;flex-direction:column;gap:8px}
+.food{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;background:var(--surface);border-radius:20px;padding:8px 8px 8px 8px;border:1.5px solid transparent}
+.food.sel{border-color:var(--ink)}
+.food .icb{width:42px;height:42px}
+.food .nm{font-weight:800;font-size:.9rem;line-height:1.2}
+.food .por{font-size:.75rem;color:var(--muted);font-weight:600}
+.food .kk{font-size:.78rem;font-weight:800;color:var(--ink2)}
+.food .flag{font-size:.66rem;font-weight:900;border-radius:999px;padding:1px 6px;margin-left:4px;vertical-align:1px}
+.flag.g{background:var(--rose);color:var(--rose-ink)}.flag.t{background:var(--amber);color:#6B4A00}
+.qty{display:flex;align-items:center;gap:4px}
+.qty button{width:38px;height:38px;min-height:38px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;border:none;background:var(--soft)}
+.qty button.add{background:var(--lime-d)}
+.qty b{min-width:2.1em;text-align:center;font-weight:900}
+.qty svg{width:17px;height:17px;stroke-width:2.2}
+.secth{font-size:.78rem;font-weight:900;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;margin-top:4px}
+.custom{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--surface);border-radius:20px;padding:12px}
+.custom .full{grid-column:1/-1}
+.empty{font-size:.85rem;color:var(--muted);text-align:center;padding:16px 8px}
 </style>
+</head><body>
 
 <!-- ===== SPLASH ===== -->
 <div id="splash" role="button" tabindex="0" aria-label="Masuk ke aplikasi">
   <div class="hero bob" id="splashMascot"></div>
   <h1>Healthy is a must, not a maybe.</h1>
   <p>Fast smart. Skip the sugar. Sleep well. Every single day.</p>
+  <div class="foods" id="splashFoods" aria-hidden="true"></div>
   <button class="go" id="goBtn">Let’s start</button>
   <div class="tiny">Ketuk di mana saja untuk masuk</div>
-  <div id="iosHint" hidden style="background:var(--card);color:var(--ink);border-radius:18px;padding:12px 14px;font-size:.85rem;max-width:320px;text-align:left">
+  <div id="iosHint" hidden style="background:var(--surface);color:var(--ink);border-radius:18px;padding:12px 14px;font-size:.85rem;max-width:320px;text-align:left">
     <b>Pasang di iPhone:</b> ketuk tombol <b>Bagikan</b> (kotak dengan panah ke atas) di bawah, lalu pilih <b>Tambahkan ke Layar Utama</b>.
   </div>
 </div>
@@ -221,7 +279,7 @@ textarea{width:100%;min-height:90px;font:inherit;font-size:.8rem;background:var(
 <div id="lock" hidden>
   <div id="lockMascot"></div>
   <h1 id="lockTitle">Masukkan PIN</h1>
-  <div class="small" id="lockSub" style="color:var(--on-bg-muted)">PIN 4 angka</div>
+  <div class="small muted" id="lockSub">PIN 4 angka</div>
   <div class="dots" id="pinDots"><i></i><i></i><i></i><i></i></div>
   <div class="pad" id="pad">
     <button>1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button><button>8</button><button>9</button>
@@ -230,95 +288,97 @@ textarea{width:100%;min-height:90px;font:inherit;font-size:.8rem;background:var(
 </div>
 
 <div class="wrap" id="app">
-  <header class="top">
-    <span class="logo">jendela makan</span>
-    <span class="sync" id="sync">Memuat data…</span>
-  </header>
 
   <!-- ===== HARI INI ===== -->
   <section id="v-today" class="wrap">
-    <div class="row between">
-      <div class="datenav">
-        <button id="prevDay" aria-label="Hari sebelumnya">‹</button>
-        <input type="date" id="dayPick" aria-label="Pilih tanggal">
-        <button id="nextDay" aria-label="Hari berikutnya">›</button>
+    <header class="top">
+      <div class="hello">
+        <div class="av" id="avatar"></div>
+        <div style="min-width:0"><div class="t1" id="hello">Halo,</div>
+          <div class="datepick"><div class="t2" id="dayTitle">Hari ini</div><input type="date" id="dayPick" aria-label="Pilih tanggal"></div></div>
       </div>
-      <button class="sm l" id="goToday">Hari ini</button>
+      <div class="datenav">
+        <button id="prevDay" aria-label="Hari sebelumnya" data-ic="left"></button>
+        <button id="nextDay" aria-label="Hari berikutnya" data-ic="right"></button>
+      </div>
+    </header>
+    <div class="row between" style="margin-top:-6px"><span class="sync" id="sync">Memuat data…</span><button class="sm" id="goToday" hidden>Kembali ke hari ini</button></div>
+
+    <div class="card lav" id="heroCard">
+      <div class="status">
+        <div id="status"></div>
+        <svg class="dial" id="dial" viewBox="0 0 200 200" role="img" aria-label="Jam 24 jam: jendela makan, jam snack, dan waktu sekarang"></svg>
+      </div>
+      <div class="legend"><span><i style="background:var(--lime-d)"></i>Makan <b id="lgWin"></b></span><span><i style="background:var(--amber-d)"></i>Snack <b id="lgSnack"></b></span><span><i style="background:#fff"></i>Puasa</span></div>
     </div>
 
-    <div class="card purple hero-card" id="heroCard">
-      <div class="m" id="heroMascot"></div>
-      <div id="status"></div>
+    <div class="card peach" id="kcalCard"></div>
+
+    <div class="tiles">
+      <div class="tile lime tall">
+        <span class="tag" data-icl="cloche">Makan berat</span>
+        <ul class="mini" id="heavyList"></ul>
+        <div class="foot"><span class="s" id="heavySub">2× sehari</span><button class="plus lime" data-add="berat" aria-label="Catat makan berat" data-ic="plus"></button></div>
+      </div>
+      <div class="tile blue">
+        <span class="tag" data-icl="bottle">Air putih</span>
+        <div><span class="v" id="wVal">0</span><div class="s" id="wSub">gelas 250 ml</div></div>
+        <div class="foot"><div class="step"><button id="wMinus" aria-label="Kurangi air" data-ic="minus"></button></div><button class="plus blue" id="wPlus" aria-label="Tambah segelas air" data-ic="plus"></button></div>
+      </div>
+      <div class="tile amber">
+        <span class="tag" data-icl="coffee">Americano</span>
+        <div><span class="v" id="cVal">0</span><div class="s">tanpa gula & susu</div></div>
+        <div class="foot"><div class="step"><button id="cMinus" aria-label="Kurangi americano" data-ic="minus"></button></div><button class="plus amber" id="cPlus" aria-label="Tambah americano" data-ic="plus"></button></div>
+      </div>
+      <div class="tile lav">
+        <span class="tag" data-icl="cupcake">Snack</span>
+        <div><span class="v" id="snVal">0</span><div class="s" id="snSub">opsional</div></div>
+        <div class="foot"><span></span><button class="plus lav" data-add="snack" aria-label="Catat snack" data-ic="plus"></button></div>
+      </div>
+      <div class="tile soft">
+        <span class="tag" data-icl="suitcase" style="background:#fff">Sarapan</span>
+        <div><span class="v" id="lbVal">0</span><div class="s" id="lbSub">khusus hari dinas</div></div>
+        <div class="foot"><span></span><button class="plus ghost" data-add="ringan" aria-label="Catat sarapan ringan" data-ic="plus" style="background:#fff"></button></div>
+      </div>
     </div>
 
     <div class="card">
-      <div class="dialwrap">
-        <svg class="dial" id="dial" viewBox="0 0 200 200" role="img" aria-label="Jam 24 jam: jendela makan, jam snack, dan waktu sekarang"></svg>
-        <div class="legend">
-          <span><i style="background:var(--yellow)"></i>Jendela makan <b id="lgWin"></b></span>
-          <span><i style="background:var(--pink)"></i>Snack opsional <b id="lgSnack"></b></span>
-          <span><i style="background:var(--stone)"></i>Puasa (air &amp; americano boleh)</span>
-          <span id="dinasNote" class="muted"></span>
-        </div>
-      </div>
+      <div class="row between"><span class="tag" data-icl="plate">Makanan hari ini</span><span id="mealPill"></span></div>
+      <ul class="meals" id="meals"></ul>
     </div>
 
     <div class="card">
       <div class="switch">
-        <div><h2>Perjalanan dinas</h2><div class="muted small">Sarapan ringan dihitung pengecualian, bukan pelanggaran.</div></div>
+        <div class="icrow"><span class="icb" style="background:var(--blue)" data-ic="suitcase"></span><div><h2>Perjalanan dinas</h2><div class="muted small">Sarapan ringan dihitung pengecualian, bukan pelanggaran.</div></div></div>
         <input type="checkbox" id="dinas" aria-label="Hari ini perjalanan dinas">
       </div>
     </div>
 
     <div class="card">
-      <div class="row between"><h2>Catat makan</h2><span id="mealPill"></span></div>
-      <label class="field" style="max-width:150px">Jam<input type="time" id="mealTime"></label>
-      <div class="btns3">
-        <button class="y" id="addHeavy">Makan<br>berat</button>
-        <button class="k" id="addSnack">Snack</button>
-        <button id="addLight">Sarapan<br>ringan</button>
-      </div>
-      <ul class="meals" id="meals"></ul>
-    </div>
-
-    <div class="tiles">
-      <div class="tile sky">
-        <span class="label">Air putih</span>
-        <span class="v" id="wVal">0</span><span class="s" id="wSub">gelas 250 ml</span>
-        <div class="counter"><button id="wMinus" aria-label="Kurangi air">−</button><button id="wPlus" aria-label="Tambah segelas air">+</button></div>
-      </div>
-      <div class="tile yellow">
-        <span class="label">Americano</span>
-        <span class="v" id="cVal">0</span><span class="s">tanpa gula, susu, creamer</span>
-        <div class="counter"><button id="cMinus" aria-label="Kurangi americano">−</button><button id="cPlus" aria-label="Tambah americano">+</button></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Formula hari ini</h2>
+      <span class="tag" data-icl="check">Formula hari ini</span>
       <div class="tri">
-        <div class="item"><div><b>Gula tambahan</b><div class="muted small">Target 0, maksimal 25 g.</div></div>
-          <div class="chips" data-key="sugar"><button class="chip yes" data-v="1">Bebas</button><button class="chip no" data-v="0">Kebobolan</button></div></div>
-        <div class="item"><div><b>Tepung &amp; gorengan</b><div class="muted small">Roti putih, mie, biskuit, keripik.</div></div>
-          <div class="chips" data-key="flour"><button class="chip yes" data-v="1">Bebas</button><button class="chip no" data-v="0">Kebobolan</button></div></div>
-        <div class="item"><div><b>Protein cukup</b><div class="muted small" id="protHint">1,6–2,2 g per kg berat badan.</div></div>
-          <div class="chips" data-key="protein"><button class="chip yes" data-v="1">Cukup</button><button class="chip no" data-v="0">Kurang</button></div></div>
-        <div class="item"><div><b>Kopi lain</b><div class="muted small">Kopi susu, sachet, sirup.</div></div>
-          <div class="counter"><button id="oMinus" aria-label="Kurangi kopi lain">−</button><b id="oVal">0</b><button id="oPlus" aria-label="Tambah kopi lain">+</button></div></div>
+        <div class="item"><span class="icb" style="background:var(--rose)" data-ic="sugar"></span><div><b>Gula tambahan</b><div class="muted small">Target 0, maksimal 25 g.</div></div>
+          <div class="chips ctl" data-key="sugar"><button class="chip yes" data-v="1">Bebas</button><button class="chip no" data-v="0">Kebobolan</button></div></div>
+        <div class="item"><span class="icb" style="background:var(--amber)" data-ic="bread"></span><div><b>Tepung &amp; gorengan</b><div class="muted small">Roti putih, mie, biskuit, keripik.</div></div>
+          <div class="chips ctl" data-key="flour"><button class="chip yes" data-v="1">Bebas</button><button class="chip no" data-v="0">Kebobolan</button></div></div>
+        <div class="item"><span class="icb" style="background:var(--peach)" data-ic="drumstick"></span><div><b>Protein cukup</b><div class="muted small" id="protHint">1,6–2,2 g per kg berat badan.</div></div>
+          <div class="chips ctl" data-key="protein"><button class="chip yes" data-v="1">Cukup</button><button class="chip no" data-v="0">Kurang</button></div></div>
+        <div class="item"><span class="icb" style="background:var(--soft)" data-ic="coffee"></span><div><b>Kopi lain</b><div class="muted small">Kopi susu, sachet, sirup.</div></div>
+          <div class="counter ctl"><button id="oMinus" aria-label="Kurangi kopi lain" data-ic="minus"></button><b id="oVal">0</b><button id="oPlus" aria-label="Tambah kopi lain" data-ic="plus"></button></div></div>
       </div>
     </div>
 
-    <div class="card pink">
-      <div class="row between"><h2>Tidur</h2><span id="sleepPill"></span></div>
-      <div class="small">Isi tidur semalam. Dicatat di tanggal kamu bangun.</div>
+    <div class="card blue">
+      <div class="row between"><span class="tag" data-icl="moon">Tidur</span><span id="sleepPill"></span></div>
+      <div class="small muted">Isi tidur semalam. Dicatat di tanggal kamu bangun.</div>
       <div class="row">
         <label class="field">Tidur jam<input type="time" id="sleepStart"></label>
         <label class="field">Bangun jam<input type="time" id="sleepEnd"></label>
       </div>
     </div>
 
-    <div class="card stone">
-      <div class="row between"><h2>Timbang</h2><span id="wtPill"></span></div>
+    <div class="card soft">
+      <div class="row between"><span class="tag" data-icl="scale" style="background:#fff">Timbang</span><span id="wtPill"></span></div>
       <div class="small muted">Opsional. Timbang pagi setelah bangun, cukup 1–2 kali seminggu.</div>
       <label class="field" style="max-width:180px">Berat (kg)<input type="number" id="weight" inputmode="decimal" step="0.1" min="30" max="250" placeholder="contoh 78.4"></label>
     </div>
@@ -342,8 +402,31 @@ textarea{width:100%;min-height:90px;font:inherit;font-size:.8rem;background:var(
   <!-- ===== ATUR ===== -->
   <section id="v-set" class="wrap" hidden>
     <h1>Atur</h1>
+    <div class="card peach">
+      <span class="tag" data-icl="flame">Profil untuk target kalori</span>
+      <div class="small muted">Dipakai menghitung kebutuhan kalori harian (rumus Mifflin-St Jeor). Berat diambil dari timbangan terakhir.</div>
+      <div class="row">
+        <label class="field">Nama panggilan<input type="text" id="sName" placeholder="opsional" maxlength="20"></label>
+        <label class="field">Jenis kelamin
+          <select id="sSex"><option value="">Pilih</option><option value="m">Laki-laki</option><option value="f">Perempuan</option></select>
+        </label>
+      </div>
+      <div class="row">
+        <label class="field">Umur (tahun)<input type="number" id="sAge" inputmode="numeric" min="14" max="90" placeholder="contoh 35"></label>
+        <label class="field">Tinggi (cm)<input type="number" id="sHeight" inputmode="numeric" min="120" max="220" placeholder="contoh 170"></label>
+      </div>
+      <label class="field">Aktivitas harian
+        <select id="sAct">
+          <option value="1.2">Jarang gerak (kerja duduk, tanpa olahraga)</option>
+          <option value="1.375">Ringan (olahraga 1–3× seminggu)</option>
+          <option value="1.55">Sedang (olahraga 3–5× seminggu)</option>
+          <option value="1.725">Tinggi (olahraga hampir tiap hari)</option>
+        </select>
+      </label>
+      <div class="note" id="energyNote" style="background:rgba(255,255,255,.62)"></div>
+    </div>
     <div class="card">
-      <h2>Jendela makan</h2>
+      <span class="tag" data-icl="clock">Jendela makan</span>
       <div class="muted small">Di luar jendela kamu puasa. Air putih dan americano tetap boleh.</div>
       <div class="row">
         <label class="field">Mulai makan<input type="time" id="sStart"></label>
@@ -359,7 +442,7 @@ textarea{width:100%;min-height:90px;font:inherit;font-size:.8rem;background:var(
       <div class="note" id="protoNote"></div>
     </div>
     <div class="card">
-      <h2>Profil &amp; target</h2>
+      <span class="tag" data-icl="star">Target program</span>
       <div class="row">
         <label class="field">Berat awal (kg)<input type="number" id="sW0" step="0.1" inputmode="decimal" placeholder="contoh 82"></label>
         <label class="field">Mulai program<input type="date" id="sD0"></label>
@@ -377,16 +460,16 @@ textarea{width:100%;min-height:90px;font:inherit;font-size:.8rem;background:var(
       </label>
     </div>
     <div class="card">
-      <div class="row between"><h2>Kunci PIN</h2><span id="pinState"></span></div>
+      <div class="row between"><span class="tag" data-icl="lock">Kunci PIN</span><span id="pinState"></span></div>
       <div class="muted small">Minta PIN 4 angka setiap aplikasi dibuka, supaya orang lain yang memegang HP ini tidak bisa melihat catatanmu. Kalau lupa PIN, catatan hanya bisa dibuka lagi dengan menghapus data aplikasi, jadi simpan cadangan.</div>
-      <div class="row"><button id="pinSet" class="p">Pasang PIN</button><button id="pinOff" hidden>Matikan PIN</button></div>
+      <div class="row"><button id="pinSet" class="dark">Pasang PIN</button><button id="pinOff" hidden>Matikan PIN</button></div>
     </div>
-    <div class="card sky">
-      <h2>Soal pelacakan tidur</h2>
+    <div class="card blue">
+      <span class="tag" data-icl="moon">Soal pelacakan tidur</span>
       <div class="small">Tidur dicatat manual: isi jam tidur dan jam bangun. Halaman web tidak bisa membaca sensor HP. Kalau mau otomatis, pakai jam pintar (Mi Band, Galaxy Watch, Fitbit) atau aplikasi Sleep as Android, lalu salin jamnya ke sini tiap pagi.</div>
     </div>
     <div class="card">
-      <h2>Cadangan data</h2>
+      <span class="tag" data-icl="save">Cadangan data</span>
       <div class="muted small">Salin semua catatan sebagai teks, misalnya untuk disimpan di catatan HP.</div>
       <button id="copyJson">Salin data</button>
       <textarea id="jsonOut" readonly hidden aria-label="Data JSON"></textarea>
@@ -401,12 +484,34 @@ textarea{width:100%;min-height:90px;font:inherit;font-size:.8rem;background:var(
 
 <nav class="tabs" aria-label="Menu">
   <div class="in">
-    <button data-v="today" aria-current="true"><span class="sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>Hari ini</button>
-    <button data-v="recap"><span class="sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 19v-6M12 19V6M19 19v-9"/></svg></span>Rekap</button>
-    <button data-v="program"><span class="sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></span>Program</button>
-    <button data-v="set"><span class="sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span>Atur</button>
+    <button data-v="today" aria-current="true"><span data-ic="grid"></span>Hari ini</button>
+    <button data-v="recap"><span data-ic="chart"></span>Rekap</button>
+    <button data-v="program"><span data-ic="star"></span>Program</button>
+    <button data-v="set"><span data-ic="sliders"></span>Atur</button>
   </div>
 </nav>
+
+<!-- ===== FOOD SHEET ===== -->
+<div id="sheetBg" hidden></div>
+<div id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+  <div class="hd">
+    <div class="row between" style="flex-wrap:nowrap">
+      <div class="row" style="flex-wrap:nowrap;gap:8px;min-width:0"><span class="icb" id="sheetIc" style="background:var(--lime)"></span><h2 id="sheetTitle">Catat makan</h2></div>
+      <button class="round" id="sheetClose" aria-label="Tutup" data-ic="close"></button>
+    </div>
+    <div class="row" style="flex-wrap:nowrap">
+      <div class="kinds" id="sheetKinds" style="flex:1"><button data-k="berat">Berat</button><button data-k="snack">Snack</button><button data-k="ringan">Sarapan</button></div>
+      <input type="time" id="sheetTime" aria-label="Jam makan" style="width:104px;flex:none">
+    </div>
+    <input type="search" id="sheetQ" placeholder="Cari: nasi, ayam, bayam, pisang…" aria-label="Cari makanan">
+    <div class="cats" id="sheetCats"></div>
+  </div>
+  <div class="bd" id="sheetBody"></div>
+  <div class="ft">
+    <div class="tot"><small id="sheetSub">Total sepiring</small><b id="sheetTot">0 kkal</b><small id="sheetProt"></small></div>
+    <button class="dark" id="sheetSave" style="min-width:120px">Simpan</button>
+  </div>
+</div>
 <div class="toast" id="toast" hidden></div>
 
 <script>
@@ -421,23 +526,170 @@ const isoDay = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.
 const addDays = (iso, n) => { const d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); return isoDay(d); };
 const diffDays = (a, b) => Math.round((new Date(b + "T12:00:00") - new Date(a + "T12:00:00")) / 864e5);
 const HARI = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+const BULAN = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 const dayLabel = iso => { const d = new Date(iso + "T12:00:00"); return HARI[d.getDay()] + " " + d.getDate() + "/" + (d.getMonth() + 1); };
 const nowMin = () => { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); };
 const uid = () => Math.random().toString(36).slice(2, 9);
 const kg = (v, dp = 1) => v.toFixed(dp).replace(".", ",");
+const num = v => Math.round(v).toLocaleString("id-ID");
+const qtyTxt = q => { const w = Math.floor(q), h = q - w >= 0.5; return (w ? String(w) : "") + (h ? "½" : "") || "0"; };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* ---------- line icons (drawn for this app, gastronomy style) ---------- */
+const IC = {
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  minus: '<path d="M5 12h14"/>',
+  close: '<path d="M6 6l12 12M18 6L6 18"/>',
+  left: '<path d="M14.5 6l-6 6 6 6"/>',
+  right: '<path d="M9.5 6l6 6-6 6"/>',
+  check: '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M8 12.3l2.7 2.7L16 9.5"/>',
+  cloche: '<path d="M2.5 18h19"/><path d="M4.5 18a7.5 7.5 0 0 1 15 0"/><path d="M12 10.5V8.2"/><path d="M10.3 7.5h3.4"/><path d="M8 14.5a4.5 4.5 0 0 1 2.2-2.6"/><path d="M4 20.5h16"/>',
+  plate: '<circle cx="12" cy="12.5" r="6.2"/><circle cx="12" cy="12.5" r="3.6"/><path d="M2.6 4v4.2a1.4 1.4 0 0 0 2.8 0V4M4 9.6V21"/><path d="M21.4 4c-1.7 1-2.4 3.4-2.4 6.6h2.4V21"/>',
+  rice: '<path d="M3.5 12h17c0 4.6-3.8 8.3-8.5 8.3S3.5 16.6 3.5 12z"/><path d="M6.5 12a5.5 4.4 0 0 1 11 0"/><path d="M9.5 20.3h5"/><path d="M14.5 3.5l5.5 5.8M17.6 2.8l3.9 4.8"/><path d="M10 9.5h.01M12.6 8.6h.01M14.3 10.2h.01"/>',
+  fish: '<path d="M2.8 12c3.1-4.6 9.4-5.6 13.2 0-3.8 5.6-10.1 4.6-13.2 0z"/><path d="M16 12l5.2-3.6v7.2z"/><path d="M10.3 9.4c1 1.6 1 3.6 0 5.2"/><circle cx="6.6" cy="11.3" r=".5"/>',
+  drumstick: '<path d="M10.6 13.4C8.4 10.6 9 6.3 12 4.4c3-1.9 7.2-.7 8.3 2.8 1 3.3-1 6.7-4.4 7.5-1.8.4-3.6.2-5.3-1.3z"/><path d="M11.2 13.8l-3.6 3.6"/><path d="M7.6 17.4a2 2 0 1 0-3 1.8 2 2 0 1 0 1.8 3"/><path d="M14 7.4c1.3-.9 3-.7 3.9.5"/>',
+  steak: '<path d="M4.2 12.6C4 8.2 8 4.6 13 4.6c4.4 0 7 2.4 7 5.4 0 2.9-2 4.1-4 5.6-2.1 1.5-3.1 3.9-6.9 3.9-3 0-4.8-2.6-4.9-6.9z"/><circle cx="9.3" cy="11.3" r="2.1"/><path d="M6.9 16c2.2 1.3 5.2.8 7.2-1.2"/>',
+  egg: '<path d="M12 3.6c3 0 4.5 2.1 6 3.5 1.6 1.5 3 3.6 2.5 6.6-.6 3.1-3.1 5-6 6-3 1-6.5 1.4-9-.5-2.6-2-3.1-5-2-8C4.6 8 8.5 3.6 12 3.6z"/><circle cx="11.4" cy="12" r="3"/>',
+  tofu: '<path d="M3.8 8.6L12 4.5l8.2 4.1v7.2L12 19.9l-8.2-4.1z"/><path d="M3.8 8.6l8.2 4.1 8.2-4.1M12 12.7v7.2"/><path d="M7.5 13.5h.01M9 15.6h.01M16 14.1h.01"/>',
+  shrimp: '<path d="M19.5 7.5c-1.5-2.7-5-3.8-8.3-2.6C7 6.4 5.1 10.9 6.7 14.7c.9 2.1 2.6 3.4 4.3 3.9"/><path d="M11 18.6l-2.8 1.9.4-3.2"/><path d="M19.5 7.5c.6 1.2-.1 2.4-1.4 2.6-2.6.4-5.2 1.9-6.3 4.4"/><path d="M10 8.3l1.7 2.4M8.2 11.2l2.5 1.5"/><path d="M19.7 7.3l2.3-2.5"/>',
+  broccoli: '<path d="M7.2 13.2a3.1 3.1 0 0 1-.6-6 3.6 3.6 0 0 1 6.6-2.2 3.3 3.3 0 0 1 5 3.3 2.9 2.9 0 0 1-.9 5.3"/><path d="M9.6 13.2h7.3"/><path d="M10.3 13.2l-1 7.3h5.8l-1-7.3"/><path d="M12.2 13.2v-2.6M10 10.5l2.2 2M14.6 10.6l-2.4 2.6"/>',
+  apple: '<path d="M12 7.6c-1.6-1-4.6-1.5-6.3.6-2 2.4-1.2 7 .8 9.9 1.4 2 3 2.6 4.2 1.9.8-.4 1.8-.4 2.6 0 1.2.7 2.8.1 4.2-1.9 2-2.9 2.8-7.5.8-9.9-1.7-2.1-4.7-1.6-6.3-.6z"/><path d="M12 7.6c0-2.1.8-3.6 2.4-4.6"/><path d="M12.6 5.6c1.4-.6 3-.4 3.8.7-1.4.7-2.8.6-3.8-.7z"/>',
+  banana: '<path d="M4.5 9.5c1.4 6.3 7.8 10 14.6 7.4.9-.4.7-1.6-.2-1.6-5.3.2-9.5-2.7-11.1-7.6"/><path d="M4.5 9.5c.6-.9 1.9-1.2 3.3-1.8"/><path d="M19.1 15.3c.7-1 .9-2.1.6-3.4"/>',
+  glass: '<path d="M6 3.8h12l-1.6 15.6a1.6 1.6 0 0 1-1.6 1.4H9.2a1.6 1.6 0 0 1-1.6-1.4z"/><path d="M6.7 9.8h10.6"/>',
+  bottle: '<path d="M10 2.6h4v2.8l1.6 2.2v12a1.6 1.6 0 0 1-1.6 1.6h-4a1.6 1.6 0 0 1-1.6-1.6v-12L10 5.4z"/><path d="M8.4 11h7.2M8.4 15.5h7.2"/>',
+  coffee: '<path d="M4.2 10h11.6v3.8a5 5 0 0 1-5 5H9.2a5 5 0 0 1-5-5z"/><path d="M15.8 11h1.6a2.4 2.4 0 0 1 0 4.8h-1.8"/><path d="M3 21.2h14.5"/><path d="M8 3.4c-.8 1 .8 2 0 3.4M11.8 3.4c-.8 1 .8 2 0 3.4"/>',
+  tea: '<path d="M5 9.5h12v3a6 6 0 0 1-12 0z"/><path d="M17 10.5h1.2a2.3 2.3 0 0 1 0 4.6h-1.6"/><path d="M11 9.5V6.5"/><rect x="9.6" y="3.6" width="2.8" height="2.9" rx=".6"/><path d="M4 21h14"/>',
+  juice: '<path d="M7 7.5h10l-1.4 12.2a1.6 1.6 0 0 1-1.6 1.4H10a1.6 1.6 0 0 1-1.6-1.4z"/><path d="M12.8 7.5l1.6-5 3 .7"/><circle cx="16.4" cy="8.2" r="2.6"/><path d="M7.5 12h9"/>',
+  cupcake: '<path d="M5.5 12.5h13l-1.8 7.4a1.4 1.4 0 0 1-1.4 1.1H8.7a1.4 1.4 0 0 1-1.4-1.1z"/><path d="M10 12.5l.5 8.5M14 12.5l-.5 8.5"/><path d="M5.3 12.5a3 3 0 0 1 .9-5.5 4 4 0 0 1 7.2-2.2A3.6 3.6 0 0 1 18 7a3 3 0 0 1 .7 5.5"/><path d="M12 4.2V2.6"/>',
+  bread: '<path d="M6 11.2A3.6 3.6 0 0 1 5.4 4h13.2a3.6 3.6 0 0 1-.6 7.2V19a1.4 1.4 0 0 1-1.4 1.4H7.4A1.4 1.4 0 0 1 6 19z"/><path d="M9.5 8.2l1.4-1.4M13 8.6l1.6-1.6"/>',
+  sugar: '<rect x="3.6" y="11.6" width="7.4" height="7.4" rx="1.4"/><rect x="13" y="11.6" width="7.4" height="7.4" rx="1.4"/><rect x="8.3" y="3.8" width="7.4" height="7.4" rx="1.4"/><path d="M6 14.3h.01M8.6 16.6h.01M15.6 14.5h.01M17.9 16.3h.01M11 6.4h.01M13.2 8.6h.01"/>',
+  chili: '<path d="M8.2 8.8c-2.4 3.9-1.8 9.6 2.4 11.4 3.9 1.7 8.5-.5 9.7-5.3-2.8 1.8-6.6 1.5-8.7-2-1-1.8-1.5-3.5-3.4-4.1z"/><path d="M8.2 8.8c.1-2 1.1-3.5 3-4.3"/><path d="M7.2 8.2c.8-.9 2-1.1 3.1-.6"/>',
+  moon: '<path d="M19.8 14.6A8 8 0 1 1 9.4 4.2a6.4 6.4 0 0 0 10.4 10.4z"/><path d="M17 3.5v3M15.5 5h3"/>',
+  scale: '<rect x="3.6" y="3.6" width="16.8" height="16.8" rx="4.4"/><path d="M8 10a4.8 4.8 0 0 1 8 0"/><path d="M12 11.2l1.5-2.6"/>',
+  suitcase: '<rect x="3" y="7" width="18" height="13" rx="2.6"/><path d="M9 7V5.3a1.6 1.6 0 0 1 1.6-1.6h2.8A1.6 1.6 0 0 1 15 5.3V7"/><path d="M3 12.6h18M10.5 12.6v1.6h3v-1.6"/>',
+  flame: '<path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.3 2.3-5.3 3.6-7.8.4 1.6 1.2 2.6 2.4 3.1C11.6 6.6 13 4.2 15 3c-.3 2.8 3.5 5.8 3.5 10.6C18.5 18 16 21 12 21z"/><path d="M12 21c-1.6 0-2.7-1.1-2.7-2.7 0-1.8 1.6-2.7 2.3-4.3 1.6 1.3 3.1 2.6 3.1 4.4 0 1.5-1.1 2.6-2.7 2.6z"/>',
+  clock: '<circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3 2"/>',
+  grid: '<rect x="3.8" y="3.8" width="7" height="7" rx="2"/><rect x="13.2" y="3.8" width="7" height="7" rx="2"/><rect x="3.8" y="13.2" width="7" height="7" rx="2"/><rect x="13.2" y="13.2" width="7" height="7" rx="2"/>',
+  chart: '<rect x="3.8" y="3.8" width="16.4" height="16.4" rx="4"/><path d="M8.5 16v-3.5M12 16V8M15.5 16v-5.5"/>',
+  star: '<path d="M12 3.6l2.5 5.3 5.7.7-4.2 3.9 1.1 5.7L12 16.4l-5.1 2.8 1.1-5.7-4.2-3.9 5.7-.7z"/>',
+  sliders: '<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',
+  lock: '<rect x="5" y="10.5" width="14" height="10" rx="2.6"/><path d="M8.2 10.5V8a3.8 3.8 0 0 1 7.6 0v2.5"/><path d="M12 14.6v2"/>',
+  save: '<path d="M5.5 3.8h10.2l3 3V18.6a1.6 1.6 0 0 1-1.6 1.6H6.9a1.6 1.6 0 0 1-1.6-1.6V5.4a1.6 1.6 0 0 1 1.6-1.6z"/><path d="M8.5 3.8v4.6h6V3.8M8 20.2v-5.4h8v5.4"/>',
+  search: '<circle cx="11" cy="11" r="6.4"/><path d="M15.8 15.8l4.4 4.4"/>',
+  pencil: '<path d="M4 20l1-4.2L15.6 5.2a2 2 0 0 1 2.9 0l.3.3a2 2 0 0 1 0 2.9L8.2 19z"/><path d="M13.8 7l3.2 3.2"/>'
+};
+const ic = (n, cls = "i") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${IC[n] || ""}</svg>`;
+function paintIcons(root = document) {
+  root.querySelectorAll("[data-ic]").forEach(el => { if (!el.dataset.done) { el.insertAdjacentHTML("afterbegin", ic(el.dataset.ic)); el.dataset.done = 1; } });
+  root.querySelectorAll("[data-icl]").forEach(el => { if (!el.dataset.done) { el.insertAdjacentHTML("afterbegin", ic(el.dataset.icl)); el.dataset.done = 1; } });
+}
 
 /* ---------- mascot ---------- */
 const MASCOT = "data:image/webp;base64,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";
 function mascot(mood = "happy", _fill, extras = true) {
   let deco = "";
-  if (extras && mood === "happy") deco = `<svg class="deco" viewBox="0 0 200 200" aria-hidden="true"><path d="M14 40 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z" fill="var(--lime)"/><path d="M182 118 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="var(--card)"/><path d="M168 22 l10 -6 -4 10 10 -4" stroke="var(--sky)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  if (extras && mood === "sleep") deco = `<svg class="deco" viewBox="0 0 200 200" aria-hidden="true"><text x="160" y="46" font-size="30" fill="var(--sky)" font-family="Anton,Impact,sans-serif">Z</text><text x="182" y="22" font-size="20" fill="var(--sky)" font-family="Anton,Impact,sans-serif">z</text></svg>`;
+  if (extras && mood === "happy") deco = `<svg class="deco" viewBox="0 0 200 200" aria-hidden="true"><path d="M14 40 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z" fill="#fff"/><path d="M182 118 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="var(--amber-d)"/><path d="M168 22 l10 -6 -4 10 10 -4" stroke="var(--ink)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  if (extras && mood === "sleep") deco = `<svg class="deco" viewBox="0 0 200 200" aria-hidden="true"><text x="160" y="46" font-size="30" font-weight="900" fill="var(--ink)" font-family="Nunito,sans-serif">Z</text><text x="182" y="22" font-size="20" font-weight="900" fill="var(--ink)" font-family="Nunito,sans-serif">z</text></svg>`;
   return `<div class="masc ${mood}"><img src="${MASCOT}" alt="">${deco}</div>`;
 }
 
+/* ---------- food reference: kcal & protein per portion (rumahan; TKPI & label umum) ---------- */
+const CATS = [
+  { id: "karbo", name: "Nasi & karbo", ic: "rice", bg: "var(--amber)" },
+  { id: "lauk", name: "Lauk hewani", ic: "drumstick", bg: "var(--peach)" },
+  { id: "nabati", name: "Tahu & tempe", ic: "tofu", bg: "var(--soft)" },
+  { id: "sayur", name: "Sayur", ic: "broccoli", bg: "var(--lime)" },
+  { id: "buah", name: "Buah", ic: "apple", bg: "var(--rose)" },
+  { id: "minum", name: "Minuman", ic: "glass", bg: "var(--blue)" },
+  { id: "lain", name: "Pelengkap", ic: "chili", bg: "var(--lav)" },
+];
+const CAT = Object.fromEntries(CATS.map(c => [c.id, c]));
+// [id, cat, name, portion, kcal, protein g, flag (g = gula, t = tepung), icon]
+const FOODS = [
+  ["nasi", "karbo", "Nasi putih", "1 centong · 100 g", 130, 2.5, "", "rice"],
+  ["nasimerah", "karbo", "Nasi merah", "1 centong · 100 g", 110, 2.5, "", "rice"],
+  ["nasigoreng", "karbo", "Nasi goreng", "1 piring", 330, 9, "", "rice"],
+  ["kentang", "karbo", "Kentang rebus", "1 buah sedang · 150 g", 115, 3, "", "rice"],
+  ["ubi", "karbo", "Ubi / singkong rebus", "1 potong · 100 g", 120, 1, "", "rice"],
+  ["jagung", "karbo", "Jagung rebus", "1 tongkol sedang", 90, 3, "", "rice"],
+  ["lontong", "karbo", "Lontong / ketupat", "1 potong · 100 g", 145, 2.5, "", "rice"],
+  ["oat", "karbo", "Oatmeal tawar", "4 sdm · 40 g", 150, 5, "", "rice"],
+  ["roti", "karbo", "Roti tawar", "1 lembar", 70, 2.5, "t", "bread"],
+  ["rotigandum", "karbo", "Roti gandum", "1 lembar", 80, 4, "t", "bread"],
+  ["mie", "karbo", "Mie instan", "1 bungkus", 380, 8, "t", "bread"],
+  ["bihun", "karbo", "Bihun / kwetiau goreng", "1 piring", 350, 7, "t", "bread"],
+  ["ayamgoreng", "lauk", "Ayam goreng", "1 potong sedang", 220, 20, "", "drumstick"],
+  ["ayambakar", "lauk", "Ayam bakar / panggang", "1 potong sedang", 170, 22, "", "drumstick"],
+  ["dadaayam", "lauk", "Dada ayam rebus / kukus", "100 g", 165, 31, "", "drumstick"],
+  ["opor", "lauk", "Opor / gulai ayam", "1 potong + kuah", 260, 20, "", "drumstick"],
+  ["geprek", "lauk", "Ayam geprek / tepung", "1 potong", 300, 20, "t", "drumstick"],
+  ["sateayam", "lauk", "Sate ayam + bumbu kacang", "5 tusuk", 225, 18, "", "drumstick"],
+  ["ikangoreng", "lauk", "Ikan goreng (nila, kembung)", "1 ekor / potong sedang", 200, 20, "", "fish"],
+  ["ikanbakar", "lauk", "Ikan bakar", "1 potong · 100 g", 130, 22, "", "fish"],
+  ["pepes", "lauk", "Pepes ikan", "1 bungkus", 120, 20, "", "fish"],
+  ["tongkol", "lauk", "Tongkol / tuna balado", "1 potong", 150, 20, "", "fish"],
+  ["lele", "lauk", "Lele goreng", "1 ekor sedang", 240, 18, "", "fish"],
+  ["udang", "lauk", "Udang tumis", "5 ekor sedang", 90, 12, "", "shrimp"],
+  ["cumi", "lauk", "Cumi tumis", "100 g", 120, 16, "", "shrimp"],
+  ["rendang", "lauk", "Rendang sapi", "1 potong · 70 g", 190, 14, "", "steak"],
+  ["semur", "lauk", "Semur daging", "1 potong", 140, 12, "", "steak"],
+  ["empal", "lauk", "Empal / daging goreng", "1 potong · 50 g", 150, 13, "", "steak"],
+  ["steak", "lauk", "Daging sapi panggang", "100 g", 220, 26, "", "steak"],
+  ["bakso", "lauk", "Bakso (tanpa mie)", "5 butir", 180, 12, "t", "steak"],
+  ["telurrebus", "lauk", "Telur rebus", "1 butir", 75, 6.5, "", "egg"],
+  ["telurceplok", "lauk", "Telur ceplok / dadar", "1 butir", 110, 7, "", "egg"],
+  ["telurbalado", "lauk", "Telur balado", "1 butir", 120, 7, "", "egg"],
+  ["tahugoreng", "nabati", "Tahu goreng", "1 potong", 80, 4, "", "tofu"],
+  ["tahukukus", "nabati", "Tahu kukus / bacem tanpa gula", "1 potong", 50, 5, "", "tofu"],
+  ["tempegoreng", "nabati", "Tempe goreng", "1 potong", 85, 5, "", "tofu"],
+  ["tempekukus", "nabati", "Tempe kukus / panggang", "1 potong", 60, 5, "", "tofu"],
+  ["tempebacem", "nabati", "Tempe / tahu bacem", "1 potong", 95, 5, "g", "tofu"],
+  ["mendoan", "nabati", "Tempe mendoan", "1 potong", 110, 4, "t", "tofu"],
+  ["bayam", "sayur", "Sayur bening bayam", "1 mangkuk", 35, 2, "", "broccoli"],
+  ["kangkung", "sayur", "Tumis kangkung", "1 porsi", 70, 3, "", "broccoli"],
+  ["asem", "sayur", "Sayur asem", "1 mangkuk", 60, 2, "", "broccoli"],
+  ["sop", "sayur", "Sayur sop", "1 mangkuk", 60, 2, "", "broccoli"],
+  ["capcay", "sayur", "Capcay", "1 porsi", 100, 4, "", "broccoli"],
+  ["buncis", "sayur", "Tumis buncis / tauge", "1 porsi", 70, 3, "", "broccoli"],
+  ["lodeh", "sayur", "Sayur lodeh (santan)", "1 mangkuk", 130, 3, "", "broccoli"],
+  ["brokoli", "sayur", "Brokoli / wortel rebus", "100 g", 35, 3, "", "broccoli"],
+  ["urap", "sayur", "Urap", "1 porsi", 90, 3, "", "broccoli"],
+  ["gado", "sayur", "Gado-gado / pecel", "1 porsi", 300, 12, "", "broccoli"],
+  ["lalapan", "sayur", "Lalapan (timun, kol, kemangi)", "1 porsi", 15, 1, "", "broccoli"],
+  ["pisang", "buah", "Pisang", "1 buah sedang", 105, 1, "", "banana"],
+  ["apel", "buah", "Apel", "1 buah sedang", 95, 0.5, "", "apple"],
+  ["pepaya", "buah", "Pepaya", "1 potong · 150 g", 60, 1, "", "apple"],
+  ["jeruk", "buah", "Jeruk", "1 buah", 60, 1, "", "apple"],
+  ["semangka", "buah", "Semangka", "1 potong · 200 g", 60, 1, "", "apple"],
+  ["melon", "buah", "Melon", "1 potong · 150 g", 50, 1, "", "apple"],
+  ["mangga", "buah", "Mangga", "½ buah · 150 g", 90, 1, "", "apple"],
+  ["naga", "buah", "Buah naga", "½ buah", 60, 1, "", "apple"],
+  ["alpukat", "buah", "Alpukat (tanpa gula/susu)", "½ buah", 160, 2, "", "apple"],
+  ["air", "minum", "Air putih", "1 gelas", 0, 0, "", "bottle"],
+  ["americano", "minum", "Americano", "1 gelas", 5, 0.3, "", "coffee"],
+  ["tehtawar", "minum", "Teh tawar", "1 gelas", 2, 0, "", "tea"],
+  ["tehmanis", "minum", "Teh manis", "1 gelas", 90, 0, "g", "tea"],
+  ["kopisusu", "minum", "Kopi susu gula aren", "1 gelas", 180, 4, "g", "coffee"],
+  ["jus", "minum", "Jus buah tanpa gula", "1 gelas", 120, 1, "", "juice"],
+  ["jusgula", "minum", "Jus buah pakai gula / susu kental", "1 gelas", 200, 2, "g", "juice"],
+  ["esjeruk", "minum", "Es jeruk manis", "1 gelas", 110, 0.5, "g", "juice"],
+  ["susu", "minum", "Susu UHT plain", "200 ml", 120, 6, "", "glass"],
+  ["susukedelai", "minum", "Susu kedelai tanpa gula", "1 gelas", 80, 6, "", "glass"],
+  ["soda", "minum", "Soda / minuman kemasan manis", "1 kaleng / botol", 140, 0, "g", "glass"],
+  ["kelapa", "minum", "Air kelapa", "1 gelas", 45, 0.5, "", "glass"],
+  ["sambal", "lain", "Sambal", "1 sdm", 20, 0, "", "chili"],
+  ["kecap", "lain", "Kecap manis", "1 sdm", 30, 0.5, "g", "chili"],
+  ["sauskacang", "lain", "Saus kacang", "2 sdm", 90, 3, "", "chili"],
+  ["kerupuk", "lain", "Kerupuk", "1 buah besar", 60, 0.5, "t", "chili"],
+  ["gorengan", "lain", "Gorengan (bakwan, pisang goreng)", "1 buah", 130, 2, "t", "chili"],
+  ["kacang", "lain", "Kacang tanah / almond", "1 genggam · 25 g", 145, 6, "", "chili"],
+  ["keju", "lain", "Keju", "1 lembar", 70, 4, "", "chili"],
+];
+const allFoods = () => FOODS.map(f => ({ id: f[0], cat: f[1], n: f[2], por: f[3], k: f[4], p: f[5], tag: f[6], ic: f[7] }))
+  .concat((S.settings.foods || []).map(f => ({ ...f, ic: CAT[f.cat] ? CAT[f.cat].ic : "plate", own: true })));
+
 /* ---------- state ---------- */
-const DEFAULTS = { start: "12:00", end: "20:00", snackS: "15:00", snackE: "16:00", tol: 30, sleepTarget: 7, w0: null, d0: isoDay(new Date()), deficit: 500, water: 10, habits: [] };
+const DEFAULTS = { start: "12:00", end: "20:00", snackS: "15:00", snackE: "16:00", tol: 30, sleepTarget: 7, w0: null, d0: isoDay(new Date()), deficit: 500, water: 10, habits: [], name: "", sex: "", age: null, height: null, act: 1.375, foods: [] };
 const S = { settings: { ...DEFAULTS }, days: {}, day: isoDay(new Date()), view: "today", range: 7, mode: "loading" };
 const blankDay = () => ({ meals: [], dinas: false, coffee: 0, otherCoffee: 0, water: 0, sugar: null, flour: null, protein: null, sleepStart: "", sleepEnd: "", weight: null });
 const getDay = iso => ({ ...blankDay(), ...(S.days[iso] || {}) });
@@ -493,6 +745,18 @@ function setSync() {
 const W = () => ({ s: toMin(S.settings.start), e: toMin(S.settings.end), tol: +S.settings.tol || 0 });
 function inWindow(t) { const { s, e, tol } = W(); const m = toMin(t); return s <= e ? (m >= s - tol && m <= e + tol) : (m >= s - tol || m <= e + tol); }
 function mealVerdict(meal, day) { if (inWindow(meal.t)) return "ok"; if (meal.kind === "ringan" && day.dinas) return "dinas"; return "out"; }
+const mealKcal = m => (m.items || []).reduce((a, i) => a + (+i.k || 0) * (+i.q || 0), 0);
+const mealProt = m => (m.items || []).reduce((a, i) => a + (+i.p || 0) * (+i.q || 0), 0);
+const hasFood = d => (d.meals || []).some(m => m.items && m.items.length);
+function latestWeight() { const ks = Object.keys(S.days).filter(k => S.days[k] && S.days[k].weight).sort(); return ks.length ? { iso: ks[ks.length - 1], w: +S.days[ks[ks.length - 1]].weight } : null; }
+const bodyW = () => { const lw = latestWeight(); return lw ? lw.w : (S.settings.w0 ? +S.settings.w0 : null); };
+function energy() {
+  const st = S.settings, w = bodyW();
+  if (!st.sex || !+st.age || !+st.height || !w) return null;
+  const bmr = 10 * w + 6.25 * +st.height - 5 * +st.age + (st.sex === "m" ? 5 : -161);
+  const tdee = bmr * (+st.act || 1.375); const floor = st.sex === "m" ? 1500 : 1200; const raw = tdee - (+st.deficit || 0);
+  return { bmr: Math.round(bmr), tdee: Math.round(tdee / 10) * 10, target: Math.round(Math.max(floor, raw) / 10) * 10, floored: raw < floor, w, floor };
+}
 function dayEval(iso) {
   const raw = S.days[iso]; if (!raw) return null; const d = getDay(iso);
   const meals = d.meals.slice().sort((a, b) => toMin(a.t) - toMin(b.t));
@@ -501,12 +765,14 @@ function dayEval(iso) {
   let fast = null; const prev = S.days[addDays(iso, -1)];
   if (meals.length && prev && prev.meals && prev.meals.length) fast = (1440 - Math.max(...prev.meals.map(m => toMin(m.t)))) + toMin(meals[0].t);
   const sleep = d.sleepStart && d.sleepEnd ? (toMin(d.sleepEnd) - toMin(d.sleepStart) + 1440) % 1440 : null;
+  const kcal = hasFood(d) ? meals.reduce((a, m) => a + mealKcal(m), 0) : null;
+  const prot = hasFood(d) ? meals.reduce((a, m) => a + mealProt(m), 0) : null;
+  const en = energy(); const calOk = kcal != null && en ? kcal <= en.target + 100 : null;
   // score: how many daily formula items were met (of those filled)
-  const checks = [windowOk, d.sugar, d.flour, d.protein, d.water ? d.water >= S.settings.water : null, d.otherCoffee ? false : (d.coffee || meals.length ? true : null)].filter(v => v != null);
+  const checks = [windowOk, d.sugar, d.flour, d.protein, calOk, d.water ? d.water >= S.settings.water : null, d.otherCoffee ? false : (d.coffee || meals.length ? true : null)].filter(v => v != null);
   const score = checks.length ? checks.filter(Boolean).length / checks.length : null;
-  return { meals, verdicts, windowOk, exceptions: verdicts.filter(v => v === "dinas").length, fast, sleep, sugar: d.sugar, flour: d.flour, protein: d.protein, coffee: d.coffee || 0, other: d.otherCoffee || 0, water: d.water || 0, dinas: !!d.dinas, weight: d.weight, score };
+  return { meals, verdicts, windowOk, exceptions: verdicts.filter(v => v === "dinas").length, fast, sleep, sugar: d.sugar, flour: d.flour, protein: d.protein, coffee: d.coffee || 0, other: d.otherCoffee || 0, water: d.water || 0, dinas: !!d.dinas, weight: d.weight, kcal, prot, calOk, score };
 }
-function latestWeight() { const ks = Object.keys(S.days).filter(k => S.days[k] && S.days[k].weight).sort(); return ks.length ? { iso: ks[ks.length - 1], w: +S.days[ks[ks.length - 1]].weight } : null; }
 const ratePerWeek = () => (+S.settings.deficit * 7) / 7700; // kg fat per week
 
 function mutDay(fn) { const iso = S.day; const d = JSON.parse(JSON.stringify(getDay(iso))); fn(d); S.days[iso] = d; saveDay(iso); render(); }
@@ -516,27 +782,23 @@ function polar(min, r) { const a = (min / 1440) * 2 * Math.PI - Math.PI / 2; ret
 function arc(a, b, r) { const span = ((b - a) + 1440) % 1440 || 1440; const [x1, y1] = polar(a, r), [x2, y2] = polar(a + span, r); return `M${x1.toFixed(2)} ${y1.toFixed(2)} A${r} ${r} 0 ${span > 720 ? 1 : 0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`; }
 function drawDial() {
   const { s, e } = W(); const d = getDay(S.day); const isToday = S.day === isoDay(new Date());
-  let h = `<circle cx="100" cy="100" r="76" fill="none" stroke="var(--stone)" stroke-width="22"/>`;
-  h += `<path d="${arc(s, e, 76)}" fill="none" stroke="var(--yellow)" stroke-width="22"/>`;
+  let h = `<circle cx="100" cy="100" r="74" fill="none" stroke="#fff" stroke-width="24"/>`;
+  h += `<path d="${arc(s, e, 74)}" fill="none" stroke="var(--lime-d)" stroke-width="24" stroke-linecap="round"/>`;
   const ss = toMin(S.settings.snackS), se = toMin(S.settings.snackE);
-  if (ss != null && se != null && se > ss) h += `<path d="${arc(ss, se, 76)}" fill="none" stroke="var(--pink)" stroke-width="22"/>`;
-  for (let i = 0; i < 24; i++) { const [x1, y1] = polar(i * 60, 92), [x2, y2] = polar(i * 60, i % 6 ? 95 : 99); h += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="var(--muted)" stroke-width="${i % 6 ? 1 : 2.2}" stroke-linecap="round"/>`; }
-  [[0, "0"], [360, "6"], [720, "12"], [1080, "18"]].forEach(([m, l]) => { const [x, y] = polar(m, 50); h += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--muted)" font-family="Onest, sans-serif">${l}</text>`; });
-  d.meals.forEach(m => { const v = mealVerdict(m, d); const [x, y] = polar(toMin(m.t), 76); const c = v === "ok" ? "#fff" : v === "dinas" ? "var(--sky)" : "var(--bad)"; h += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7" fill="${c}" stroke="var(--ink)" stroke-width="2"/>`; });
-  if (isToday) { const [x, y] = polar(nowMin(), 66); h += `<line x1="100" y1="100" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--purple)" stroke-width="4" stroke-linecap="round"/><circle cx="100" cy="100" r="6" fill="var(--purple)"/>`; }
-  else h += `<text x="100" y="105" text-anchor="middle" font-size="14" font-weight="800" fill="var(--ink)" font-family="Onest, sans-serif">${dayLabel(S.day)}</text>`;
+  if (ss != null && se != null && se > ss) h += `<path d="${arc(ss, se, 74)}" fill="none" stroke="var(--amber-d)" stroke-width="24"/>`;
+  [[0, "0"], [360, "6"], [720, "12"], [1080, "18"]].forEach(([m, l]) => { const [x, y] = polar(m, 44); h += `<text x="${x.toFixed(1)}" y="${(y + 5).toFixed(1)}" text-anchor="middle" font-size="14" font-weight="800" fill="var(--ink2)" font-family="Nunito, sans-serif">${l}</text>`; });
+  d.meals.forEach(m => { const v = mealVerdict(m, d); const [x, y] = polar(toMin(m.t), 74); const c = v === "ok" ? "#fff" : v === "dinas" ? "var(--blue-d)" : "var(--bad)"; h += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="${c}" stroke="var(--ink)" stroke-width="2.5"/>`; });
+  if (isToday) { const [x, y] = polar(nowMin(), 60); h += `<line x1="100" y1="100" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/><circle cx="100" cy="100" r="7" fill="var(--ink)"/>`; }
   $("#dial").innerHTML = h;
   $("#lgWin").textContent = S.settings.start + "–" + S.settings.end;
   $("#lgSnack").textContent = S.settings.snackS + "–" + S.settings.snackE;
-  $("#dinasNote").textContent = d.dinas ? "Mode dinas aktif: sarapan ringan boleh." : "";
 }
 function drawStatus() {
   const el = $("#status"); const card = $("#heroCard"); const { s, e } = W(); const isToday = S.day === isoDay(new Date()); const ev = dayEval(S.day);
   if (!isToday) {
-    card.className = "card hero-card " + (ev && ev.windowOk === false ? "pink" : "lime");
-    $("#heroMascot").innerHTML = mascot(ev && ev.windowOk === false ? "meh" : "happy", "var(--yellow)", false);
+    card.className = "card " + (ev && ev.windowOk === false ? "rose" : "lime");
     const sc = ev && ev.score != null ? Math.round(ev.score * 100) + "%" : "–";
-    el.innerHTML = `<div class="eyebrow">Catatan ${dayLabel(S.day)}</div><div class="big">${sc}</div><div class="small">formula terpenuhi · puasa ${ev && ev.fast != null ? dur(ev.fast) : "–"}</div>`;
+    el.innerHTML = `<span class="tag">${ic("check")}Catatan ${dayLabel(S.day)}</span><div class="big" style="margin-top:10px">${sc}</div><div class="small muted">formula terpenuhi · puasa ${ev && ev.fast != null ? dur(ev.fast) : "–"}${ev && ev.kcal != null ? ` · ${num(ev.kcal)} kkal` : ""}</div>`;
     return;
   }
   const n = nowMin(); const open = s <= e ? (n >= s && n <= e) : (n >= s || n <= e);
@@ -544,66 +806,187 @@ function drawStatus() {
   const tm = td.meals.map(m => toMin(m.t)).filter(m => m <= n);
   if (tm.length) last = n - Math.max(...tm); else if (yd && yd.meals && yd.meals.length) last = n + 1440 - Math.max(...yd.meals.map(m => toMin(m.t)));
   if (open) {
-    card.className = "card hero-card purple";
-    $("#heroMascot").innerHTML = mascot("happy", "var(--yellow)");
-    el.innerHTML = `<div class="eyebrow" style="color:#E8E2FF">Jendela makan terbuka</div><div class="big">${dur(((e - n) + 1440) % 1440)}</div><div class="small" style="color:#E8E2FF">lagi sampai makan terakhir jam <b style="color:#fff">${S.settings.end}</b></div>`;
+    card.className = "card lime";
+    el.innerHTML = `<span class="tag">${ic("plate")}Jendela makan terbuka</span><div class="big" style="margin-top:10px">${dur(((e - n) + 1440) % 1440)}</div><div class="small muted">lagi sampai makan terakhir jam <b style="color:var(--ink)">${S.settings.end}</b></div>`;
   } else {
-    card.className = "card hero-card indigo";
-    $("#heroMascot").innerHTML = mascot(n >= 22 * 60 || n < 5 * 60 ? "sleep" : "calm", "var(--sky)");
-    el.innerHTML = `<div class="eyebrow" style="color:#C9C1F5">Sedang puasa</div><div class="big">${dur(((s - n) + 1440) % 1440)}</div><div class="small" style="color:#C9C1F5">lagi sampai boleh makan jam <b style="color:#fff">${S.settings.start}</b>${last != null ? `<br>sudah puasa <b style="color:#fff">${dur(last)}</b>` : ""}</div>`;
+    card.className = "card lav";
+    el.innerHTML = `<span class="tag">${ic(n >= 22 * 60 || n < 5 * 60 ? "moon" : "clock")}Sedang puasa</span><div class="big" style="margin-top:10px">${dur(((s - n) + 1440) % 1440)}</div><div class="small muted">lagi sampai boleh makan jam <b style="color:var(--ink)">${S.settings.start}</b>${last != null ? `<br>sudah puasa <b style="color:var(--ink)">${dur(last)}</b>` : ""}</div>`;
   }
+}
+function drawKcal() {
+  const d = getDay(S.day); const en = energy();
+  const eaten = d.meals.reduce((a, m) => a + mealKcal(m), 0), prot = d.meals.reduce((a, m) => a + mealProt(m), 0);
+  const el = $("#kcalCard");
+  if (!en) {
+    el.innerHTML = `<span class="tag">${ic("flame")}Kalori hari ini</span>
+      <div class="kcal"><b>${num(eaten)}</b><span class="small" style="font-weight:800">kkal dimakan</span></div>
+      <div class="small muted">Isi jenis kelamin, umur, tinggi, dan berat badan di tab Atur supaya target kalori harianmu bisa dihitung.</div>
+      <button class="sm dark" id="goProfile" style="width:max-content">Lengkapi profil</button>`;
+    return;
+  }
+  const left = en.target - eaten; const p = Math.min(100, eaten / en.target * 100); const over = left < 0;
+  const pt = Math.round(en.w * 1.6);
+  el.innerHTML = `<div class="row between"><span class="tag">${ic("flame")}Kalori hari ini</span><span class="pill ${over ? "bad" : eaten ? "good" : "wait"}">${over ? "Lewat target" : eaten ? "Masih aman" : "Belum ada"}</span></div>
+    <div class="kcal"><b>${num(eaten)}</b><span class="small" style="font-weight:800">/ ${num(en.target)} kkal</span></div>
+    <div class="meter" role="img" aria-label="${num(eaten)} dari ${num(en.target)} kkal"><span class="${over ? "over" : ""}" style="width:${Math.max(eaten ? 3 : 0, p)}%"></span></div>
+    <div class="kgrid">
+      <div><small>${over ? "Kelebihan" : "Sisa"}</small><b style="${over ? "color:var(--bad)" : ""}">${num(Math.abs(left))}</b></div>
+      <div><small>Protein</small><b>${Math.round(prot)}<span class="small">/${pt} g</span></b></div>
+      <div><small>Kebutuhan</small><b>${num(en.tdee)}</b></div>
+    </div>
+    <div class="small muted">Target = kebutuhan harian ${num(en.tdee)} − defisit ${num(+S.settings.deficit)} kkal${en.floored ? ` (dibatasi minimal ${num(en.floor)} kkal supaya aman)` : ""}.</div>`;
 }
 
 /* ---------- today ---------- */
+const KIND = { berat: { n: "Makan berat", ic: "cloche", bg: "var(--lime)" }, snack: { n: "Snack", ic: "cupcake", bg: "var(--lav)" }, ringan: { n: "Sarapan ringan", ic: "suitcase", bg: "var(--blue)" } };
 function renderToday() {
-  const d = getDay(S.day); const today = isoDay(new Date());
+  const d = getDay(S.day); const today = isoDay(new Date()); const dt = new Date(S.day + "T12:00:00");
   $("#dayPick").value = S.day; $("#dayPick").max = today;
   $("#nextDay").disabled = S.day >= today; $("#goToday").hidden = S.day === today;
+  $("#hello").textContent = "Halo" + (S.settings.name ? " " + S.settings.name : "") + ",";
+  $("#dayTitle").textContent = (S.day === today ? "Hari ini, " : HARI[dt.getDay()] + ", ") + dt.getDate() + " " + BULAN[dt.getMonth()];
   $("#dinas").checked = !!d.dinas;
-  if (!$("#mealTime").value) $("#mealTime").value = fmtMin(nowMin());
   const meals = d.meals.slice().sort((a, b) => toMin(a.t) - toMin(b.t));
   $("#meals").innerHTML = meals.length ? meals.map(m => {
-    const v = mealVerdict(m, d);
+    const v = mealVerdict(m, d); const K = KIND[m.kind] || KIND.berat;
     const pill = v === "ok" ? '<span class="pill good">Di jendela</span>' : v === "dinas" ? '<span class="pill info">Pengecualian dinas</span>' : '<span class="pill bad">Di luar jendela</span>';
-    const name = m.kind === "berat" ? "Makan berat" : m.kind === "snack" ? "Snack" : "Sarapan ringan";
-    return `<li><span class="t">${esc(m.t)}</span><span class="k">${name}</span>${pill}<button class="x" data-del="${esc(m.id)}" aria-label="Hapus makan jam ${esc(m.t)}">×</button></li>`;
-  }).join("") : `<li class="muted small">Belum ada catatan. Pola kamu: makan berat ${S.settings.start} dan ${fmtMin(Math.max(0, toMin(S.settings.end) - 60))}–${S.settings.end}, snack opsional ${S.settings.snackS}–${S.settings.snackE}.</li>`;
+    const items = (m.items || []).map(i => (i.q !== 1 ? qtyTxt(i.q) + "× " : "") + i.n).join(", ");
+    const k = mealKcal(m);
+    return `<li class="m" data-edit="${esc(m.id)}"><span class="ic" style="background:${K.bg}">${ic(K.ic)}</span>
+      <div class="min"><div class="nm">${esc(m.t)} · ${K.n} ${pill}</div><div class="it">${items ? esc(items) : "Ketuk untuk isi menu & kalori"}</div></div>
+      <div class="row" style="gap:2px;flex-wrap:nowrap"><div class="kc">${items ? num(k) : "–"}<small>kkal</small></div><button class="x" data-del="${esc(m.id)}" aria-label="Hapus makan jam ${esc(m.t)}">${ic("close")}</button></div></li>`;
+  }).join("") : `<li class="empty">Belum ada catatan. Ketuk tombol + di kartu Makan berat, Snack, atau Sarapan ringan. Pola kamu: makan berat ${S.settings.start} dan ${fmtMin(Math.max(0, toMin(S.settings.end) - 60))}–${S.settings.end}, snack ${S.settings.snackS}–${S.settings.snackE}.</li>`;
+  const heavy = meals.filter(m => m.kind === "berat");
+  $("#heavyList").innerHTML = heavy.length ? heavy.map(m => `<li data-edit="${esc(m.id)}" style="cursor:pointer"><span>${esc(m.t)}</span><span>${m.items && m.items.length ? num(mealKcal(m)) + " kkal" : "isi menu"}</span></li>`).join("") : `<li style="background:transparent;padding:0;font-weight:600;color:var(--ink2)">Belum ada. Pilih nasi, lauk, sayur, buah, dan minum.</li>`;
+  $("#heavySub").textContent = heavy.length + " dari 2× hari ini";
+  const sn = meals.filter(m => m.kind === "snack"), lb = meals.filter(m => m.kind === "ringan");
+  $("#snVal").textContent = sn.length; $("#snSub").textContent = sn.length ? num(sn.reduce((a, m) => a + mealKcal(m), 0)) + " kkal · jam " + S.settings.snackS + "–" + S.settings.snackE : "opsional, jam " + S.settings.snackS + "–" + S.settings.snackE;
+  $("#lbVal").textContent = lb.length; $("#lbSub").textContent = d.dinas ? "mode dinas aktif, boleh" : "khusus hari dinas";
   const ev = dayEval(S.day);
   $("#mealPill").innerHTML = !ev || ev.windowOk == null ? "" : ev.windowOk ? '<span class="pill good">Patuh</span>' : '<span class="pill bad">Bolong</span>';
   document.querySelectorAll("#v-today .chips[data-key]").forEach(g => { const val = d[g.dataset.key]; g.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(val != null && (+b.dataset.v === 1) === val))); });
   $("#cVal").textContent = d.coffee || 0; $("#oVal").textContent = d.otherCoffee || 0;
-  $("#wVal").textContent = (d.water || 0) + " / " + S.settings.water;
-  $("#wSub").textContent = kg((d.water || 0) * 0.25, 2).replace(/,?0+$/, "") + " L dari " + kg(S.settings.water * 0.25, 1).replace(",0", "") + " L";
+  $("#wVal").textContent = (d.water || 0) + "/" + S.settings.water;
+  $("#wSub").textContent = kg((d.water || 0) * 0.25, 2).replace(/,?0+$/, "") + " dari " + kg(S.settings.water * 0.25, 1).replace(",0", "") + " liter";
   if (document.activeElement !== $("#sleepStart")) $("#sleepStart").value = d.sleepStart || "";
   if (document.activeElement !== $("#sleepEnd")) $("#sleepEnd").value = d.sleepEnd || "";
   if (document.activeElement !== $("#weight")) $("#weight").value = d.weight || "";
   const sl = ev && ev.sleep;
   $("#sleepPill").innerHTML = sl == null ? "" : `<span class="pill ${sl >= S.settings.sleepTarget * 60 ? "good" : "bad"}">${dur(sl)}</span>`;
-  const lw = latestWeight(); const bw = lw ? lw.w : (S.settings.w0 ? +S.settings.w0 : null);
-  $("#protHint").textContent = bw ? `Sekitar ${Math.round(bw * 1.6)}–${Math.round(bw * 2.2)} g per hari untuk berat ${kg(bw)} kg.` : "1,6–2,2 g per kg berat badan. Isi berat di Atur.";
+  const lw = latestWeight(); const bw = bodyW();
+  const prot = ev && ev.prot != null ? Math.round(ev.prot) : null;
+  $("#protHint").textContent = bw ? `Sekitar ${Math.round(bw * 1.6)}–${Math.round(bw * 2.2)} g per hari${prot != null ? `, tercatat ${prot} g dari menu` : ""}.` : "1,6–2,2 g per kg berat badan. Isi berat di Atur.";
   $("#wtPill").innerHTML = S.settings.w0 && lw ? `<span class="pill ${lw.w <= S.settings.w0 ? "good" : "bad"}">${lw.w <= S.settings.w0 ? "−" : "+"}${kg(Math.abs(S.settings.w0 - lw.w))} kg</span>` : "";
-  drawDial(); drawStatus();
+  drawDial(); drawStatus(); drawKcal();
+}
+
+/* ---------- food sheet ---------- */
+let ED = null, edCat = "karbo", edQ = "", edCustom = false;
+function openSheet(kind, mealId) {
+  const d = getDay(S.day); const m = mealId ? d.meals.find(x => x.id === mealId) : null;
+  ED = m ? { id: m.id, kind: m.kind, t: m.t, items: JSON.parse(JSON.stringify(m.items || [])) } : { id: null, kind, t: S.day === isoDay(new Date()) ? fmtMin(nowMin()) : (kind === "berat" ? S.settings.start : S.settings.snackS), items: [] };
+  edCat = ED.kind === "snack" ? "buah" : ED.kind === "ringan" ? "karbo" : "karbo"; edQ = ""; edCustom = false;
+  $("#sheetQ").value = ""; $("#sheetTime").value = ED.t;
+  $("#sheetBg").hidden = false; $("#sheet").hidden = false; document.body.style.overflow = "hidden";
+  renderSheet(); $("#sheetBody").scrollTop = 0;
+}
+function closeSheet() { ED = null; $("#sheetBg").hidden = true; $("#sheet").hidden = true; document.body.style.overflow = ""; }
+function foodRow(f) {
+  const sel = ED.items.find(i => i.id === f.id); const c = CAT[f.cat] || CATS[0];
+  const flag = f.tag === "g" ? '<span class="flag g">gula</span>' : f.tag === "t" ? '<span class="flag t">tepung</span>' : "";
+  const ctl = sel ? `<div class="qty"><button data-q="-" data-f="${esc(f.id)}" aria-label="Kurangi ${esc(f.n)}">${ic("minus")}</button><b>${qtyTxt(sel.q)}</b><button class="add" data-q="+" data-f="${esc(f.id)}" aria-label="Tambah ${esc(f.n)}">${ic("plus")}</button></div>`
+    : `<div class="qty"><button class="add" data-q="+" data-f="${esc(f.id)}" aria-label="Tambah ${esc(f.n)}">${ic("plus")}</button></div>`;
+  return `<div class="food${sel ? " sel" : ""}"><span class="icb" style="background:${c.bg}">${ic(f.ic)}</span>
+    <div style="min-width:0"><div class="nm">${esc(f.n)}${flag}</div><div class="por">${esc(f.por || "1 porsi")} · <span class="kk">${num(f.k)} kkal</span>${f.p ? ` · ${String(f.p).replace(".", ",")} g protein` : ""}</div></div>${ctl}</div>`;
+}
+function renderSheet() {
+  if (!ED) return; const K = KIND[ED.kind];
+  $("#sheetTitle").textContent = (ED.id ? "Ubah " : "Catat ") + K.n.toLowerCase();
+  $("#sheetIc").innerHTML = ic(K.ic); $("#sheetIc").style.background = K.bg;
+  $("#sheetKinds").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === ED.kind)));
+  const foods = allFoods();
+  const count = c => ED.items.filter(i => i.cat === c).length;
+  $("#sheetCats").innerHTML = CATS.map(c => `<button data-cat="${c.id}" aria-pressed="${!edQ && edCat === c.id}">${ic(c.ic)}${c.name}${count(c.id) ? ` <span class="n">${count(c.id)}</span>` : ""}</button>`).join("");
+  let h = "";
+  if (ED.items.length) {
+    h += `<div class="secth">Di piringmu</div><div class="flist">${ED.items.map(i => foodRow({ ...i, ic: i.ic || (CAT[i.cat] ? CAT[i.cat].ic : "plate") })).join("")}</div>`;
+  }
+  const q = edQ.trim().toLowerCase();
+  const list = q ? foods.filter(f => f.n.toLowerCase().includes(q) || (CAT[f.cat] && CAT[f.cat].name.toLowerCase().includes(q))) : foods.filter(f => f.cat === edCat);
+  h += `<div class="secth">${q ? `Hasil “${esc(edQ.trim())}”` : esc(CAT[edCat].name)}</div>`;
+  h += list.length ? `<div class="flist">${list.map(foodRow).join("")}</div>` : `<div class="empty">Tidak ketemu. Tambahkan sebagai makanan sendiri di bawah.</div>`;
+  h += edCustom ? `<div class="custom">
+      <label class="field full">Nama makanan<input type="text" id="cuN" maxlength="40" value="${esc(q ? edQ.trim() : "")}" placeholder="contoh: Soto ayam"></label>
+      <label class="field">Porsi<input type="text" id="cuP" maxlength="30" placeholder="1 mangkuk"></label>
+      <label class="field">Kategori<select id="cuC">${CATS.map(c => `<option value="${c.id}" ${c.id === edCat ? "selected" : ""}>${c.name}</option>`).join("")}</select></label>
+      <label class="field">Kalori (kkal)<input type="number" id="cuK" inputmode="numeric" min="0" max="3000" placeholder="250"></label>
+      <label class="field">Protein (g)<input type="number" id="cuPr" inputmode="decimal" min="0" max="200" placeholder="opsional"></label>
+      <label class="field full">Mengandung<select id="cuT"><option value="">Aman (tanpa gula / tepung)</option><option value="g">Gula tambahan</option><option value="t">Tepung / gorengan</option></select></label>
+      <div class="row full"><button class="dark sm" id="cuSave">Simpan & masukkan ke piring</button><button class="sm" id="cuCancel">Batal</button></div></div>`
+    : `<button class="sm" id="cuOpen" style="width:max-content">${ic("pencil")} Tambah makanan sendiri</button>`;
+  h += `<div class="small muted">Patokan kalori adalah perkiraan porsi rumahan (mengacu Tabel Komposisi Pangan Indonesia dan label umum). Porsi lebih besar? Tambah jumlahnya, bisa per ½ porsi.</div>`;
+  $("#sheetBody").innerHTML = h;
+  const tot = ED.items.reduce((a, i) => a + i.k * i.q, 0), pr = ED.items.reduce((a, i) => a + (i.p || 0) * i.q, 0);
+  $("#sheetTot").textContent = num(tot) + " kkal";
+  $("#sheetSub").textContent = ED.kind === "berat" ? "Total sepiring" : "Total";
+  const en = energy(); const dayOther = getDay(S.day).meals.filter(m => m.id !== ED.id).reduce((a, m) => a + mealKcal(m), 0);
+  $("#sheetProt").textContent = `${Math.round(pr)} g protein · ${ED.items.length} item` + (en ? ` · sisa hari ini ${num(en.target - dayOther - tot)} kkal` : "");
+}
+function addFood(fid, delta) {
+  const ex = ED.items.find(i => i.id === fid);
+  if (ex) { ex.q = Math.round((ex.q + delta * 0.5) * 2) / 2; if (ex.q <= 0) ED.items = ED.items.filter(i => i !== ex); }
+  else if (delta > 0) { const f = allFoods().find(x => x.id === fid); if (f) ED.items.push({ id: f.id, cat: f.cat, n: f.n, por: f.por, k: f.k, p: f.p || 0, tag: f.tag || "", ic: f.ic, q: 1 }); }
+  renderSheet();
+}
+function saveSheet() {
+  if (!ED) return; const t = $("#sheetTime").value || fmtMin(nowMin());
+  const meal = { id: ED.id || uid(), t, kind: ED.kind, items: ED.items };
+  const flags = new Set(ED.items.map(i => i.tag).filter(Boolean)); let auto = [];
+  mutDay(d => {
+    d.meals = ED.id ? d.meals.map(m => m.id === ED.id ? meal : m) : d.meals.concat(meal);
+    if (flags.has("g") && d.sugar == null) { d.sugar = false; auto.push("gula"); }
+    if (flags.has("t") && d.flour == null) { d.flour = false; auto.push("tepung"); }
+  });
+  const v = mealVerdict(meal, getDay(S.day)); const k = mealKcal(meal);
+  closeSheet();
+  toast((v === "ok" ? `Tercatat jam ${t}` : v === "dinas" ? "Tercatat sebagai pengecualian dinas" : "Tercatat, tapi di luar jendela makan") + (meal.items.length ? ` · ${num(k)} kkal` : "") + (auto.length ? `. Ada ${auto.join(" & ")}, ditandai kebobolan.` : ""));
 }
 
 /* ---------- recap ---------- */
 function face(score) {
-  if (score == null) return { bg: "var(--stone)", svg: "" };
+  if (score == null) return { bg: "var(--soft)", svg: "" };
   if (score >= 0.8) return { bg: "var(--lime)", svg: mascot("happy", null, false) };
-  if (score >= 0.5) return { bg: "var(--sky)", svg: "" };
-  return { bg: "var(--pink)", svg: "" };
+  if (score >= 0.5) return { bg: "var(--blue)", svg: "" };
+  return { bg: "var(--rose)", svg: "" };
+}
+function barChart(evs, N, get, maxV, target, label, tickFmt, ticks, goodFn) {
+  const Wd = 340, H = 150, padL = 34, padB = 22, top = 8, bw = (Wd - padL - 4) / N;
+  const y = m => top + (H - padB - top) * (1 - Math.min(m, maxV) / maxV);
+  let svg = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="${label}">`;
+  ticks.forEach(t => { svg += `<line x1="${padL}" x2="${Wd}" y1="${y(t).toFixed(1)}" y2="${y(t).toFixed(1)}" stroke="var(--soft)" stroke-width="1"/><text x="${padL - 6}" y="${(y(t) + 4).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="var(--muted)">${tickFmt(t)}</text>`; });
+  evs.forEach((x, i) => { const v = x.ev ? get(x.ev) : null; const cx = padL + i * bw;
+    if (v != null) svg += `<rect x="${(cx + bw * 0.16).toFixed(1)}" y="${y(v).toFixed(1)}" width="${(bw * 0.68).toFixed(1)}" height="${Math.max(0, y(0) - y(v)).toFixed(1)}" rx="${Math.min(8, bw * 0.3).toFixed(1)}" fill="${goodFn(v) ? "var(--lime-d)" : "var(--peach-d)"}"/>`;
+    if (N <= 7 || i % 5 === 0 || i === N - 1) svg += `<text x="${(cx + bw / 2).toFixed(1)}" y="${H - 6}" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--muted)">${N <= 7 ? HARI[new Date(x.iso + "T12:00:00").getDay()] : new Date(x.iso + "T12:00:00").getDate()}</text>`; });
+  if (target != null) svg += `<line x1="${padL}" x2="${Wd}" y1="${y(target).toFixed(1)}" y2="${y(target).toFixed(1)}" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+  return svg + "</svg>";
 }
 function renderRecap() {
   const end = isoDay(new Date()); const N = S.range;
   const days = Array.from({ length: N }, (_, i) => addDays(end, -(N - 1 - i)));
   const evs = days.map(iso => ({ iso, ev: dayEval(iso) })); const filled = evs.filter(x => x.ev);
   const body = $("#recapBody");
-  if (!filled.length) { body.innerHTML = `<div class="card pink"><div style="width:110px">${mascot("calm", "var(--yellow)", false)}</div><h2>Belum ada catatan</h2><div class="small">Rekap muncul setelah kamu mencatat makan, gula/tepung, air, kopi, atau tidur di tab Hari ini.</div></div>`; return; }
+  if (!filled.length) { body.innerHTML = `<div class="card lav"><div style="width:110px">${mascot("calm", null, false)}</div><h2>Belum ada catatan</h2><div class="small">Rekap muncul setelah kamu mencatat makan, gula/tepung, air, kopi, atau tidur di tab Hari ini.</div></div>`; return; }
   const withMeals = filled.filter(x => x.ev.windowOk != null); const okDays = withMeals.filter(x => x.ev.windowOk).length;
   const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
   const avgFast = avg(filled.map(x => x.ev.fast).filter(v => v != null));
   const sleeps = filled.map(x => x.ev.sleep).filter(v => v != null);
   const avgSleep = avg(sleeps);
   const avgWater = avg(filled.map(x => x.ev.water).filter(v => v));
+  const en = energy();
+  const kDays = filled.filter(x => x.ev.kcal != null);
+  const avgK = avg(kDays.map(x => x.ev.kcal));
+  const avgP = avg(kDays.map(x => x.ev.prot));
+  const kOk = en ? kDays.filter(x => x.ev.kcal <= en.target + 100).length : 0;
   const cnt = k => ({ yes: filled.filter(x => x.ev[k] === true).length, all: filled.filter(x => x.ev[k] != null).length });
   const streak = k => { let n = 0; for (let i = 0; i < 400; i++) { const ev = dayEval(addDays(end, -i)); if (ev && ev[k] === true) n++; else if (i === 0 && (!ev || ev[k] == null)) continue; else break; } return n; };
   const pct = c => c.all ? Math.round(c.yes / c.all * 100) : 0;
@@ -615,31 +998,30 @@ function renderRecap() {
   const firstDow = new Date(calDays[0] + "T12:00:00").getDay();
   const lead = (firstDow + 6) % 7;
   let cal = ["Sen","Sel","Rab","Kam","Jum","Sab","Min"].map(h => `<div class="h">${h}</div>`).join("") + "<div></div>".repeat(lead);
-  cal += calDays.map(iso => { const ev = dayEval(iso); const f = face(ev && ev.score); return `<div class="d" data-day="${iso}" style="background:${f.bg};cursor:pointer" title="${dayLabel(iso)}">${f.svg || `<span class="small muted">${new Date(iso + "T12:00:00").getDate()}</span>`}</div>`; }).join("");
+  cal += calDays.map(iso => { const ev = dayEval(iso); const f = face(ev && ev.score); return `<div class="d" data-day="${iso}" style="background:${f.bg};cursor:pointer" title="${dayLabel(iso)}">${f.svg || `<span class="small muted" style="font-weight:800">${new Date(iso + "T12:00:00").getDate()}</span>`}</div>`; }).join("");
 
-  const Wd = 340, H = 150, padL = 26, padB = 22, top = 8, maxH = 12 * 60, bw = (Wd - padL - 4) / N;
-  const y = m => top + (H - padB - top) * (1 - Math.min(m, maxH) / maxH);
-  let svg = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Grafik lama tidur per hari">`;
-  [0, 4, 8, 12].forEach(hh => { svg += `<line x1="${padL}" x2="${Wd}" y1="${y(hh * 60).toFixed(1)}" y2="${y(hh * 60).toFixed(1)}" stroke="var(--stone)" stroke-width="1"/><text x="${padL - 6}" y="${(y(hh * 60) + 4).toFixed(1)}" text-anchor="end" font-size="10" fill="var(--muted)">${hh}j</text>`; });
-  evs.forEach((x, i) => { const sl = x.ev && x.ev.sleep; const cx = padL + i * bw;
-    if (sl != null) svg += `<rect x="${(cx + bw * 0.16).toFixed(1)}" y="${y(sl).toFixed(1)}" width="${(bw * 0.68).toFixed(1)}" height="${(y(0) - y(sl)).toFixed(1)}" rx="${Math.min(8, bw * 0.3).toFixed(1)}" fill="${sl >= target ? "var(--purple)" : "var(--pink)"}"/>`;
-    if (N <= 7 || i % 5 === 0 || i === N - 1) svg += `<text x="${(cx + bw / 2).toFixed(1)}" y="${H - 6}" text-anchor="middle" font-size="9.5" fill="var(--muted)">${N <= 7 ? HARI[new Date(x.iso + "T12:00:00").getDay()] : new Date(x.iso + "T12:00:00").getDate()}</text>`; });
-  svg += `<line x1="${padL}" x2="${Wd}" y1="${y(target).toFixed(1)}" y2="${y(target).toFixed(1)}" stroke="var(--good)" stroke-width="1.5" stroke-dasharray="4 3"/></svg>`;
+  const sleepSvg = barChart(evs, N, e => e.sleep, 12 * 60, target, "Grafik lama tidur per hari", t => t / 60 + "j", [0, 240, 480, 720], v => v >= target);
+  const maxK = Math.max(en ? en.target * 1.4 : 2500, ...kDays.map(x => x.ev.kcal)) ;
+  const kStep = maxK > 3000 ? 1000 : 500; const kTicks = []; for (let t = 0; t <= maxK; t += kStep) kTicks.push(t);
+  const kcalSvg = barChart(evs, N, e => e.kcal, maxK, en ? en.target : null, "Grafik kalori per hari", t => t >= 1000 ? (t / 1000).toString().replace(".", ",") + "rb" : t, kTicks, v => !en || v <= en.target + 100);
 
   const mark = v => v === true ? '<span class="ok">✓</span>' : v === false ? '<span class="ng">✗</span>' : '<span class="na">–</span>';
   const rows = evs.slice().reverse().map(x => { const e = x.ev;
-    if (!e) return `<tr data-day="${x.iso}"><td>${dayLabel(x.iso)}</td><td colspan="7" class="na">belum diisi</td></tr>`;
-    return `<tr data-day="${x.iso}"><td>${dayLabel(x.iso)}${e.dinas ? ' <span class="pill info" style="padding:1px 7px">dinas</span>' : ""}</td><td>${mark(e.windowOk)}</td><td>${e.fast != null ? dur(e.fast) : "–"}</td><td>${mark(e.sugar)}</td><td>${mark(e.flour)}</td><td>${e.water || "–"}</td><td>${e.coffee}${e.other ? ` <span class="ng">+${e.other}</span>` : ""}</td><td>${e.sleep != null ? dur(e.sleep) : "–"}</td></tr>`; }).join("");
+    if (!e) return `<tr data-day="${x.iso}"><td>${dayLabel(x.iso)}</td><td colspan="8" class="na">belum diisi</td></tr>`;
+    return `<tr data-day="${x.iso}"><td>${dayLabel(x.iso)}${e.dinas ? ' <span class="pill info" style="padding:1px 7px">dinas</span>' : ""}</td><td>${mark(e.windowOk)}</td><td>${e.fast != null ? dur(e.fast) : "–"}</td><td>${e.kcal != null ? `<span class="${e.calOk === false ? "ng" : ""}">${num(e.kcal)}</span>` : "–"}</td><td>${mark(e.sugar)}</td><td>${mark(e.flour)}</td><td>${e.water || "–"}</td><td>${e.coffee}${e.other ? ` <span class="ng">+${e.other}</span>` : ""}</td><td>${e.sleep != null ? dur(e.sleep) : "–"}</td></tr>`; }).join("");
   /* ---- Hasil: estimates computed only from what was logged ---- */
   const chosenH = new Set(S.settings.habits || []);
   const sumH = cat => HABITS.filter(h => h[3] === cat && chosenH.has(h[0])).reduce((a, h) => a + h[2], 0);
   const sugarK = sumH("gula") || 300, flourK = sumH("tepung") || 300, ifK = 150, otherK = 150;
-  let defK = 0, defDays = 0;
+  let defK = 0, defDays = 0, kcalDays = 0;
   filled.forEach(x => { const e = x.ev; let k = 0, any = false;
-    if (e.sugar === true) { k += sugarK; any = true; } if (e.sugar === false) any = true;
-    if (e.flour === true) { k += flourK; any = true; } if (e.flour === false) any = true;
-    if (e.windowOk === true) { k += ifK; any = true; } if (e.windowOk === false) any = true;
-    if (e.other) { k -= e.other * otherK; any = true; }
+    if (e.kcal != null && en) { k = en.tdee - e.kcal; any = true; kcalDays++; }
+    else {
+      if (e.sugar === true) { k += sugarK; any = true; } if (e.sugar === false) any = true;
+      if (e.flour === true) { k += flourK; any = true; } if (e.flour === false) any = true;
+      if (e.windowOk === true) { k += ifK; any = true; } if (e.windowOk === false) any = true;
+      if (e.other) { k -= e.other * otherK; any = true; }
+    }
     if (any) { defK += k; defDays++; } });
   const fatKg = Math.max(0, defK) / 7700;
   const firstW = filled.find(x => x.ev.weight), lastW = filled.slice().reverse().find(x => x.ev.weight);
@@ -653,7 +1035,7 @@ function renderRecap() {
   if (avgWater) comp.push(Math.min(1, avgWater / S.settings.water));
   const bs = comp.length ? Math.round(comp.reduce((a, b) => a + b, 0) / comp.length * 100) : null;
   const bsLabel = bs == null ? "Belum cukup data" : bs >= 80 ? "Cenderung stabil" : bs >= 60 ? "Cukup stabil" : "Rawan naik-turun";
-  const bsColor = bs == null ? "var(--stone)" : bs >= 80 ? "var(--lime)" : bs >= 60 ? "var(--sky)" : "var(--purple)";
+  const bsColor = bs == null ? "var(--soft)" : bs >= 80 ? "var(--lime-d)" : bs >= 60 ? "var(--blue-d)" : "var(--peach-d)";
   const debt = filled.reduce((a, x) => a + (x.ev.sleep != null ? Math.max(0, target - x.ev.sleep) : 0), 0);
   let sleepTxt = "Isi jam tidur dan bangun untuk melihat efeknya.";
   if (avgSleep != null) {
@@ -667,23 +1049,33 @@ function renderRecap() {
   if (avgWater) waterTxt = avgWater >= S.settings.water
     ? "Target tercapai. Air membantu rasa kenyang selama puasa, mencegah haus yang terasa seperti lapar, dan mengurangi sakit kepala saat adaptasi."
     : `Rata-rata kurang ${kg(S.settings.water - avgWater)} gelas dari target. Kurang minum sering terasa seperti lapar atau lemas saat puasa. Coba 2 gelas begitu bangun dan 1 gelas sebelum tiap makan.`;
+  let kTxt = "Isi menu saat mencatat makan (nasi, lauk, sayur, buah, minum) untuk melihat kalori harianmu di sini.";
+  if (avgK != null && en) kTxt = avgK <= en.target + 100
+    ? `Rata-rata di bawah target ${num(en.target)} kkal. Pertahankan, dan pastikan protein cukup supaya yang turun lemak, bukan otot.`
+    : `Rata-rata ${num(avgK - en.target)} kkal di atas target. Cek menu yang paling besar kalorinya di daftar per hari, biasanya nasi porsi besar, gorengan, atau minuman manis.`;
+  else if (avgK != null) kTxt = "Lengkapi profil di Atur supaya bisa dibandingkan dengan target harianmu.";
   const results = `
   <div class="card">
-    <div class="row between"><h2>Hasil kamu</h2><span class="small muted">${N} hari terakhir</span></div>
-    <div class="result"><span class="ic" style="background:var(--purple);color:var(--card)">FAT</span><div>
+    <div class="row between"><span class="tag">${ic("star")}Hasil kamu</span><span class="small muted">${N} hari terakhir</span></div>
+    <div class="result"><span class="icb" style="background:var(--peach)">${ic("flame")}</span><div>
       <div class="small muted">Estimasi lemak terkurangi</div><div class="num">${kg(fatKg, 2)} kg</div>
-      <p class="small">Dari defisit sekitar <b>${Math.max(0, Math.round(defK)).toLocaleString("id-ID")} kkal</b> selama ${defDays} hari tercatat. ${scaleTxt}</p>
-      <div class="basis">Dasar angka: hari bebas gula −${sugarK} kkal, bebas tepung −${flourK} kkal (dari kalkulator di tab Program${sumH("gula") || sumH("tepung") ? "" : ", pakai nilai bawaan karena belum dicentang"}), patuh jendela −${ifK} kkal, tiap kopi lain +${otherK} kkal. 7.700 kkal ≈ 1 kg lemak.</div></div></div>
-    <div class="result"><span class="ic" style="background:${bsColor}">GD</span><div>
+      <p class="small">Dari defisit sekitar <b>${num(Math.max(0, defK))} kkal</b> selama ${defDays} hari tercatat. ${scaleTxt}</p>
+      <div class="basis">Dasar angka: ${kcalDays ? `${kcalDays} hari pakai kalori menu yang kamu catat (kebutuhan ${num(en.tdee)} kkal dikurangi yang dimakan)${defDays > kcalDays ? "; hari lain pakai perkiraan kebiasaan: " : "."}` : ""}${defDays > kcalDays || !kcalDays ? `hari bebas gula −${sugarK} kkal, bebas tepung −${flourK} kkal (dari kalkulator di tab Program${sumH("gula") || sumH("tepung") ? "" : ", pakai nilai bawaan karena belum dicentang"}), patuh jendela −${ifK} kkal, tiap kopi lain +${otherK} kkal.` : ""} 7.700 kkal ≈ 1 kg lemak.</div></div></div>
+    <div class="result"><span class="icb" style="background:var(--amber)">${ic("plate")}</span><div>
+      <div class="small muted">Kalori rata-rata per hari</div><div class="num">${avgK != null ? num(avgK) + " kkal" : "–"}</div>
+      ${avgK != null && en ? `<div class="gauge"><span style="width:${Math.min(100, avgK / en.target * 100)}%;background:${avgK <= en.target + 100 ? "var(--lime-d)" : "var(--peach-d)"}"></span></div>` : ""}
+      <p class="small">${kTxt}</p>
+      <div class="basis">Dasar angka: ${kDays.length} hari dengan menu tercatat${en ? `, target ${num(en.target)} kkal/hari, ${kOk} hari sesuai target` : ""}${avgP != null ? `, protein rata-rata ${Math.round(avgP)} g` : ""}. Patokan kalori per porsi adalah perkiraan.</div></div></div>
+    <div class="result"><span class="icb" style="background:var(--lime)">${ic("sugar")}</span><div>
       <div class="small muted">Indikasi stabilitas gula darah</div><div class="num">${bs != null ? bs + "/100" : "–"}</div>
       <div class="gauge"><span style="width:${bs || 0}%;background:${bsColor}"></span></div>
       <p class="small"><b>${bsLabel}.</b> ${burnMin ? `Kamu menghabiskan sekitar <b>${dur(burnMin)}</b> di atas 12 jam puasa, fase saat tubuh mulai beralih membakar lemak.` : "Puasa di atas 12 jam akan muncul di sini."}</p>
       <div class="basis">Ini indikasi dari kebiasaan, bukan ukuran gula darah. Dihitung dari rata-rata lama puasa (target 16 jam), hari bebas gula dan tepung, lama tidur, dan air putih. Untuk angka sebenarnya pakai glukometer atau cek lab (gula darah puasa normal di bawah 100 mg/dL).</div></div></div>
-    <div class="result"><span class="ic" style="background:var(--pink)">ZZ</span><div>
+    <div class="result"><span class="icb" style="background:var(--lav)">${ic("moon")}</span><div>
       <div class="small muted">Efek tidur rata-rata</div><div class="num">${avgSleep != null ? dur(avgSleep) : "–"}</div>
       <p class="small">${sleepTxt}</p>
       <div class="basis">Dasar angka: ${sleeps.length} malam tercatat, target ${String(S.settings.sleepTarget).replace(".", ",")} jam${debt ? `, utang tidur ${dur(debt)}` : ""}.</div></div></div>
-    <div class="result"><span class="ic" style="background:var(--sky)">H₂O</span><div>
+    <div class="result"><span class="icb" style="background:var(--blue)">${ic("bottle")}</span><div>
       <div class="small muted">Air putih</div><div class="num">${avgWater ? kg(avgWater) + " gelas/hari" : "–"}</div>
       <p class="small">${waterTxt}</p>
       <div class="basis">Dasar angka: ${waterDays} hari tercatat, total ${kg(waterL)} liter, target ${S.settings.water} gelas (${kg(S.settings.water * 0.25, 1).replace(",0", "")} L) per hari.</div></div></div>
@@ -691,25 +1083,28 @@ function renderRecap() {
   const bar = (label, p, txt) => `<div class="progrow"><span>${label}</span><div class="bar"><span style="width:${Math.max(4, p)}%"></span><em>${txt}</em></div></div>`;
 
   body.innerHTML = `
-  <div class="card stone"><div class="row between"><h2>Kalender wajah</h2><span class="small muted">${N === 7 ? "7 hari" : "4 minggu"} terakhir</span></div><div class="cal">${cal}</div>
-    <div class="small muted">Lime + maskot: ≥80% formula terpenuhi · cyan: 50–79% · pink: di bawah 50%. Ketuk hari untuk membuka.</div></div>
   <div class="tiles">
-    <div class="tile purple"><span class="label">Hari patuh jendela</span><span class="v">${withMeals.length ? okDays + "/" + withMeals.length : "–"}</span><span class="s">${exc ? exc + " pengecualian dinas" : "hari yang ada catatan makan"}</span></div>
-    <div class="tile yellow"><span class="label">Rata-rata puasa</span><span class="v">${avgFast != null ? dur(avgFast) : "–"}</span><span class="s">target ${dur(((W().s - W().e) + 1440) % 1440)}</span></div>
-    <div class="tile pink"><span class="label">Rata-rata tidur</span><span class="v">${avgSleep != null ? dur(avgSleep) : "–"}</span><span class="s">target ${String(S.settings.sleepTarget).replace(".", ",")} jam</span></div>
-    <div class="tile sky"><span class="label">Berat badan</span><span class="v">${lw ? kg(lw.w) : "–"}</span><span class="s">${lw && S.settings.w0 ? (lw.w <= S.settings.w0 ? "turun " : "naik ") + kg(Math.abs(S.settings.w0 - lw.w)) + " kg dari awal" : "isi di Hari ini → Timbang"}</span></div>
+    <div class="tile peach"><span class="tag">${ic("flame")}Kalori/hari</span><span class="v">${avgK != null ? num(avgK) : "–"}</span><span class="s">${en ? `target ${num(en.target)} · ${kOk}/${kDays.length} hari pas` : "lengkapi profil di Atur"}</span></div>
+    <div class="tile lime"><span class="tag">${ic("cloche")}Patuh jendela</span><span class="v">${withMeals.length ? okDays + "/" + withMeals.length : "–"}</span><span class="s">${exc ? exc + " pengecualian dinas" : "hari yang ada catatan makan"}</span></div>
+    <div class="tile amber"><span class="tag">${ic("clock")}Rata puasa</span><span class="v">${avgFast != null ? dur(avgFast) : "–"}</span><span class="s">target ${dur(((W().s - W().e) + 1440) % 1440)}</span></div>
+    <div class="tile lav"><span class="tag">${ic("moon")}Rata tidur</span><span class="v">${avgSleep != null ? dur(avgSleep) : "–"}</span><span class="s">target ${String(S.settings.sleepTarget).replace(".", ",")} jam</span></div>
+    <div class="tile blue wide"><div class="row between"><span class="tag">${ic("scale")}Berat badan</span><span class="v">${lw ? kg(lw.w) + " kg" : "–"}</span></div><span class="s">${lw && S.settings.w0 ? (lw.w <= S.settings.w0 ? "turun " : "naik ") + kg(Math.abs(S.settings.w0 - lw.w)) + " kg dari awal" : "isi di Hari ini → Timbang"}</span></div>
   </div>
+  <div class="card"><div class="row between"><span class="tag">${ic("grid")}Kalender wajah</span><span class="small muted">${N === 7 ? "7 hari" : "4 minggu"} terakhir</span></div><div class="cal">${cal}</div>
+    <div class="small muted">Lime + maskot: ≥80% formula terpenuhi · biru: 50–79% · merah muda: di bawah 50%. Ketuk hari untuk membuka.</div></div>
+  <div class="card chart"><div class="row between"><span class="tag">${ic("flame")}Kalori per hari</span><span class="small muted">${en ? "garis putus = target" : ""}</span></div>${kDays.length ? kcalSvg : `<div class="small muted">${kTxt}</div>`}</div>
   ${results}
-  <div class="card"><h2>Konsistensi</h2>
+  <div class="card"><span class="tag">${ic("check")}Konsistensi</span>
     ${bar("Bebas gula", pct(sug), sug.all ? `${sug.yes}/${sug.all} · streak ${streak("sugar")}` : "belum diisi")}
     ${bar("Bebas tepung", pct(flo), flo.all ? `${flo.yes}/${flo.all} · streak ${streak("flour")}` : "belum diisi")}
+    ${bar("Kalori pas", kDays.length && en ? kOk / kDays.length * 100 : 0, kDays.length && en ? `${kOk}/${kDays.length} · streak ${streak("calOk")}` : "belum diisi")}
     ${bar("Protein cukup", pct(pro), pro.all ? `${pro.yes}/${pro.all}` : "belum diisi")}
     ${bar("Air putih", avgWater ? Math.min(100, avgWater / S.settings.water * 100) : 0, avgWater ? `rata-rata ${kg(avgWater)} gelas` : "belum diisi")}
     <div class="small muted">Americano: <b>${coffee}</b> gelas${other ? ` · kopi lain: <b class="ng">${other}</b>` : " · tanpa kopi lain"}</div>
   </div>
-  <div class="card chart"><div class="row between"><h2>Lama tidur</h2><span class="small muted">garis putus = target</span></div>${svg}</div>
-  <div class="card"><h2>Per hari</h2><div class="small muted">Ketuk baris untuk membuka atau mengubah catatan.</div>
-    <div class="scroll"><table><thead><tr><th>Hari</th><th>Jendela</th><th>Puasa</th><th>Gula</th><th>Tepung</th><th>Air</th><th>Kopi</th><th>Tidur</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+  <div class="card chart"><div class="row between"><span class="tag">${ic("moon")}Lama tidur</span><span class="small muted">garis putus = target</span></div>${sleepSvg}</div>
+  <div class="card"><span class="tag">${ic("chart")}Per hari</span><div class="small muted">Ketuk baris untuk membuka atau mengubah catatan.</div>
+    <div class="scroll"><table><thead><tr><th>Hari</th><th>Jendela</th><th>Puasa</th><th>Kkal</th><th>Gula</th><th>Tepung</th><th>Air</th><th>Kopi</th><th>Tidur</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
 }
 
 /* ---------- program (the user's formula) ---------- */
@@ -724,59 +1119,73 @@ const HABITS = [
   ["noodle", "Mie instan / roti manis / camilan kemasan", 450, "tepung"],
 ];
 function renderProgram() {
-  const st = S.settings; const rate = ratePerWeek(); const lw = latestWeight();
+  const st = S.settings; const rate = ratePerWeek(); const lw = latestWeight(); const en = energy();
   const w0 = st.w0 ? +st.w0 : null; const weeks = Math.max(0, diffDays(st.d0 || isoDay(new Date()), isoDay(new Date())) / 7);
   const expected = w0 ? w0 - rate * weeks : null; const cur = lw ? lw.w : null;
   let prog = `<div class="small">Isi berat awal dan tanggal mulai di tab <b>Atur</b> supaya target kamu bisa dihitung.</div>`;
   if (w0) {
     const lost = cur != null ? w0 - cur : 0; const p = Math.max(0, Math.min(100, (lost / (rate * 12)) * 100));
     prog = `<div class="tiles">
-      <div class="tile" style="background:rgba(255,255,255,.6)"><span class="label">Berat sekarang</span><span class="v">${cur != null ? kg(cur) : "–"}</span><span class="s">awal ${kg(w0)} kg</span></div>
-      <div class="tile" style="background:rgba(255,255,255,.6)"><span class="label">Seharusnya sekarang</span><span class="v">${kg(expected)}</span><span class="s">minggu ke-${Math.floor(weeks) + 1}</span></div>
+      <div class="tile" style="background:rgba(255,255,255,.62);min-height:0"><span class="s">Berat sekarang</span><span class="v">${cur != null ? kg(cur) : "–"}</span><span class="s">awal ${kg(w0)} kg</span></div>
+      <div class="tile" style="background:rgba(255,255,255,.62);min-height:0"><span class="s">Seharusnya sekarang</span><span class="v">${kg(expected)}</span><span class="s">minggu ke-${Math.floor(weeks) + 1}</span></div>
     </div>
-    <div class="progrow"><span>Menuju 3 bulan</span><div class="bar"><span style="width:${Math.max(4, p)}%;background:var(--purple)"></span><em>${kg(Math.max(0, lost))} / ${kg(rate * 12)} kg</em></div></div>
+    <div class="progrow"><span>Menuju 3 bulan</span><div class="bar" style="background:rgba(255,255,255,.7)"><span style="width:${Math.max(4, p)}%;background:var(--ink)"></span><em style="color:${p > 70 ? "#fff" : "var(--ink2)"}">${kg(Math.max(0, lost))} / ${kg(rate * 12)} kg</em></div></div>
     ${cur != null ? `<span class="pill ${cur <= expected + 0.5 ? "good" : "bad"}">${cur <= expected + 0.5 ? "Sesuai jalur" : "Sedikit di belakang target"}</span>` : ""}`;
   }
   const chosen = new Set(st.habits || []);
   const kcal = HABITS.filter(h => chosen.has(h[0])).reduce((a, h) => a + h[2], 0);
   const perMonth = kcal * 30 / 7700;
+  const pt = en ? `${Math.round(en.w * 1.6)}–${Math.round(en.w * 2.2)} g` : null;
+  const plate = en ? Math.round(en.target / 2 / 10) * 10 : null;
+  const enCard = en ? `
+  <div class="card peach">
+    <div class="row between"><span class="tag">${ic("flame")}Kebutuhan kalori kamu</span><span class="pill y">${kg(en.w)} kg</span></div>
+    <div class="kgrid">
+      <div><small>Metabolisme basal</small><b>${num(en.bmr)}</b></div>
+      <div><small>Kebutuhan harian</small><b>${num(en.tdee)}</b></div>
+      <div><small>Target makan</small><b>${num(en.target)}</b></div>
+    </div>
+    <div class="small">Makan sekitar <b>${num(en.target)} kkal</b> sehari supaya defisit ${num(+st.deficit)} kkal. Dengan 2× makan berat, satu piring sekitar <b>${num(plate)} kkal</b> kalau tanpa snack. Contoh piring sekitar 500 kkal: 1 centong nasi merah (110) + ayam bakar (170) + tempe kukus (60) + sayur sop (60) + pisang (105) ≈ 505 kkal.</div>
+    <div class="small muted">Protein ${pt} per hari. Metabolisme basal pakai rumus Mifflin-St Jeor dari umur, tinggi, berat, dan jenis kelamin, lalu dikali faktor aktivitas.</div>
+  </div>` : `
+  <div class="card peach"><span class="tag">${ic("flame")}Kebutuhan kalori kamu</span><div class="small">Lengkapi jenis kelamin, umur, tinggi, dan berat badan di tab <b>Atur</b>. Setelah itu target kalori harian muncul di Hari ini dan Rekap.</div><button class="sm dark" data-goset style="width:max-content">Buka Atur</button></div>`;
   body = $("#progBody");
   body.innerHTML = `
   <div class="card lime">
-    <div class="row between"><h2>Target utama</h2><span class="pill y">defisit ${(+st.deficit).toLocaleString("id-ID")} kkal/hari</span></div>
+    <div class="row between"><span class="tag">${ic("star")}Target utama</span><span class="pill y">defisit ${num(+st.deficit)} kkal/hari</span></div>
     <div class="small">Turunkan lemak, bukan sekadar angka timbangan. Dengan defisit ini, perkiraan turun sekitar <b>${kg(rate, 2)} kg per minggu</b>.</div>
     <div class="iftable">
       <div><span>1 bulan (realistis)</span><b>${kg(rate * 4.3)}–${kg(Math.min(4, rate * 4.3 * 1.8))} kg</b></div>
       <div><span>3 bulan (konsisten)</span><b>${kg(rate * 13)}–${kg(Math.min(12, rate * 13 * 1.8))} kg</b></div>
     </div>
-    <div class="small muted" style="color:var(--ink);opacity:.7">Bulan pertama sebagian berupa air dan glikogen. CDC menyebut 0,45–0,9 kg per minggu sebagai laju yang sehat.</div>
+    <div class="small muted">Bulan pertama sebagian berupa air dan glikogen. CDC menyebut 0,45–0,9 kg per minggu sebagai laju yang sehat.</div>
     ${prog}
   </div>
-
+  ${enCard}
   <div class="card">
-    <h2>Formula harian</h2>
+    <span class="tag">${ic("check")}Formula harian</span>
     <ul class="formula">
-      <li><span class="ic" style="background:var(--yellow)">16:8</span><div><b>Puasa ${st.end}–${st.start}</b><div class="small muted">Makan berat ${st.start} dan ${fmtMin(Math.max(0, toMin(st.end) - 60))}–${st.end}. Snack opsional ${st.snackS}–${st.snackE}.</div></div></li>
-      <li><span class="ic" style="background:var(--stone)">☕</span><div><b>Kopi hanya americano</b><div class="small muted">Tanpa gula, susu, creamer, atau sirup.</div></div></li>
-      <li><span class="ic" style="background:var(--pink)">0g</span><div><b>Gula tambahan 0–25 g</b><div class="small muted">Idealnya mendekati nol. Gula dari buah utuh tidak dihitung.</div></div></li>
-      <li><span class="ic" style="background:var(--lime)">✕</span><div><b>Tepung olahan &amp; gorengan seminimal mungkin</b><div class="small muted">Karbohidrat tidak dihapus, ganti ke nasi merah atau kentang porsi sedang.</div></div></li>
-      <li><span class="ic" style="background:var(--sky)">P</span><div><b>Protein 1,6–2,2 g/kg</b><div class="small muted">${(cur || w0) ? `Untuk ${kg(cur || w0)} kg: ${Math.round((cur || w0) * 1.6)}–${Math.round((cur || w0) * 2.2)} g per hari.` : "Isi berat badan untuk melihat angkanya."}</div></div></li>
-      <li><span class="ic" style="background:var(--purple);color:#fff">H₂O</span><div><b>Air putih 2–3 liter</b><div class="small muted">Target kamu ${S.settings.water} gelas (${kg(S.settings.water * 0.25, 1).replace(",0", "")} L).</div></div></li>
+      <li><span class="icb" style="background:var(--lime)">${ic("clock")}</span><div><b>Puasa ${st.end}–${st.start}</b><div class="small muted">Makan berat ${st.start} dan ${fmtMin(Math.max(0, toMin(st.end) - 60))}–${st.end}. Snack opsional ${st.snackS}–${st.snackE}.</div></div></li>
+      <li><span class="icb" style="background:var(--amber)">${ic("coffee")}</span><div><b>Kopi hanya americano</b><div class="small muted">Tanpa gula, susu, creamer, atau sirup.</div></div></li>
+      <li><span class="icb" style="background:var(--rose)">${ic("sugar")}</span><div><b>Gula tambahan 0–25 g</b><div class="small muted">Idealnya mendekati nol. Gula dari buah utuh tidak dihitung.</div></div></li>
+      <li><span class="icb" style="background:var(--soft)">${ic("bread")}</span><div><b>Tepung olahan &amp; gorengan seminimal mungkin</b><div class="small muted">Karbohidrat tidak dihapus, ganti ke nasi merah atau kentang porsi sedang.</div></div></li>
+      <li><span class="icb" style="background:var(--peach)">${ic("drumstick")}</span><div><b>Protein 1,6–2,2 g/kg</b><div class="small muted">${(cur || w0) ? `Untuk ${kg(cur || w0)} kg: ${Math.round((cur || w0) * 1.6)}–${Math.round((cur || w0) * 2.2)} g per hari.` : "Isi berat badan untuk melihat angkanya."}</div></div></li>
+      <li><span class="icb" style="background:var(--blue)">${ic("bottle")}</span><div><b>Air putih 2–3 liter</b><div class="small muted">Target kamu ${S.settings.water} gelas (${kg(S.settings.water * 0.25, 1).replace(",0", "")} L).</div></div></li>
     </ul>
   </div>
 
-  <div class="card sky">
-    <h2>Kalkulator: kebiasaan yang kamu stop</h2>
+  <div class="card blue">
+    <span class="tag">${ic("sugar")}Kalkulator: kebiasaan yang kamu stop</span>
     <div class="small">Centang yang benar-benar kamu hentikan. Angkanya perkiraan kalau tidak diganti makanan lain.</div>
-    <div class="wrap" style="gap:8px">${HABITS.map(h => `<label class="habit" style="background:rgba(255,255,255,.6)"><input type="checkbox" data-habit="${h[0]}" ${chosen.has(h[0]) ? "checked" : ""}><span>${h[1]}<div class="small muted">${h[3]}</div></span><b>−${h[2]} kkal</b></label>`).join("")}</div>
+    <div class="wrap" style="gap:8px">${HABITS.map(h => `<label class="habit"><input type="checkbox" data-habit="${h[0]}" ${chosen.has(h[0]) ? "checked" : ""}><span>${h[1]}<div class="small muted">${h[3]}</div></span><b>−${h[2]} kkal</b></label>`).join("")}</div>
     <div class="tiles">
-      <div class="tile purple"><span class="label">Kalori hilang</span><span class="v">${kcal.toLocaleString("id-ID")}</span><span class="s">kkal per hari</span></div>
-      <div class="tile yellow"><span class="label">Potensi per bulan</span><span class="v">${kg(perMonth)} kg</span><span class="s">hasil nyata biasanya lebih kecil</span></div>
+      <div class="tile" style="background:var(--surface);min-height:0"><span class="s">Kalori hilang</span><span class="v">${num(kcal)}</span><span class="s">kkal per hari</span></div>
+      <div class="tile" style="background:var(--surface);min-height:0"><span class="s">Potensi per bulan</span><span class="v">${kg(perMonth)} kg</span><span class="s">hasil nyata biasanya lebih kecil</span></div>
     </div>
   </div>
 
-  <div class="card pink">
-    <h2>Efek IF 16:8</h2>
+  <div class="card lav">
+    <span class="tag">${ic("clock")}Efek IF 16:8</span>
     <div class="iftable">
       <div><span>IF tapi kalori tetap berlebih</span><b>tidak turun</b></div>
       <div><span>IF + kalori turun 300–500 kkal</span><b>1–2 kg/bln</b></div>
@@ -784,7 +1193,7 @@ function renderProgram() {
       <div><span>IF + cut gula/tepung + olahraga</span><b>paling baik</b></div>
       <div><span>IF beberapa hari lalu berhenti</span><b>minimal</b></div>
     </div>
-    <div class="small">IF bukan pembakar lemak otomatis. Ia membantu karena membatasi waktu makan dan mengurangi ngemil malam, tapi total kalori tetap penentunya.</div>
+    <div class="small">IF bukan pembakar lemak otomatis. Ia membantu karena membatasi waktu makan dan mengurangi ngemil malam, tapi total kalori tetap penentunya. Karena itu sekarang kalori tiap piring ikut dicatat.</div>
   </div>`;
 }
 let body;
@@ -794,18 +1203,23 @@ function renderSettings() {
   const st = S.settings;
   $("#sStart").value = st.start; $("#sEnd").value = st.end; $("#sSnackS").value = st.snackS; $("#sSnackE").value = st.snackE;
   $("#sTol").value = String(st.tol); $("#sSleep").value = String(st.sleepTarget); $("#sDef").value = String(st.deficit); $("#sWater").value = String(st.water);
-  if (document.activeElement !== $("#sW0")) $("#sW0").value = st.w0 || "";
+  $("#sSex").value = st.sex || ""; $("#sAct").value = String(st.act || 1.375);
+  [["#sW0", "w0"], ["#sAge", "age"], ["#sHeight", "height"], ["#sName", "name"]].forEach(([id, k]) => { if (document.activeElement !== $(id)) $(id).value = st[k] || ""; });
   $("#sD0").value = st.d0 || "";
   const { s, e } = W(); const eat = ((e - s) + 1440) % 1440; const fast = 1440 - eat;
   $("#protoNote").innerHTML = `Pola kamu: puasa <b>${dur(fast)}</b>, makan <b>${dur(eat)}</b> (${Math.round(fast / 60)}:${Math.round(eat / 60)}). Makan dalam toleransi ${st.tol} menit masih dihitung patuh.`;
+  const en = energy();
+  $("#energyNote").innerHTML = en ? `Kebutuhan harian <b>${num(en.tdee)} kkal</b>. Target makan <b>${num(en.target)} kkal</b> per hari (defisit ${num(+st.deficit)})${en.floored ? `, dibatasi minimal ${num(en.floor)} kkal` : ""}. Berat dipakai: ${kg(en.w)} kg.`
+    : `Belum lengkap. ${!bodyW() ? "Isi juga berat awal di bawah atau timbang di tab Hari ini." : "Isi jenis kelamin, umur, dan tinggi."}`;
 }
 
 function render() {
   ["today", "recap", "program", "set"].forEach(v => { $("#v-" + v).hidden = S.view !== v; });
   document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-current", String(b.dataset.v === S.view)));
   ({ today: renderToday, recap: renderRecap, program: renderProgram, set: renderSettings })[S.view]();
+  if (ED) renderSheet();
 }
-let toastT; function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2400); }
+let toastT; function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2800); }
 
 /* ---------- pin lock (kept only on this device) ---------- */
 const PIN_KEY = "jendela-makan-pin";
@@ -856,29 +1270,28 @@ if (pinGet()) showLock("unlock");
 document.addEventListener("visibilitychange", () => { if (document.hidden) { window.__hiddenAt = Date.now(); } else if (pinGet() && window.__hiddenAt && Date.now() - window.__hiddenAt > 60000 && $("#lock").hidden) showLock("unlock"); });
 
 /* ---------- events ---------- */
-$("#splashMascot").innerHTML = mascot("happy", "var(--yellow)");
+paintIcons();
+$("#splashMascot").innerHTML = mascot("happy");
+$("#splashFoods").innerHTML = ["rice", "fish", "broccoli", "apple", "coffee"].map(n => `<span>${ic(n)}</span>`).join("");
+$("#avatar").innerHTML = mascot("happy", null, false);
 const closeSplash = () => { $("#splash").hidden = true; window.scrollTo(0, 0); };
 $("#splash").addEventListener("click", closeSplash);
 $("#splash").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); closeSplash(); } });
 $("#showSplash").onclick = () => { $("#splash").hidden = false; };
-document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => { S.view = b.dataset.v; render(); window.scrollTo(0, 0); }));
-const goDay = iso => { S.day = iso; $("#mealTime").value = ""; S.view = "today"; render(); window.scrollTo(0, 0); };
+const goView = v => { S.view = v; render(); window.scrollTo(0, 0); };
+document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => goView(b.dataset.v)));
+const goDay = iso => { S.day = iso; S.view = "today"; render(); window.scrollTo(0, 0); };
 $("#prevDay").onclick = () => goDay(addDays(S.day, -1));
 $("#nextDay").onclick = () => { if (S.day < isoDay(new Date())) goDay(addDays(S.day, 1)); };
 $("#goToday").onclick = () => goDay(isoDay(new Date()));
 $("#dayPick").onchange = e => { const v = e.target.value; if (v && v <= isoDay(new Date())) goDay(v); else render(); };
 $("#dinas").onchange = e => mutDay(d => { d.dinas = e.target.checked; });
-function addMeal(kind) {
-  const t = $("#mealTime").value || fmtMin(nowMin());
-  mutDay(d => { d.meals = d.meals.concat({ id: uid(), t, kind }); });
-  const v = mealVerdict({ t, kind }, getDay(S.day));
-  toast(v === "ok" ? `Tercatat jam ${t}. Mantap!` : v === "dinas" ? "Tercatat sebagai pengecualian dinas" : "Tercatat, tapi di luar jendela makan");
-  $("#mealTime").value = ""; renderToday();
-}
-$("#addHeavy").onclick = () => addMeal("berat");
-$("#addSnack").onclick = () => addMeal("snack");
-$("#addLight").onclick = () => addMeal("ringan");
-$("#meals").addEventListener("click", e => { const id = e.target.dataset && e.target.dataset.del; if (id) mutDay(d => { d.meals = d.meals.filter(m => m.id !== id); }); });
+document.querySelectorAll("[data-add]").forEach(b => b.addEventListener("click", () => openSheet(b.dataset.add)));
+$("#v-today").addEventListener("click", e => {
+  if (e.target.closest("#goProfile")) { goView("set"); return; }
+  const del = e.target.closest("[data-del]"); if (del) { e.stopPropagation(); const id = del.dataset.del; mutDay(d => { d.meals = d.meals.filter(m => m.id !== id); }); toast("Catatan makan dihapus"); return; }
+  const ed = e.target.closest("[data-edit]"); if (ed) openSheet(null, ed.dataset.edit);
+});
 document.querySelectorAll("#v-today .chips[data-key]").forEach(g => g.addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return; const k = g.dataset.key; const val = +b.dataset.v === 1;
   mutDay(d => { d[k] = d[k] === val ? null : val; });
@@ -892,11 +1305,35 @@ $("#weight").addEventListener("change", e => { const v = parseFloat(String(e.tar
 $("#rangeSeg").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; S.range = +b.dataset.r; $("#rangeSeg").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); renderRecap(); });
 $("#recapBody").addEventListener("click", e => { const t = e.target.closest("[data-day]"); if (t) goDay(t.dataset.day); });
 $("#progBody").addEventListener("change", e => { const h = e.target.dataset && e.target.dataset.habit; if (!h) return; const set = new Set(S.settings.habits || []); e.target.checked ? set.add(h) : set.delete(h); S.settings.habits = [...set]; saveSettings(); renderProgram(); });
-const bindSet = (id, key, conv = v => v) => $(id).addEventListener("change", e => { const v = e.target.value; if (v === "" && key !== "w0") return; S.settings[key] = conv(v); saveSettings(); render(); });
+$("#progBody").addEventListener("click", e => { if (e.target.closest("[data-goset]")) goView("set"); });
+const bindSet = (id, key, conv = v => v, allowEmpty = false) => $(id).addEventListener("change", e => { const v = e.target.value; if (v === "" && !allowEmpty) return; S.settings[key] = conv(v); saveSettings(); render(); });
+const posNum = v => { const n = parseFloat(String(v).replace(",", ".")); return n > 0 ? Math.round(n * 10) / 10 : null; };
 bindSet("#sStart", "start"); bindSet("#sEnd", "end"); bindSet("#sSnackS", "snackS"); bindSet("#sSnackE", "snackE");
 bindSet("#sTol", "tol", Number); bindSet("#sSleep", "sleepTarget", Number); bindSet("#sDef", "deficit", Number); bindSet("#sWater", "water", Number);
-bindSet("#sW0", "w0", v => { const n = parseFloat(String(v).replace(",", ".")); return n > 0 ? Math.round(n * 10) / 10 : null; });
+bindSet("#sW0", "w0", posNum, true); bindSet("#sAge", "age", posNum, true); bindSet("#sHeight", "height", posNum, true);
+bindSet("#sSex", "sex", v => v, true); bindSet("#sAct", "act", Number); bindSet("#sName", "name", v => v.trim().slice(0, 20), true);
 bindSet("#sD0", "d0");
+
+/* sheet events */
+$("#sheetClose").onclick = closeSheet; $("#sheetBg").onclick = closeSheet;
+document.addEventListener("keydown", e => { if (e.key === "Escape" && ED) closeSheet(); });
+$("#sheetSave").onclick = saveSheet;
+$("#sheetTime").onchange = e => { if (ED) ED.t = e.target.value; };
+$("#sheetKinds").addEventListener("click", e => { const b = e.target.closest("button"); if (!b || !ED) return; ED.kind = b.dataset.k; renderSheet(); });
+$("#sheetCats").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; edCat = b.dataset.cat; edQ = ""; $("#sheetQ").value = ""; renderSheet(); });
+$("#sheetQ").addEventListener("input", e => { edQ = e.target.value; renderSheet(); });
+$("#sheetBody").addEventListener("click", e => {
+  const q = e.target.closest("[data-q]"); if (q) { addFood(q.dataset.f, q.dataset.q === "+" ? 1 : -1); return; }
+  if (e.target.closest("#cuOpen")) { edCustom = true; renderSheet(); const n = $("#cuN"); if (n) n.focus(); return; }
+  if (e.target.closest("#cuCancel")) { edCustom = false; renderSheet(); return; }
+  if (e.target.closest("#cuSave")) {
+    const n = $("#cuN").value.trim(), k = parseFloat(String($("#cuK").value).replace(",", "."));
+    if (!n) { toast("Isi nama makanannya dulu"); return; } if (!(k >= 0)) { toast("Isi perkiraan kalorinya"); return; }
+    const f = { id: "u-" + uid(), cat: $("#cuC").value, n: n.slice(0, 40), por: $("#cuP").value.trim().slice(0, 30) || "1 porsi", k: Math.round(k), p: parseFloat(String($("#cuPr").value).replace(",", ".")) || 0, tag: $("#cuT").value };
+    S.settings.foods = (S.settings.foods || []).concat(f); saveSettings();
+    edCustom = false; edCat = f.cat; edQ = ""; $("#sheetQ").value = ""; addFood(f.id, 1); toast("Tersimpan, bisa dipilih lagi lain kali");
+  }
+});
 $("#copyJson").onclick = () => {
   const txt = JSON.stringify({ settings: S.settings, days: S.days }, null, 1); const ta = $("#jsonOut"); ta.value = txt;
   const fallback = () => { ta.hidden = false; ta.select(); toast("Pilih dan salin teks di bawah"); };
